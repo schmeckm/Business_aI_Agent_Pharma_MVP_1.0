@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmaceutical Manufacturing Agent System - Phase 2</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>
+                Pharmaceutical Manufacturing Agent System
+                <div class="phase-badge">Phase 2</div>
+            </h1>
+            <div style="font-size: 14px; opacity: 0.9;">Enterprise AI Operations Platform</div>
+        </div>
+        
+        <div class="main-content">
+            <div class="input-section">
+                <div class="status" id="status">
+                    System Status: Initializing Phase 2 Event-Driven Architecture...
+                </div>
+
+                <div class="gmp-compliance">
+                    <div class="gmp-title">GMP Compliance & AI Audit Trail</div>
+                    <div class="gmp-indicators">
+                        <div class="gmp-indicator">
+                            <span>AI Decision Logging:</span>
+                            <span id="gmp-status">Active</span>
+                        </div>
+                        <div class="gmp-indicator">
+                            <span>Data Integrity:</span>
+                            <span id="data-integrity">Verified</span>
+                        </div>
+                        <div class="gmp-indicator">
+                            <span>Audit Trail:</span>
+                            <span id="audit-trail">Complete</span>
+                        </div>
+                    </div>
+                </div>
+
+                <label for="prompt">Manufacturing Operation Templates</label>
+                <select id="prompt">
+                    <option value="">-- Free Text Input --</option>
+                    <option value="ask-today-orders">Morning Briefing: Orders Ready for Release</option>
+                    <option value="general-assessment">Production Release Assessment (Next 24h)</option>
+                    <option value="batch-release">Execute Batch Release</option>
+                    <option value="schedule-line">Production Line Scheduling</option>
+                    <option value="qa-prioritize">Quality Assurance Prioritization</option>
+                    <option value="supply-check">Supply Chain Status Check</option>
+                    <option value="morning-briefing">Complete Morning Operations Brief</option>
+                    <option value="workflow-batch-release">Complete Batch Release Workflow</option>
+                    <option value="workflow-morning-planning">Daily Production Planning Workflow</option>
+                    <option value="test-event-publish">Test Event System</option>
+                </select>
+
+                <label for="message">Manufacturing Command Input</label>
+                <textarea id="message" placeholder="Manufacturing Command Examples:
+• Assess FG-123 batch 2000 units for EU market release
+• Schedule production of FG-456 1500 units on line PCK-01
+• Execute quality prioritization for material FG-789
+• Book transport to Germany for batch BATCH-001
+• Check material availability for urgent production
+• Trigger quality alert for contamination issue"></textarea>
+
+                <div class="workflow-section">
+                    <label>Phase 2 Workflow Operations</label>
+                    <div class="workflow-buttons">
+                        <button class="workflow-button" onclick="executeWorkflow('batch_release_complete')">Complete Release</button>
+                        <button class="workflow-button" onclick="executeWorkflow('morning_production_planning')">Daily Planning</button>
+                        <button class="workflow-button" onclick="publishEvent('quality.alert', {material: 'FG-123', severity: 'high'})">QA Alert</button>
+                        <button class="workflow-button" onclick="getEventHistory()">Event History</button>
+                    </div>
+                </div>
+
+                <div class="agent-section">
+                    <label>Direct Agent Testing</label>
+                    <button class="agent-button" onclick="testAgent('mar.assess_orders')">MAR: Orders</button>
+                    <button class="agent-button" onclick="testAgent('mar.morning_briefing')">MAR: Briefing</button>
+                    <button class="agent-button" onclick="testAgent('cmo.create_pr')">CMO: Purchase</button>
+                    <button class="agent-button" onclick="testAgent('qa.prioritize')">QA: Prioritize</button>
+                    <button class="agent-button" onclick="checkHealth()">System Health</button>
+                    <button class="agent-button" onclick="getMetrics()">GMP Metrics</button>
+                </div>
+
+                <button id="send" class="primary-button">Execute Manufacturing Command</button>
+            </div>
+            
+            <div class="output-section">
+                <div class="output-header">
+                    <label for="out">System Response & Audit Log</label>
+                    <button class="clear-button" onclick="clearOutput()">Clear</button>
+                </div>
+                <pre id="out">Pharmaceutical Manufacturing Agent System Ready...
+Phase 2 Event-Driven Architecture
+AI Decision Logging: ENABLED
+GMP Compliance Monitoring: ACTIVE</pre>
+                <div class="metrics" id="metrics">Waiting for operation metrics...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

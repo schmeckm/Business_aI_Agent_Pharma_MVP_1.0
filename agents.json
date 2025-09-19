@@ -1,0 +1,165 @@
+﻿[
+  {
+    "id": "mar-order-manager",
+    "namespace": "mar",
+    "name": "Manufacturing Order Manager",
+    "description": "Manages production orders, assessments, and batch releases",
+    "inProcess": true,
+    "module": "src/agents/mar.agent.js",
+    "skills": [
+      {
+        "intent": "mar.assess_orders",
+        "description": "Assess pending orders for release readiness"
+      },
+      {
+        "intent": "mar.batch_release",
+        "description": "Execute batch release of approved orders"
+      },
+      {
+        "intent": "mar.schedule_line",
+        "description": "Schedule production on specific lines"
+      }
+    ],
+    "capabilities": {
+      "domains": ["manufacturing", "production", "scheduling"],
+      "resources": ["bom", "inventory", "rules", "masterdata"],
+      "maxConcurrentTasks": 5
+    },
+    "config": {
+      "autoRelease": false,
+      "maxBatchSize": 50,
+      "approvalRequired": true
+    }
+  },
+  {
+    "id": "cmo-supply-manager",
+    "namespace": "cmo",
+    "name": "Supply Chain Manager",
+    "description": "Manages procurement, transport, and supply chain operations",
+    "inProcess": true,
+    "module": "src/agents/cmo.agent.js",
+    "skills": [
+      {
+        "intent": "cmo.create_pr",
+        "description": "Create purchase requisitions"
+      },
+      {
+        "intent": "cmo.create_po",
+        "description": "Create purchase orders"
+      },
+      {
+        "intent": "cmo.book_transport",
+        "description": "Book transport and logistics"
+      },
+      {
+        "intent": "cmo.track_shipment",
+        "description": "Track shipment status"
+      }
+    ],
+    "capabilities": {
+      "domains": ["supply-chain", "procurement", "logistics"],
+      "resources": ["suppliers", "contracts", "transport"],
+      "maxConcurrentTasks": 10
+    },
+    "config": {
+      "autoApproval": {
+        "threshold": 10000,
+        "currency": "EUR"
+      }
+    }
+  },
+  {
+    "id": "qa-inspector",
+    "namespace": "qa",
+    "name": "Quality Assurance Inspector",
+    "description": "Manages quality control, inspections, and compliance",
+    "inProcess": true,
+    "module": "src/agents/qa.agent.js",
+    "skills": [
+      {
+        "intent": "qa.prioritize",
+        "description": "Prioritize materials for inspection"
+      },
+      {
+        "intent": "qa.inspect_batch",
+        "description": "Schedule and execute batch inspections"
+      },
+      {
+        "intent": "qa.release_certificate",
+        "description": "Generate release certificates"
+      },
+      {
+        "intent": "qa.compliance_check",
+        "description": "Perform regulatory compliance checks"
+      }
+    ],
+    "capabilities": {
+      "domains": ["quality", "compliance", "testing"],
+      "resources": ["lims", "certificates", "regulations"],
+      "maxConcurrentTasks": 3
+    },
+    "config": {
+      "inspectionLevels": ["basic", "extended", "full"],
+      "defaultLevel": "basic"
+    }
+  },
+  {
+    "id": "mpc-optimizer",
+    "namespace": "mpc",
+    "name": "Model Predictive Control Optimizer",
+    "description": "Optimization and execution planning for production systems",
+    "inProcess": false,
+    "url": "http://localhost:5200/optimize",
+    "headers": {
+      "Authorization": "Bearer ${MPC_API_KEY}"
+    },
+    "skills": [
+      {
+        "intent": "mpc.optimize",
+        "description": "Generate optimal production plans"
+      },
+      {
+        "intent": "mpc.execute",
+        "description": "Execute production plans via OPC UA"
+      }
+    ],
+    "capabilities": {
+      "domains": ["optimization", "control", "automation"],
+      "resources": ["opc-ua", "plc", "equipment"],
+      "maxConcurrentTasks": 1
+    },
+    "timeout": 45000
+  },
+  {
+    "id": "nlp-assistant",
+    "namespace": "nlp",
+    "name": "Natural Language Processing Assistant",
+    "description": "Handles complex text analysis and generation tasks",
+    "inProcess": true,
+    "module": "src/agents/nlp.agent.js",
+    "skills": [
+      {
+        "intent": "nlp.extract_entities",
+        "description": "Extract structured entities from text"
+      },
+      {
+        "intent": "nlp.classify_intent",
+        "description": "Classify user intent from messages"
+      },
+      {
+        "intent": "nlp.generate_report",
+        "description": "Generate formatted reports"
+      }
+    ],
+    "capabilities": {
+      "domains": ["nlp", "text-analysis", "generation"],
+      "resources": ["llm", "knowledge-base"],
+      "maxConcurrentTasks": 5
+    },
+    "config": {
+      "model": "claude-3-5-sonnet",
+      "temperature": 0.1,
+      "maxTokens": 2000
+    }
+  }
+]

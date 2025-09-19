@@ -1,0 +1,37 @@
+{
+  "name": "pharma-agent-lite",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Manufacturing Agent System with AI Collaboration",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "node --watch app.js",
+    "test": "node --test test/*.test.js",
+    "lint": "eslint src/",
+    "agents:list": "node -e \"import('./src/services/AgentRegistry.js').then(({AgentRegistry}) => console.log(JSON.stringify(new AgentRegistry('./agents.json').all(), null, 2)))\"",
+    "health": "curl http://localhost:4000/health"
+  },
+  "dependencies": {
+    "axios": "^1.12.2",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2",
+    "pino": "^8.21.0",
+    "pino-pretty": "^10.3.1",
+    "uuid": "^9.0.1",
+    "ws": "^8.18.3"
+  },
+  "devDependencies": {
+    "eslint": "^8.56.0",
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "manufacturing",
+    "ai-agents",
+    "automation",
+    "pharma",
+    "nodejs"
+  ]
+}

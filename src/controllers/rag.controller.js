@@ -1,0 +1,168 @@
+﻿// src/controllers/rag.controller.js
+import { ChromaStore } from "../services/rag/chromaStore.js";
+// NOTE: logger.js exports both a default logger and a named createLogger()
+// Use the named factory to get a module-specific logger
+import { createLogger } from "../services/logger.js";
+const log = createLogger("RAG_CONTROLLER");
+
+// instantiate (same as before)
+// If ChromaStore requires async init in your version, consider moving construction into an async init function
+const rag = new ChromaStore(process.env);
+
+// --- Helper: Timeout ---
+function withTimeout(promise, ms, label = "operation") {
+  return Promise.race([
+    promise,
+    new Promise((_, rej) =>
+      setTimeout(() => rej(new Error(`${label} timeout after ${ms}ms`)), ms)
+    ),
+  ]);
+}
+
+// --- Helper: where-Normalisierung (wandelt {$eq:"EU"} -> "EU") ---
+function normalizeWhere(where) {
+  if (!where || typeof where !== "object") return undefined;
+  const out = {};
+  for (const [k, v] of Object.entries(where)) {
+    if (v && typeof v === "object" && !Array.isArray(v)) {
+      if (Object.keys(v).length === 1 && Object.prototype.hasOwnProperty.call(v, "$eq")) {
+        out[k] = v["$eq"];
+      } else {
+        out[k] = v; // ggf. weitere Operatoren unverändert durchreichen
+      }
+    } else {
+      out[k] = v; // bereits plain equality
+    }
+  }
+  return Object.keys(out).length ? out : undefined;
+}
+
+// --- Controller: Health ---
+export async function ragHealthController(req, res) {
+  try {
+    const coll = await rag.ensureCollection();
+    const info = rag.cli.debugInfo ? rag.cli.debugInfo() : {};
+    let count = 0;
+    try {
+      if (typeof rag.cli.countCollection === "function") {
+        count = await rag.cli.countCollection(coll.id);
+      }
+    } catch (countErr) {
+      log.warn("[RAG] countCollection failed", { err: String(countErr?.message || countErr) });
+    }
+
+    return res.json({
+      ok: true,
+      chroma: {
+        base: info.base,
+        mode: info.mode, // { ver: 'v2', kind: 'mt' } etc.
+        tenant: info.tenant,
+        database: info.database,
+        flavor: info.flavor,
+      },
+      collection: {
+        id: coll.id,
+        name: coll.name,
+        docCount: count,
+      },
+    });
+  } catch (e) {
+    const details = {
+      message: e?.message,
+      url: e?.config?.url,
+      status: e?.response?.status,
+      data: e?.response?.data,
+    };
+    log.error("[RAG HEALTH ERROR]", details);
+    return res.status(500).json({ ok: false, error: "RAG health failed", ...details });
+  }
+}
+
+// --- Controller: Search ---
+export async function ragSearchController(req, res) {
+  try {
+    const { query, k = 5, where, whereDocument, offset = 0 } = req.body || {};
+    if (!query || typeof query !== 'string') {
+      return res.status(422).json({ error: "Missing 'query' (string) in body" });
+    }
+
+    const w  = (where && Object.keys(where).length) ? where : undefined;
+    const wd = (whereDocument && Object.keys(whereDocument).length) ? whereDocument : undefined;
+
+    // normalize where-filter if needed
+    const wNorm = normalizeWhere(w);
+    const wdNorm = normalizeWhere(wd);
+
+    const raw = await withTimeout(rag.search(query, Math.max(1, Math.min(k, 50)), wNorm, wdNorm), 15000, "rag.search");
+
+    // 🔒 Robust normalisieren: hitsArr wird immer ein Array
+    let hitsArr = [];
+    if (Array.isArray(raw)) {
+      hitsArr = raw;
+    } else if (raw && Array.isArray(raw.items)) {
+      hitsArr = raw.items;
+    } else if (raw && typeof raw === 'object') {
+      // manche Implementationen liefern {documents:[[...]], metadatas:[[...]], distances:[[...]], ids:[[...]]}
+      const docs = raw.documents?.[0] || [];
+      const metas = raw.metadatas?.[0] || [];
+      const dists = raw.distances?.[0] || [];
+      const ids   = raw.ids?.[0] || [];
+      hitsArr = docs.map((doc, i) => ({
+        text: doc, meta: metas[i] || {}, distance: dists[i] ?? null, id: ids[i] || ''
+      }));
+    } // sonst bleibt []
+
+    // nur sortieren, wenn wirklich ein Array
+    if (Array.isArray(hitsArr)) {
+      hitsArr = [...hitsArr].sort((a, b) => (a?.distance ?? 0) - (b?.distance ?? 0));
+    }
+
+    const page = hitsArr.slice(offset, offset + k).map(h => ({
+      id: h.id,
+      text: h.text,
+      meta: h.meta,
+      distance: h.distance,
+      similarity: 1 / (1 + (h.distance ?? 0)),
+      score:      1 / (1 + (h.distance ?? 0)),
+    }));
+
+    return res.json({
+      query,
+      filters: { where: wNorm, whereDocument: wdNorm },
+      count: hitsArr.length,
+      items: page
+    });
+  } catch (e) {
+    const status = /timeout/i.test(String(e?.message)) ? 504 : 500;
+    const details = {
+      message: e?.message,
+      url: e?.config?.url,
+      status: e?.response?.status,
+      data: e?.response?.data
+    };
+    log.error("[RAG SEARCH ERROR]", details);
+    return res.status(status).json({ error: "RAG search failed", ...details });
+  }
+}
+
+
+// --- Controller: Index ---
+export async function ragIndexController(req, res) {
+  try {
+    const { docs } = req.body || {};
+    if (!Array.isArray(docs) || docs.length === 0) {
+      return res.status(422).json({ error: "Body must include non-empty 'docs' array" });
+    }
+    const out = await new ChromaStore(process.env).index(docs);
+    return res.json(out);
+  } catch (e) {
+    const details = {
+      message: e?.message,
+      url: e?.config?.url,
+      status: e?.response?.status,
+      data: e?.response?.data,
+    };
+    log.error("[RAG INDEX ERROR]", details);
+    return res.status(500).json({ error: "RAG index failed", ...details });
+  }
+}
