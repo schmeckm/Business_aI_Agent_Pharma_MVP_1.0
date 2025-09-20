@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="500">
+  <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="200">
 </div>
 
-# 💊 Pharmaceutical Manufacturing Agent System – MVP 1.011
+# 💊 Pharmaceutical Manufacturing Agent System – MVP 1.01
 
 > Revolutionizing pharmaceutical manufacturing through **AI-driven decision support** with full **GMP compliance**
 
@@ -51,7 +51,7 @@ The pharmaceutical industry faces unprecedented challenges: **increasing regulat
 
 - [Current System Features](#-current-system-features)
 - [Agent Evolution Roadmap](#-agent-evolution-roadmap)
-- [System Architecture](#-system-architecture)
+- [UML System Design](#-uml-system-design)
 - [Quick Start](#-quick-start)
 - [Installation](#-installation)
 - [API Reference](#-api-reference)
@@ -78,7 +78,7 @@ The pharmaceutical industry faces unprecedented challenges: **increasing regulat
 
 ### Technical Foundation
 - **⚡ Real-time Processing** - Async operations with loading indicators
-- **🎨 Professional UI** - Simple Style interface design
+- **🎨 Professional UI** - Enterprise-grade interface design
 - **📱 Responsive Design** - Works on desktop, tablet, and mobile
 - **🏥 Health Monitoring** - System health checks and monitoring endpoints
 
@@ -145,40 +145,230 @@ flowchart LR
 
 ---
 
-## 🏗️ System Architecture
+## 🏗️ UML System Design
+
+### Class Diagram - Core System Components
 
 ```mermaid
-flowchart TD
-    U[👤 User] -->|HTTPS| F[🌐 Frontend]
-    F -->|REST API| B[⚙️ Backend Server]
+classDiagram
+    class User {
+        +String userId
+        +String role
+        +String department
+        +authenticate()
+        +sendCommand()
+        +viewAuditTrail()
+    }
     
-    B --> C[🤖 Claude AI]
-    B --> M[📄 Mock Data Store]
-    B --> A[📋 Audit System]
+    class AgentSystem {
+        +String agentId
+        +String version
+        +AgentCapabilities capabilities
+        +processCommand()
+        +generateResponse()
+        +logInteraction()
+    }
     
-    subgraph "🔒 GMP Compliance Layer"
-        A --> AL[Audit Log]
-        A --> AV[Audit Viewer]
-        B --> AM[Audit Middleware]
+    class ClaudeAI {
+        +String apiKey
+        +String model
+        +Integer maxTokens
+        +processNaturalLanguage()
+        +generateResponse()
+        +validateInput()
+    }
+    
+    class AuditEngine {
+        +String auditId
+        +DateTime timestamp
+        +ALCOA+ compliance
+        +logEntry()
+        +generateReport()
+        +validateIntegrity()
+    }
+    
+    class ManufacturingData {
+        +String batchId
+        +String orderId
+        +QualityMetrics metrics
+        +ProductionStatus status
+        +getBatchInfo()
+        +updateStatus()
+        +validateQuality()
+    }
+    
+    class ComplianceEngine {
+        +String regulatoryRegion
+        +String[] standards
+        +Boolean validated
+        +checkCompliance()
+        +generateDocumentation()
+        +validateSignatures()
+    }
+    
+    User --> AgentSystem : interacts
+    AgentSystem --> ClaudeAI : delegates processing
+    AgentSystem --> AuditEngine : logs all actions
+    AgentSystem --> ManufacturingData : queries data
+    AgentSystem --> ComplianceEngine : ensures compliance
+    AuditEngine --> ComplianceEngine : validates entries
+    
+    <<interface>> GMP_Compliant
+    <<interface>> ALCOA_Plus
+    
+    AuditEngine ..|> GMP_Compliant
+    ComplianceEngine ..|> ALCOA_Plus
+```
+
+### Sequence Diagram - Manufacturing Query Flow
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant UI as Frontend
+    participant AS as Agent System
+    participant CA as Claude AI
+    participant MD as Manufacturing Data
+    participant AE as Audit Engine
+    participant CE as Compliance Engine
+    
+    U->>UI: Submit manufacturing query
+    UI->>AS: POST /chat with command
+    AS->>AE: Log interaction start
+    AS->>CE: Validate user permissions
+    CE-->>AS: Permission granted
+    AS->>CA: Process natural language
+    CA-->>AS: Parsed intent & entities
+    AS->>MD: Query manufacturing data
+    MD-->>AS: Return relevant data
+    AS->>CA: Generate intelligent response
+    CA-->>AS: AI-powered recommendation
+    AS->>CE: Validate compliance
+    CE-->>AS: Compliance approved
+    AS->>AE: Log complete interaction
+    AE-->>AS: Audit trail updated
+    AS-->>UI: Return response + audit ID
+    UI-->>U: Display results
+```
+
+### Component Diagram - System Architecture
+
+```mermaid
+graph TB
+    subgraph "Presentation Layer"
+        UI[Web Interface]
+        API[REST API Gateway]
     end
     
-    subgraph "📊 Data Sources"
-        M --> O[Orders]
-        M --> I[Issues]
-        M --> BR[Briefings]
+    subgraph "Agent Intelligence Layer"
+        AS[Agent System Core]
+        CA[Claude AI Integration]
+        DM[Decision Models]
+        LM[Learning Models]
     end
     
-    subgraph "🧬 Agent Evolution Framework"
-        C --> AE[Agent Engine]
-        AE --> ML[Machine Learning]
-        AE --> PR[Pattern Recognition]
-        AE --> DM[Decision Models]
+    subgraph "Data Management Layer"
+        MD[Manufacturing Data Store]
+        AD[Audit Database]
+        CD[Configuration Data]
     end
     
-    style U fill:#e1f5fe
-    style C fill:#f3e5f5
-    style A fill:#e8f5e8
-    style AE fill:#fff3e0
+    subgraph "Compliance Layer"
+        CE[Compliance Engine]
+        AE[Audit Engine]
+        VE[Validation Engine]
+    end
+    
+    subgraph "External Systems"
+        MES[Manufacturing Execution Systems]
+        LIMS[Laboratory Information Systems]
+        ERP[Enterprise Resource Planning]
+    end
+    
+    UI --> API
+    API --> AS
+    AS --> CA
+    AS --> DM
+    AS --> LM
+    AS --> MD
+    AS --> CE
+    CE --> AE
+    CE --> VE
+    AE --> AD
+    AS --> CD
+    
+    AS -.-> MES
+    AS -.-> LIMS
+    AS -.-> ERP
+    
+    style AS fill:#e3f2fd
+    style CE fill:#e8f5e8
+    style CA fill:#f3e5f5
+```
+
+### Use Case Diagram - Agent Capabilities
+
+```mermaid
+graph LR
+    subgraph "Pharmaceutical Manufacturing Agent System"
+        subgraph "User Roles"
+            QAM[QA Manager]
+            PM[Production Manager]
+            RM[Regulatory Manager]
+            OP[Operator]
+        end
+        
+        subgraph "Core Use Cases"
+            UC1[Query Production Status]
+            UC2[Generate Morning Briefing]
+            UC3[Assess Batch Release]
+            UC4[Schedule Production]
+            UC5[Analyze Deviations]
+            UC6[Review Compliance]
+            UC7[Generate Reports]
+            UC8[Monitor Quality Metrics]
+        end
+        
+        subgraph "System Functions"
+            F1[Natural Language Processing]
+            F2[Decision Support]
+            F3[Audit Logging]
+            F4[Compliance Validation]
+        end
+    end
+    
+    QAM --> UC3
+    QAM --> UC5
+    QAM --> UC6
+    QAM --> UC8
+    
+    PM --> UC1
+    PM --> UC2
+    PM --> UC4
+    PM --> UC7
+    
+    RM --> UC6
+    RM --> UC7
+    
+    OP --> UC1
+    OP --> UC8
+    
+    UC1 --> F1
+    UC1 --> F2
+    UC2 --> F1
+    UC2 --> F2
+    UC3 --> F2
+    UC3 --> F4
+    UC4 --> F2
+    UC5 --> F2
+    UC6 --> F4
+    UC7 --> F3
+    UC8 --> F2
+    
+    style QAM fill:#ffecb3
+    style PM fill:#c8e6c9
+    style RM fill:#e1bee7
+    style OP fill:#b3e5fc
 ```
 
 ### 📁 Project Structure
@@ -189,7 +379,7 @@ agent-framework/
 │   ├── index.html            # Main application interface
 │   ├── audit.html            # GMP audit log viewer
 │   ├── css/
-│   │   └── styles.css        # McKinsey-style UI components
+│   │   └── styles.css        # Enterprise-grade UI components
 │   └── js/
 │       └── app.js            # Frontend application logic
 ├── 📊 mock-data/             # Manufacturing data simulation
