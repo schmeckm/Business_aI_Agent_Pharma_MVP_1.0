@@ -787,3 +787,5 @@ This project represents the beginning of a **fundamental transformation** in pha
 - **💼 Industry Leaders**: Provide real-world manufacturing challenges and requirements
 
 ---
+
+📌 See the full [MVP 2.0 Roadmap](.github/project-mvp2.0.yaml)
