@@ -1,4 +1,4 @@
-﻿// app.js - Complete Phase 2 Manufacturing Agent System
+﻿// app.js - Complete Phase 3 Enhanced Manufacturing Agent System
 import express from "express";
 import { WebSocketServer } from 'ws';
 import 'dotenv/config';
@@ -47,7 +47,7 @@ try {
   console.log('Using default empty data');
 }
 
-// Initialize services for Phase 1 & 2 (with graceful fallbacks)
+// Initialize services for Phase 1, 2 & 3 (with graceful fallbacks)
 let services = {};
 
 try {
@@ -60,9 +60,9 @@ try {
       timeout: 30000,
       retries: 2
     });
-    console.log('LLM service initialized');
+    console.log('✅ LLM service initialized');
   } catch (e) {
-    console.log('LLM service not available:', e.message);
+    console.log('⚠️  LLM service not available:', e.message);
   }
 
   try {
@@ -81,29 +81,38 @@ try {
       data: appData,
       llm: services.llm
     });
-    console.log('Phase 1 agent services initialized');
+    console.log('✅ Phase 1 agent services initialized');
   } catch (e) {
-    console.log('Phase 1 agent services not available:', e.message);
+    console.log('⚠️  Phase 1 agent services not available:', e.message);
   }
 
   // Phase 2 services
   try {
     services.eventBus = new EventBus();
-    console.log('Phase 2 Event Bus initialized');
+    console.log('✅ Phase 2 Event Bus initialized');
 
     if (services.router) {
       services.workflow = new WorkflowOrchestrator({
         router: services.router,
         eventBus: services.eventBus
       });
-      console.log('Phase 2 Workflow Orchestrator initialized');
+      console.log('✅ Phase 2 Workflow Orchestrator initialized');
     }
   } catch (e) {
-    console.log('Phase 2 services not available:', e.message);
+    console.log('⚠️  Phase 2 services not available:', e.message);
+  }
+
+  // Phase 3 services (Enhanced MAR Agent with AI Integration)
+  try {
+    // Phase 3 is automatically initialized through the enhanced RouterService
+    // The RouterService will detect and initialize Phase 3 capabilities
+    console.log('✅ Phase 3 Enhanced MAR Agent ready for auto-initialization via RouterService');
+  } catch (e) {
+    console.log('⚠️  Phase 3 services will be initialized on-demand:', e.message);
   }
   
 } catch (error) {
-  console.log('Services initialization failed, using fallback mode');
+  console.log('⚠️  Services initialization failed, using fallback mode');
 }
 
 // Basic middleware
@@ -127,9 +136,12 @@ const auth = (req, res, next) => {
   next();
 };
 
-// ===== ROUTES =====
+// Make services available to routes
+app.locals.services = services;
 
-// Health check with Phase 2 status
+// ===== CORE ROUTES =====
+
+// Enhanced health check with Phase 3 status
 app.get('/health', (req, res) => {
   const healthInfo = {
     ok: true,
@@ -141,15 +153,22 @@ app.get('/health', (req, res) => {
       registry: !!services.registry,
       runtime: !!services.runtime,
       eventBus: !!services.eventBus,
-      workflow: !!services.workflow
+      workflow: !!services.workflow,
+      phase3: services.router?.phase3System?.isInitialized || false
     },
-    phase: services.eventBus ? 'Phase 2 - Event-Driven' : 'Phase 1 - A2A Communication'
+    phase: services.router?.phase3System ? 'Phase 3 - AI Enhanced' : 
+           services.eventBus ? 'Phase 2 - Event-Driven' : 
+           'Phase 1 - A2A Communication'
   };
   
   // Add service metrics if available
   if (services.router?.getMetrics) {
     try {
-      healthInfo.metrics = { routing: services.router.getMetrics() };
+      const routerMetrics = services.router.getMetrics();
+      healthInfo.metrics = { 
+        routing: routerMetrics,
+        phase3Stats: routerMetrics.phase3Stats || {}
+      };
     } catch (e) {
       // Ignore metrics errors
     }
@@ -177,10 +196,19 @@ app.get('/health', (req, res) => {
     }
   }
   
+  // Add Phase 3 system status if available
+  if (services.router?.phase3System?.getSystemStatus) {
+    try {
+      healthInfo.phase3Status = services.router.phase3System.getSystemStatus();
+    } catch (e) {
+      healthInfo.phase3Status = { error: e.message };
+    }
+  }
+  
   res.json(healthInfo);
 });
 
-// Enhanced chat endpoint with Phase 2 integration
+// Enhanced chat endpoint with Phase 3 integration
 app.post('/api/chat', auth, async (req, res) => {
   try {
     const { message, promptId } = req.body;
@@ -198,7 +226,11 @@ app.post('/api/chat', auth, async (req, res) => {
         'morning-briefing': 'Vollständiges Morgen-Briefing',
         'workflow-batch-release': 'Vollständiger Batch-Release Workflow',
         'workflow-morning-planning': 'Tägliche Produktionsplanung Workflow',
-        'test-event-publish': 'Test Event Publishing'
+        'test-event-publish': 'Test Event Publishing',
+        // Phase 3 templates
+        'phase3-assess-order': 'Phase 3 AI Order Assessment FG-123 2000 Stk',
+        'phase3-autonomous-production': 'Start autonomous production workflow',
+        'phase3-predictive-analysis': 'Run predictive maintenance analysis'
       };
       text = templates[promptId] || promptId;
     }
@@ -303,7 +335,8 @@ app.post('/api/chat', auth, async (req, res) => {
         result._routing = {
           via: routingResult.via,
           agent: routingResult.agent,
-          responseTime: routingResult._meta?.responseTime
+          responseTime: routingResult._meta?.responseTime,
+          phase3Enhanced: routingResult._meta?.phase3Enhanced || false
         };
         
       } catch (error) {
@@ -320,7 +353,8 @@ app.post('/api/chat', auth, async (req, res) => {
       intent,
       parsed, 
       result,
-      phase: services.eventBus ? 'Phase 2' : 'Phase 1',
+      phase: services.router?.phase3System ? 'Phase 3' : 
+             services.eventBus ? 'Phase 2' : 'Phase 1',
       timestamp: new Date().toISOString()
     });
     
@@ -333,7 +367,7 @@ app.post('/api/chat', auth, async (req, res) => {
   }
 });
 
-// Enhanced agent invoke endpoint with Phase 2 support
+// Enhanced agent invoke endpoint with Phase 3 support
 app.post('/api/agent', auth, async (req, res) => {
   try {
     const { intent, context = {} } = req.body;
@@ -361,7 +395,8 @@ app.post('/api/agent', auth, async (req, res) => {
           _routing: {
             via: routingResult.via,
             agent: routingResult.agent,
-            responseTime: routingResult._meta?.responseTime
+            responseTime: routingResult._meta?.responseTime,
+            phase3Enhanced: routingResult._meta?.phase3Enhanced || false
           }
         };
       } catch (error) {
@@ -376,7 +411,8 @@ app.post('/api/agent', auth, async (req, res) => {
     res.json({ 
       intent, 
       result,
-      phase: services.eventBus ? 'Phase 2' : 'Phase 1'
+      phase: services.router?.phase3System ? 'Phase 3' : 
+             services.eventBus ? 'Phase 2' : 'Phase 1'
     });
     
   } catch (error) {
@@ -387,6 +423,436 @@ app.post('/api/agent', auth, async (req, res) => {
     });
   }
 });
+
+// ===== PHASE 3 ENHANCED ROUTES =====
+
+// Phase 3 System Status
+app.get('/api/phase3/status', auth, async (req, res) => {
+  try {
+    if (services.router && services.router.phase3System) {
+      const status = await services.router.phase3System.getSystemStatus();
+      const routerHealth = await services.router.healthCheck();
+      
+      res.json({
+        success: true,
+        phase3: {
+          available: true,
+          initialized: services.router.phase3System.isInitialized,
+          autonomousMode: services.router.phase3Config?.enableAutonomousMode || false,
+          systemStatus: status,
+          routerIntegration: routerHealth.phase3,
+          capabilities: [
+            'CONSENSUS_ENGINE',
+            'KNOWLEDGE_GRAPH', 
+            'PREDICTIVE_INTELLIGENCE',
+            'AUTONOMOUS_ORCHESTRATION',
+            'ADVANCED_COMPLIANCE'
+          ],
+          endpoints: {
+            status: '/api/phase3/status',
+            insights: '/api/phase3/insights',
+            orchestrate: '/api/phase3/orchestrate',
+            consensus: '/api/phase3/consensus',
+            knowledge: '/api/phase3/knowledge/query',
+            predict: '/api/phase3/predict'
+          }
+        }
+      });
+    } else {
+      res.json({
+        success: true,
+        phase3: {
+          available: false,
+          reason: 'Phase 3 system will initialize on first manufacturing request',
+          autoInit: true,
+          trigger: 'Make a manufacturing request to initialize Phase 3'
+        }
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      phase3: { available: false }
+    });
+  }
+});
+
+// Phase 3 AI Insights
+app.get('/api/phase3/insights', auth, async (req, res) => {
+  try {
+    const { entityId, timeRange = 30 } = req.query;
+    
+    if (!services.router?.phase3System) {
+      return res.status(404).json({
+        success: false,
+        message: 'Phase 3 system not yet initialized. Make a manufacturing request first.',
+        suggestion: 'Try: POST /api/chat with a manufacturing command'
+      });
+    }
+
+    const phase3 = services.router.phase3System;
+    
+    const insights = {
+      compliance: await phase3.compliance.generateComplianceInsights(),
+      timestamp: new Date().toISOString()
+    };
+
+    // Add entity-specific insights if requested
+    if (entityId) {
+      insights.entity = {
+        id: entityId,
+        compliance: phase3.compliance.getComplianceReport(entityId, parseInt(timeRange)),
+        knowledge: phase3.knowledgeGraph.getInsights(entityId),
+        predictions: {}
+      };
+
+      // Add predictive insights
+      try {
+        insights.entity.predictions.maintenance = 
+          await phase3.predictiveIntelligence.predictMaintenance(entityId);
+        
+        insights.entity.predictions.demand = 
+          await phase3.predictiveIntelligence.predictDemand(entityId, 7);
+      } catch (predError) {
+        insights.entity.predictions.error = predError.message;
+      }
+    }
+
+    // Get active orchestrations
+    insights.orchestrations = Array.from(phase3.orchestration.activeOrchestrations.entries())
+      .map(([id, orch]) => ({
+        id,
+        status: orch.status,
+        progress: `${orch.currentStep}/${orch.workflow.steps.length}`,
+        startTime: orch.metrics.startTime,
+        assignedAgents: Array.from(orch.assignedAgents.entries())
+      }));
+
+    res.json({
+      success: true,
+      insights
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Phase 3 Autonomous Orchestration
+app.post('/api/phase3/orchestrate', auth, async (req, res) => {
+  try {
+    const { workflowId, steps, context, autoExecute = true } = req.body;
+    
+    if (!services.router?.phase3System) {
+      return res.status(404).json({
+        success: false,
+        message: 'Phase 3 orchestration not available. Initialize with a manufacturing request first.',
+        suggestion: 'Try: POST /api/chat with a manufacturing command'
+      });
+    }
+
+    const orchestration = services.router.phase3System.orchestration;
+    
+    // Validate workflow steps
+    if (!steps || !Array.isArray(steps) || steps.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid workflow steps provided. Expected array of step objects.'
+      });
+    }
+
+    // Create orchestration
+    const orchId = workflowId || `workflow-${Date.now()}`;
+    const workflow = { steps };
+    
+    const orchInstance = await orchestration.createOrchestration(
+      orchId,
+      workflow,
+      { ...context, data: appData }
+    );
+
+    // Execute if autonomous mode enabled and autoExecute is true
+    if (autoExecute && services.router.phase3Config?.enableAutonomousMode) {
+      orchestration.executeOrchestration(orchId)
+        .then(result => {
+          console.log(`🤖 Phase 3 Orchestration ${orchId} completed successfully`);
+          // Broadcast to WebSocket clients
+          global.broadcast({
+            type: 'phase3_orchestration_completed',
+            orchestrationId: orchId,
+            result: result.status,
+            timestamp: new Date().toISOString()
+          });
+        })
+        .catch(error => {
+          console.error(`❌ Phase 3 Orchestration ${orchId} failed:`, error);
+          global.broadcast({
+            type: 'phase3_orchestration_failed',
+            orchestrationId: orchId,
+            error: error.message,
+            timestamp: new Date().toISOString()
+          });
+        });
+    }
+
+    res.json({
+      success: true,
+      orchestration: {
+        id: orchInstance.id,
+        status: orchInstance.status,
+        workflow: orchInstance.workflow.steps.map(s => ({
+          name: s.name,
+          capabilities: s.requiredCapabilities,
+          priority: s.priority
+        })),
+        context: orchInstance.context,
+        autoExecuting: autoExecute && services.router.phase3Config?.enableAutonomousMode,
+        created: new Date().toISOString()
+      }
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Phase 3 Consensus Decision
+app.post('/api/phase3/consensus', auth, async (req, res) => {
+  try {
+    const { proposalId, decision, affectedAgents } = req.body;
+    
+    if (!services.router?.phase3System) {
+      return res.status(404).json({
+        success: false,
+        message: 'Phase 3 consensus engine not available'
+      });
+    }
+
+    const consensus = services.router.phase3System.consensusEngine;
+    
+    const proposal = await consensus.proposeDecision(
+      proposalId || `proposal-${Date.now()}`,
+      decision,
+      'api-user',
+      affectedAgents || Array.from(services.router.phase3System.orchestration.agents.keys())
+    );
+
+    res.json({
+      success: true,
+      proposal: {
+        id: proposal.id,
+        decision: proposal.decision,
+        status: proposal.status,
+        affectedAgents: proposal.affectedAgents,
+        deadline: new Date(proposal.deadline).toISOString(),
+        votingWindow: '30 seconds'
+      }
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Phase 3 Vote on Consensus
+app.post('/api/phase3/consensus/:proposalId/vote', auth, async (req, res) => {
+  try {
+    const { proposalId } = req.params;
+    const { agentId, vote, reasoning } = req.body;
+    
+    if (!services.router?.phase3System) {
+      return res.status(404).json({
+        success: false,
+        message: 'Phase 3 consensus engine not available'
+      });
+    }
+
+    const consensus = services.router.phase3System.consensusEngine;
+    
+    const updatedProposal = await consensus.castVote(
+      proposalId,
+      agentId || 'api-user',
+      vote, // 'APPROVE', 'REJECT', 'ABSTAIN'
+      reasoning || ''
+    );
+
+    // Broadcast consensus updates
+    global.broadcast({
+      type: 'phase3_consensus_vote',
+      proposalId,
+      vote,
+      status: updatedProposal.status,
+      votes: updatedProposal.votes.size,
+      totalAgents: updatedProposal.affectedAgents.length,
+      timestamp: new Date().toISOString()
+    });
+
+    res.json({
+      success: true,
+      vote: {
+        proposalId,
+        agentId: agentId || 'api-user',
+        vote,
+        reasoning,
+        timestamp: new Date().toISOString()
+      },
+      proposal: {
+        id: updatedProposal.id,
+        status: updatedProposal.status,
+        votes: updatedProposal.votes.size,
+        totalAgents: updatedProposal.affectedAgents.length
+      }
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Phase 3 Knowledge Graph Query
+app.post('/api/phase3/knowledge/query', auth, async (req, res) => {
+  try {
+    const { pattern, context = 'default' } = req.body;
+    
+    if (!services.router?.phase3System) {
+      return res.status(404).json({
+        success: false,
+        message: 'Phase 3 knowledge graph not available'
+      });
+    }
+
+    const knowledge = services.router.phase3System.knowledgeGraph;
+    
+    const results = knowledge.query(pattern, context);
+    
+    const stats = {
+      totalNodes: knowledge.nodes.size,
+      totalEdges: knowledge.edges.size,
+      version: knowledge.version
+    };
+
+    res.json({
+      success: true,
+      query: pattern,
+      results,
+      stats,
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Phase 3 Add Knowledge Entity
+app.post('/api/phase3/knowledge/entities', auth, async (req, res) => {
+  try {
+    const { id, type, properties, relationships = [] } = req.body;
+    
+    if (!services.router?.phase3System) {
+      return res.status(404).json({
+        success: false,
+        message: 'Phase 3 knowledge graph not available'
+      });
+    }
+
+    const knowledge = services.router.phase3System.knowledgeGraph;
+    
+    const node = knowledge.addNode(id, type, properties);
+    
+    const addedRelationships = [];
+    for (const rel of relationships) {
+      if (rel.to && rel.relationship) {
+        const edge = knowledge.addEdge(id, rel.to, rel.relationship, rel.properties || {});
+        addedRelationships.push(edge);
+      }
+    }
+
+    res.json({
+      success: true,
+      entity: {
+        node,
+        relationships: addedRelationships,
+        timestamp: new Date().toISOString()
+      }
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// Phase 3 Predictive Analytics
+app.post('/api/phase3/predict', auth, async (req, res) => {
+  try {
+    const { type, entityId, parameters = {}, timeHorizon = 7 } = req.body;
+    
+    if (!services.router?.phase3System) {
+      return res.status(404).json({
+        success: false,
+        message: 'Phase 3 predictive intelligence not available'
+      });
+    }
+
+    const predictive = services.router.phase3System.predictiveIntelligence;
+    let prediction = {};
+
+    switch (type) {
+      case 'demand':
+        prediction = await predictive.predictDemand(entityId, timeHorizon);
+        break;
+      case 'maintenance':
+        prediction = await predictive.predictMaintenance(entityId);
+        break;
+      case 'quality':
+        prediction = await predictive.predictQualityIssues(entityId, parameters);
+        break;
+      default:
+        return res.status(400).json({
+          success: false,
+          message: 'Invalid prediction type. Use: demand, maintenance, or quality'
+        });
+    }
+
+    res.json({
+      success: true,
+      prediction: {
+        type,
+        entityId,
+        result: prediction,
+        parameters,
+        timestamp: new Date().toISOString()
+      }
+    });
+    
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// ===== PHASE 2 WORKFLOW ROUTES =====
 
 // Phase 2 Workflow endpoints
 app.post('/api/workflow/:workflowId', auth, async (req, res) => {
@@ -478,6 +944,86 @@ app.get('/api/workflows', auth, (req, res) => {
   });
 });
 
+// Enhanced manufacturing workflow with Phase 3
+app.post('/api/manufacturing/enhanced-batch-release-workflow', auth, async (req, res) => {
+  try {
+    const context = { ...req.body, data: appData };
+    
+    // Try Phase 3 enhanced workflow first
+    if (services.router?.phase3System) {
+      try {
+        const phase3Result = await services.router.phase3System.handleMARRequest(
+          'plan_production', 
+          context
+        );
+        
+        if (phase3Result.success) {
+          return res.json({
+            ok: true,
+            mode: 'phase3-enhanced',
+            result: phase3Result,
+            capabilities: ['AI_PREDICTIONS', 'KNOWLEDGE_GRAPH', 'AUTONOMOUS_ORCHESTRATION']
+          });
+        }
+      } catch (error) {
+        console.warn('Phase 3 enhanced workflow failed, falling back:', error.message);
+      }
+    }
+    
+    // Fallback to Phase 2 workflow
+    if (services.workflow) {
+      const execution = await services.workflow.executeWorkflow('batch_release_complete', context);
+      return res.json({
+        ok: true,
+        mode: 'phase2-workflow',
+        execution: {
+          id: execution.id,
+          status: execution.status,
+          steps: execution.steps.length
+        }
+      });
+    }
+    
+    // Final fallback to simple batch release
+    const result = await handleMAR('mar.batch_release', req.body, appData);
+    res.json({ ok: true, result, mode: 'fallback' });
+    
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Manufacturing-specific workflow shortcuts
+app.post('/api/manufacturing/batch-release-workflow', auth, async (req, res) => {
+  try {
+    if (!services.workflow) {
+      // Fallback to simple batch release
+      const result = await handleMAR('mar.batch_release', req.body, appData);
+      return res.json({ ok: true, result, mode: 'fallback' });
+    }
+    
+    const execution = await services.workflow.executeWorkflow('batch_release_complete', {
+      ...req.body,
+      data: appData
+    });
+    
+    res.json({
+      ok: true,
+      mode: 'workflow',
+      execution: {
+        id: execution.id,
+        status: execution.status,
+        steps: execution.steps.length
+      }
+    });
+    
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ===== PHASE 2 EVENT ROUTES =====
+
 // Phase 2 Event endpoints
 app.post('/api/events/:eventType', auth, async (req, res) => {
   try {
@@ -547,36 +1093,9 @@ app.get('/api/events/subscriptions', auth, (req, res) => {
   });
 });
 
-// Manufacturing-specific workflow shortcuts
-app.post('/api/manufacturing/batch-release-workflow', auth, async (req, res) => {
-  try {
-    if (!services.workflow) {
-      // Fallback to simple batch release
-      const result = await handleMAR('mar.batch_release', req.body, appData);
-      return res.json({ ok: true, result, mode: 'fallback' });
-    }
-    
-    const execution = await services.workflow.executeWorkflow('batch_release_complete', {
-      ...req.body,
-      data: appData
-    });
-    
-    res.json({
-      ok: true,
-      mode: 'workflow',
-      execution: {
-        id: execution.id,
-        status: execution.status,
-        steps: execution.steps.length
-      }
-    });
-    
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
+// ===== ADMIN ROUTES =====
 
-// Service metrics endpoint with Phase 2 metrics
+// Enhanced service metrics endpoint with Phase 3 metrics
 app.get('/admin/metrics', auth, (req, res) => {
   if (!req.locals.isAdmin) {
     return res.status(403).json({ error: 'Admin access required' });
@@ -588,13 +1107,21 @@ app.get('/admin/metrics', auth, (req, res) => {
     inventory: appData.inventory.length,
     rules: appData.rules.length,
     uptime: process.uptime(),
-    phase: services.eventBus ? 'Phase 2 - Event-Driven' : 'Phase 1 - A2A Communication'
+    phase: services.router?.phase3System ? 'Phase 3 - AI Enhanced' : 
+           services.eventBus ? 'Phase 2 - Event-Driven' : 
+           'Phase 1 - A2A Communication'
   };
   
   // Add service metrics if available
   if (services.router?.getMetrics) {
     try {
-      metrics.routing = services.router.getMetrics();
+      const routerMetrics = services.router.getMetrics();
+      metrics.routing = routerMetrics;
+      metrics.phase3 = {
+        available: !!services.router.phase3System,
+        stats: routerMetrics.phase3Stats || {},
+        systemStatus: routerMetrics.phase3 || {}
+      };
     } catch (e) {
       // Ignore
     }
@@ -622,6 +1149,15 @@ app.get('/admin/metrics', auth, (req, res) => {
       metrics.workflows = services.workflow.getMetrics();
     } catch (e) {
       // Ignore
+    }
+  }
+  
+  // Phase 3 detailed metrics
+  if (services.router?.phase3System?.getSystemStatus) {
+    try {
+      metrics.phase3Details = services.router.phase3System.getSystemStatus();
+    } catch (e) {
+      metrics.phase3Details = { error: e.message };
     }
   }
   
@@ -898,19 +1434,62 @@ function assessSingleOrder(order, data) {
   };
 }
 
+// Graceful shutdown for Phase 3
+process.on('SIGINT', async () => {
+  console.log('\n🛑 Shutting down gracefully...');
+  
+  if (services.router?.shutdown) {
+    try {
+      await services.router.shutdown();
+      console.log('✅ Router service shutdown complete');
+    } catch (error) {
+      console.error('❌ Router shutdown error:', error);
+    }
+  }
+  
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  console.log('🛑 SIGTERM received, shutting down gracefully...');
+  
+  if (services.router?.shutdown) {
+    try {
+      await services.router.shutdown();
+    } catch (error) {
+      console.error('❌ Router shutdown error:', error);
+    }
+  }
+  
+  process.exit(0);
+});
+
+// ===== SERVER STARTUP =====
+
 // WebSocket for real-time updates
 const server = app.listen(port, () => {
-  console.log(`Phase 2 Manufacturing Agent System running on http://localhost:${port}`);
+  console.log(`🚀 Phase 3 Enhanced Manufacturing Agent System running on http://localhost:${port}`);
+  console.log(`📊 Health check: http://localhost:${port}/health`);
+  console.log(`🤖 Phase 3 status: http://localhost:${port}/api/phase3/status`);
 });
 
 const wss = new WebSocketServer({ server, path: '/events' });
 
 wss.on('connection', (ws) => {
-  console.log('WebSocket client connected');
+  console.log('🔌 WebSocket client connected');
   ws.send(JSON.stringify({ 
     type: 'connected', 
     timestamp: new Date().toISOString(),
-    phase: services.eventBus ? 'Phase 2' : 'Phase 1'
+    phase: services.router?.phase3System ? 'Phase 3 - AI Enhanced' : 
+           services.eventBus ? 'Phase 2 - Event-Driven' : 
+           'Phase 1 - A2A Communication',
+    capabilities: services.router?.phase3System ? [
+      'CONSENSUS_ENGINE',
+      'KNOWLEDGE_GRAPH', 
+      'PREDICTIVE_INTELLIGENCE',
+      'AUTONOMOUS_ORCHESTRATION',
+      'ADVANCED_COMPLIANCE'
+    ] : []
   }));
 });
 

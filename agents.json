@@ -18,6 +18,22 @@
       {
         "intent": "mar.schedule_line",
         "description": "Schedule production on specific lines"
+      },
+      {
+        "intent": "mar.morning_briefing",
+        "description": "Generate morning production briefing"
+      },
+      {
+        "intent": "mar.find_affected_batches",
+        "description": "Find batches affected by quality issues"
+      },
+      {
+        "intent": "mar.check_line_availability",
+        "description": "Check production line availability"
+      },
+      {
+        "intent": "mar.validate_plan",
+        "description": "Validate production plans for feasibility"
       }
     ],
     "capabilities": {
@@ -54,6 +70,42 @@
       {
         "intent": "cmo.track_shipment",
         "description": "Track shipment status"
+      },
+      {
+        "intent": "cmo.send_production_plan",
+        "description": "Send production plan to stakeholders"
+      },
+      {
+        "intent": "cmo.request_release",
+        "description": "Request batch release from site"
+      },
+      {
+        "intent": "cmo.confirm_release",
+        "description": "Confirm batch release"
+      },
+      {
+        "intent": "cmo.create_asn",
+        "description": "Create advance shipping notice"
+      },
+      {
+        "intent": "cmo.handover_to_site_or_hub",
+        "description": "Handle site or hub handover"
+      },
+      {
+        "intent": "cmo.validate_materials",
+        "description": "Validate material availability"
+      },
+      {
+        "intent": "cmo.check_transport_capacity",
+        "description": "Check transport capacity"
+      },
+      {
+        "intent": "cmo.check_supply_availability",
+        "description": "Check supply availability for orders"
+      },
+      {
+        "intent": "cmo.validate_procurement_plan",
+        "description": "Validate procurement strategies"
       }
     ],
     "capabilities": {
@@ -91,6 +143,34 @@
       {
         "intent": "qa.compliance_check",
         "description": "Perform regulatory compliance checks"
+      },
+      {
+        "intent": "qa.pre_release_check",
+        "description": "Pre-release quality validation"
+      },
+      {
+        "intent": "qa.assess_order_quality",
+        "description": "Assess quality requirements for orders"
+      },
+      {
+        "intent": "qa.validate_schedule",
+        "description": "Validate production schedule for quality requirements"
+      },
+      {
+        "intent": "qa.plan_batch_inspection",
+        "description": "Plan batch inspection activities"
+      },
+      {
+        "intent": "qa.get_daily_status",
+        "description": "Get daily quality status report"
+      },
+      {
+        "intent": "qa.hold_batch",
+        "description": "Place batch on quality hold"
+      },
+      {
+        "intent": "qa.start_investigation",
+        "description": "Start quality investigation"
       }
     ],
     "capabilities": {
@@ -121,6 +201,18 @@
       {
         "intent": "mpc.execute",
         "description": "Execute production plans via OPC UA"
+      },
+      {
+        "intent": "mpc.schedule_batch",
+        "description": "Schedule batch in MPC system"
+      },
+      {
+        "intent": "mpc.optimize_schedule",
+        "description": "Optimize production schedule"
+      },
+      {
+        "intent": "mpc.optimize_daily_schedule",
+        "description": "Optimize daily production schedule"
       }
     ],
     "capabilities": {
@@ -160,6 +252,172 @@
       "model": "claude-3-5-sonnet",
       "temperature": 0.1,
       "maxTokens": 2000
+    }
+  },
+  {
+    "id": "business-agent",
+    "namespace": "business",
+    "name": "Business Intelligence Agent",
+    "description": "Handles business assessments and morning briefings",
+    "inProcess": true,
+    "module": "src/agents/business.agent.js",
+    "skills": [
+      {
+        "intent": "business.request",
+        "description": "Handle general business requests and assessments"
+      }
+    ],
+    "capabilities": {
+      "domains": ["business", "analysis", "reporting"],
+      "resources": ["data", "llm", "router"],
+      "maxConcurrentTasks": 3
+    }
+  },
+  {
+    "id": "planning-intelligence",
+    "namespace": "planning",
+    "name": "Intelligent Production Planning Agent",
+    "description": "AI-powered production planning and optimization using LLM",
+    "inProcess": true,
+    "module": "src/agents/planning.agent.js",
+    "skills": [
+      {
+        "intent": "planning.optimize_weekly",
+        "description": "AI-powered weekly production schedule optimization"
+      },
+      {
+        "intent": "planning.suggest_schedule",
+        "description": "AI suggestions for optimal production scheduling"
+      },
+      {
+        "intent": "planning.analyze_bottlenecks",
+        "description": "Intelligent analysis of production bottlenecks"
+      }
+    ],
+    "capabilities": {
+      "domains": ["planning", "optimization", "ai-analysis"],
+      "resources": ["llm", "data", "analytics"],
+      "aiPowered": true,
+      "maxConcurrentTasks": 2
+    },
+    "config": {
+      "requiresLLM": true,
+      "confidence": {
+        "high": 0.85,
+        "medium": 0.70,
+        "low": 0.50
+      }
+    }
+  },
+  {
+    "id": "quality-intelligence",
+    "namespace": "qa-intel",
+    "name": "Quality Intelligence Agent",
+    "description": "AI-powered quality analysis, risk prediction, and investigation",
+    "inProcess": true,
+    "module": "src/agents/quality-intelligence.agent.js",
+    "skills": [
+      {
+        "intent": "qa-intel.intelligent_assessment",
+        "description": "AI-powered quality assessment with pattern analysis"
+      },
+      {
+        "intent": "qa-intel.predict_quality_risk",
+        "description": "Predict quality risks using historical data and AI"
+      },
+      {
+        "intent": "qa-intel.auto_deviation_investigation",
+        "description": "Automated deviation investigation with AI analysis"
+      },
+      {
+        "intent": "qa-intel.recommend_action",
+        "description": "AI recommendations for quality actions"
+      }
+    ],
+    "capabilities": {
+      "domains": ["quality", "prediction", "investigation", "compliance"],
+      "resources": ["llm", "historical-data", "analytics", "regulations"],
+      "aiPowered": true,
+      "maxConcurrentTasks": 3
+    },
+    "config": {
+      "requiresLLM": true,
+      "riskThresholds": {
+        "critical": 80,
+        "high": 60,
+        "medium": 40,
+        "low": 20
+      },
+      "predictionWindow": "14d"
+    }
+  },
+  {
+    "id": "supply-intelligence",
+    "namespace": "supply-intel",
+    "name": "Supply Chain Intelligence Agent",
+    "description": "AI-powered supply chain analysis, forecasting, and optimization",
+    "inProcess": true,
+    "module": "src/agents/supply-intelligence.agent.js",
+    "skills": [
+      {
+        "intent": "supply-intel.predict_shortage",
+        "description": "AI-powered material shortage prediction"
+      },
+      {
+        "intent": "supply-intel.optimize_procurement",
+        "description": "Optimize procurement strategy using AI analysis"
+      },
+      {
+        "intent": "supply-intel.supplier_risk_analysis",
+        "description": "Analyze supplier risks using AI"
+      },
+      {
+        "intent": "supply-intel.demand_forecast",
+        "description": "AI-powered demand forecasting"
+      }
+    ],
+    "capabilities": {
+      "domains": ["supply-chain", "forecasting", "optimization", "risk-analysis"],
+      "resources": ["llm", "market-data", "inventory", "supplier-data"],
+      "aiPowered": true,
+      "maxConcurrentTasks": 5
+    },
+    "config": {
+      "requiresLLM": true,
+      "forecastHorizon": "30d",
+      "riskFactors": ["supplier", "market", "logistics", "regulatory"],
+      "optimizationGoals": ["cost", "speed", "reliability", "quality"]
+    }
+  },
+  {
+    "id": "regulatory-compliance",
+    "namespace": "regulatory",
+    "name": "Regulatory Compliance Agent",
+    "description": "Handles regulatory compliance checks and validations",
+    "inProcess": true,
+    "module": "src/agents/regulatory.agent.js",
+    "skills": [
+      {
+        "intent": "regulatory.validate_release",
+        "description": "Validate batch release against regulatory requirements"
+      },
+      {
+        "intent": "regulatory.check_compliance",
+        "description": "Check regulatory compliance for operations"
+      },
+      {
+        "intent": "regulatory.get_requirements",
+        "description": "Get regulatory requirements for specific products/markets"
+      }
+    ],
+    "capabilities": {
+      "domains": ["regulatory", "compliance", "validation"],
+      "resources": ["regulations", "guidelines", "certificates"],
+      "maxConcurrentTasks": 2
+    },
+    "config": {
+      "frameworks": ["GMP", "GDP", "GCP", "CFR21"],
+      "regions": ["EU", "US", "ROW"]
     }
   }
 ]
