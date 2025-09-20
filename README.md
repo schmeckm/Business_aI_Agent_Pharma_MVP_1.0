@@ -2,7 +2,7 @@
   <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="400">
 </div>
 
-# 💊 Pharmaceutical Manufacturing Agent System – MVP 1.01
+# 💊 Pharmaceutical Manufacturing Agent System – MVP 1.0
 
 > Revolutionizing pharmaceutical manufacturing through **AI-driven decision support** with full **GMP compliance**
 
@@ -69,7 +69,7 @@ The pharmaceutical industry faces unprecedented challenges: **increasing regulat
 
 ## 🚀 Current System Features
 
-### MVP 1.01 - Foundation Agent
+### MVP 1.0 - Foundation Agent
 - **🤖 Claude AI Integration** - Natural language processing for manufacturing commands
 - **📊 Intelligent Decision Support** - Real-time analysis of production data
 - **📅 Daily Operations Briefings** - Automated morning briefings and shift handovers
