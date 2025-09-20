@@ -147,80 +147,77 @@ flowchart LR
 
 ## 🏗️ UML System Design
 
-### Class Diagram - Core System Components
+### System Architecture Overview
 
 ```mermaid
-classDiagram
-    class User {
-        +String userId
-        +String role
-        +String department
-        +authenticate()
-        +sendCommand()
-        +viewAuditTrail()
-    }
+flowchart TD
+    subgraph "👤 User Layer"
+        U1[QA Manager]
+        U2[Production Manager] 
+        U3[Regulatory Manager]
+        U4[Operator]
+    end
     
-    class AgentSystem {
-        +String agentId
-        +String version
-        +AgentCapabilities capabilities
-        +processCommand()
-        +generateResponse()
-        +logInteraction()
-    }
+    subgraph "🌐 Presentation Layer"
+        UI[Web Interface]
+        API[REST API Gateway]
+    end
     
-    class ClaudeAI {
-        +String apiKey
-        +String model
-        +Integer maxTokens
-        +processNaturalLanguage()
-        +generateResponse()
-        +validateInput()
-    }
+    subgraph "🤖 Agent Intelligence Layer"
+        AS[Agent System Core]
+        CA[Claude AI Integration]
+        DM[Decision Models]
+        LE[Learning Engine]
+    end
     
-    class AuditEngine {
-        +String auditId
-        +DateTime timestamp
-        +ALCOA+ compliance
-        +logEntry()
-        +generateReport()
-        +validateIntegrity()
-    }
+    subgraph "📊 Data Management Layer"
+        MD[Manufacturing Data]
+        AD[Audit Database]
+        CD[Configuration Store]
+    end
     
-    class ManufacturingData {
-        +String batchId
-        +String orderId
-        +QualityMetrics metrics
-        +ProductionStatus status
-        +getBatchInfo()
-        +updateStatus()
-        +validateQuality()
-    }
+    subgraph "🔒 Compliance Layer"
+        CE[Compliance Engine]
+        AE[Audit Engine]
+        VE[Validation Engine]
+    end
     
-    class ComplianceEngine {
-        +String regulatoryRegion
-        +String[] standards
-        +Boolean validated
-        +checkCompliance()
-        +generateDocumentation()
-        +validateSignatures()
-    }
+    subgraph "🏭 External Systems"
+        MES[Manufacturing Execution System]
+        LIMS[Laboratory Information System]
+        ERP[Enterprise Resource Planning]
+    end
     
-    User --> AgentSystem : interacts
-    AgentSystem --> ClaudeAI : delegates processing
-    AgentSystem --> AuditEngine : logs all actions
-    AgentSystem --> ManufacturingData : queries data
-    AgentSystem --> ComplianceEngine : ensures compliance
-    AuditEngine --> ComplianceEngine : validates entries
+    U1 --> UI
+    U2 --> UI
+    U3 --> UI
+    U4 --> UI
     
-    <<interface>> GMP_Compliant
-    <<interface>> ALCOA_Plus
+    UI --> API
+    API --> AS
     
-    AuditEngine ..|> GMP_Compliant
-    ComplianceEngine ..|> ALCOA_Plus
+    AS --> CA
+    AS --> DM
+    AS --> LE
+    AS --> MD
+    AS --> CE
+    
+    CE --> AE
+    CE --> VE
+    AE --> AD
+    AS --> CD
+    
+    AS -.->|Future Integration| MES
+    AS -.->|Future Integration| LIMS
+    AS -.->|Future Integration| ERP
+    
+    style AS fill:#e3f2fd
+    style CE fill:#e8f5e8
+    style CA fill:#f3e5f5
+    style AE fill:#fff8e1
 ```
 
-### Sequence Diagram - Manufacturing Query Flow
+### Manufacturing Query Flow
 
 ```mermaid
 sequenceDiagram
@@ -238,7 +235,7 @@ sequenceDiagram
     AS->>CE: Validate user permissions
     CE-->>AS: Permission granted
     AS->>CA: Process natural language
-    CA-->>AS: Parsed intent & entities
+    CA-->>AS: Parsed intent and entities
     AS->>MD: Query manufacturing data
     MD-->>AS: Return relevant data
     AS->>CA: Generate intelligent response
@@ -247,94 +244,78 @@ sequenceDiagram
     CE-->>AS: Compliance approved
     AS->>AE: Log complete interaction
     AE-->>AS: Audit trail updated
-    AS-->>UI: Return response + audit ID
+    AS-->>UI: Return response with audit ID
     UI-->>U: Display results
 ```
 
-### Component Diagram - System Architecture
+### Core System Components
 
 ```mermaid
 graph TB
-    subgraph "Presentation Layer"
-        UI[Web Interface]
-        API[REST API Gateway]
-    end
-    
-    subgraph "Agent Intelligence Layer"
-        AS[Agent System Core]
-        CA[Claude AI Integration]
-        DM[Decision Models]
-        LM[Learning Models]
-    end
-    
-    subgraph "Data Management Layer"
-        MD[Manufacturing Data Store]
-        AD[Audit Database]
-        CD[Configuration Data]
-    end
-    
-    subgraph "Compliance Layer"
-        CE[Compliance Engine]
-        AE[Audit Engine]
-        VE[Validation Engine]
-    end
-    
-    subgraph "External Systems"
-        MES[Manufacturing Execution Systems]
-        LIMS[Laboratory Information Systems]
-        ERP[Enterprise Resource Planning]
+    subgraph "Agent System Architecture"
+        direction TB
+        
+        subgraph "Core Components"
+            AS[Agent System Core]
+            CA[Claude AI Integration]
+            DM[Decision Models]
+            LE[Learning Engine]
+        end
+        
+        subgraph "Data Components"
+            MD[Manufacturing Data Store]
+            AD[Audit Database]
+            CD[Configuration Data]
+        end
+        
+        subgraph "Compliance Components"
+            CE[Compliance Engine]
+            AE[Audit Engine]
+            VE[Validation Engine]
+        end
+        
+        subgraph "Interface Components"
+            UI[Web Interface]
+            API[REST API]
+        end
     end
     
     UI --> API
     API --> AS
     AS --> CA
     AS --> DM
-    AS --> LM
+    AS --> LE
     AS --> MD
     AS --> CE
     CE --> AE
     CE --> VE
     AE --> AD
-    AS --> CD
-    
-    AS -.-> MES
-    AS -.-> LIMS
-    AS -.-> ERP
     
     style AS fill:#e3f2fd
     style CE fill:#e8f5e8
     style CA fill:#f3e5f5
 ```
 
-### Use Case Diagram - Agent Capabilities
+### User Roles and Use Cases
 
 ```mermaid
-graph LR
-    subgraph "Pharmaceutical Manufacturing Agent System"
-        subgraph "User Roles"
-            QAM[QA Manager]
-            PM[Production Manager]
-            RM[Regulatory Manager]
-            OP[Operator]
-        end
-        
-        subgraph "Core Use Cases"
-            UC1[Query Production Status]
-            UC2[Generate Morning Briefing]
-            UC3[Assess Batch Release]
-            UC4[Schedule Production]
-            UC5[Analyze Deviations]
-            UC6[Review Compliance]
-            UC7[Generate Reports]
-            UC8[Monitor Quality Metrics]
-        end
-        
-        subgraph "System Functions"
-            F1[Natural Language Processing]
-            F2[Decision Support]
-            F3[Audit Logging]
-            F4[Compliance Validation]
-        end
+flowchart LR
+    subgraph "User Roles"
+        QAM[👤 QA Manager]
+        PM[👤 Production Manager]
+        RM[👤 Regulatory Manager]
+        OP[👤 Operator]
+    end
+    
+    subgraph "Core Use Cases"
+        UC1[📊 Query Production Status]
+        UC2[📅 Generate Morning Briefing]
+        UC3[✅ Assess Batch Release]
+        UC4[📋 Schedule Production]
+        UC5[⚠️ Analyze Deviations]
+        UC6[📑 Review Compliance]
+        UC7[📈 Generate Reports]
+        UC8[🔍 Monitor Quality Metrics]
     end
     
     QAM --> UC3
@@ -352,18 +333,6 @@ graph LR
     
     OP --> UC1
     OP --> UC8
-    
-    UC1 --> F1
-    UC1 --> F2
-    UC2 --> F1
-    UC2 --> F2
-    UC3 --> F2
-    UC3 --> F4
-    UC4 --> F2
-    UC5 --> F2
-    UC6 --> F4
-    UC7 --> F3
-    UC8 --> F2
     
     style QAM fill:#ffecb3
     style PM fill:#c8e6c9
@@ -817,3 +786,7 @@ This project represents the beginning of a **fundamental transformation** in pha
 - **💼 Industry Leaders**: Provide real-world manufacturing challenges and requirements
 
 ---
+
+## 📞 Support & Community
+
+- **Documentation**: [Agent
