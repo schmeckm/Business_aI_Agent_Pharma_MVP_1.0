@@ -1,69 +1,141 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Audit Trail Viewer</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Audit Log Viewer</title>
   <style>
-    body { padding: 20px; font-family: Arial, sans-serif; }
-    h1 { color: #003A70; }
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 8px; font-size: 14px; vertical-align: top; }
-    th { background: #003A70; color: white; text-align: left; }
-    tr:nth-child(even) { background: #f9f9f9; }
-    .json-cell { font-family: monospace; white-space: pre-wrap; font-size: 12px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #003366;
+      margin-bottom: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #003366;
+      color: white;
+    }
+    tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+    .timestamp {
+      font-size: 12px;
+      color: #666;
+    }
+    .response {
+      white-space: pre-wrap;
+    }
+    .status-success {
+      color: green;
+      font-weight: bold;
+    }
+    .status-error {
+      color: red;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <h1>📂 Audit Trail Viewer</h1>
-  <p>This page displays all logged system actions in compliance with GMP / Part 11.</p>
-  <table id="audit-table">
+  <h1>Audit Log (Part 11 / ALCOA+)</h1>
+  <table>
     <thead>
       <tr>
         <th>Timestamp</th>
-        <th>Type</th>
-        <th>User Input</th>
+        <th>User</th>
+        <th>Command</th>
         <th>AI Response</th>
-        <th>Payload</th>
+        <th>Status</th>
       </tr>
     </thead>
-    <tbody>
-      <tr><td colspan="5">Loading...</td></tr>
+    <tbody id="log-rows">
+      <tr><td colspan="5">Loading audit log...</td></tr>
     </tbody>
   </table>
 
   <script>
-    async function loadAudit() {
+    async function loadAuditLog() {
       try {
-        const resp = await fetch("/audit_log.json");
-        const data = await resp.json();
-        const tbody = document.querySelector("#audit-table tbody");
+        const res = await fetch("/audit_log.json");
+        const data = await res.json();
+
+        const tbody = document.getElementById("log-rows");
         tbody.innerHTML = "";
 
-        if (!Array.isArray(data) || data.length === 0) {
-          tbody.innerHTML = "<tr><td colspan='5'>No audit entries found</td></tr>";
+        if (!data || data.length === 0) {
+          tbody.innerHTML = "<tr><td colspan='5'>No audit entries found.</td></tr>";
           return;
         }
 
         data.forEach(entry => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${entry.timestamp || ""}</td>
-            <td>${entry.type || ""}</td>
-            <td class="json-cell">${entry.input || ""}</td>
-            <td class="json-cell">${entry.response ? entry.response.substring(0,200) + "..." : ""}</td>
-            <td class="json-cell">${entry.payload ? JSON.stringify(entry.payload, null, 2) : ""}</td>
-          `;
-          tbody.appendChild(row);
+          const tr = document.createElement("tr");
+
+          // Timestamp in Browser-Zeit
+          const tdTime = document.createElement("td");
+          if (entry.timestamp) {
+            const localTime = new Date(entry.timestamp).toLocaleString(undefined, {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              second: "2-digit",
+              hour12: false
+            });
+            tdTime.innerHTML = `<div class="timestamp">${localTime}</div>`;
+          } else {
+            tdTime.innerHTML = "-";
+          }
+
+          // User
+          const tdUser = document.createElement("td");
+          tdUser.textContent = entry.userName || entry.userId || "unknown";
+
+          // Command
+          const tdCommand = document.createElement("td");
+          tdCommand.textContent = entry.action || entry.userMessage || "-";
+
+          // AI Response
+          const tdAI = document.createElement("td");
+          tdAI.className = "response";
+          tdAI.textContent = entry.claudeResponse || entry.response || "-";
+
+          // Status
+          const tdStatus = document.createElement("td");
+          tdStatus.textContent = entry.status || "-";
+          if (entry.status === "success") tdStatus.className = "status-success";
+          if (entry.status === "error") tdStatus.className = "status-error";
+
+          tr.appendChild(tdTime);
+          tr.appendChild(tdUser);
+          tr.appendChild(tdCommand);
+          tr.appendChild(tdAI);
+          tr.appendChild(tdStatus);
+          tbody.appendChild(tr);
         });
       } catch (err) {
-        console.error("Error loading audit:", err);
+        console.error("Failed to load audit log:", err);
+        document.getElementById("log-rows").innerHTML =
+          "<tr><td colspan='5'>Error loading audit log.</td></tr>";
       }
     }
 
-    loadAudit();
+    loadAuditLog();
   </script>
 </body>
 </html>
-

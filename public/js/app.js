@@ -1,46 +1,38 @@
 document.getElementById("send").addEventListener("click", async () => {
-  const button = document.getElementById("send");
-  const message = document.getElementById("message").value;
-  const prompt = document.getElementById("prompt").value;
+  const btn = document.getElementById("send");
+  const promptSelect = document.getElementById("prompt").value;
+  const messageInput = document.getElementById("message").value;
 
-  let finalMessage = message || prompt;
-
-  if (!finalMessage) {
-    alert("Please select a template or enter a command.");
-    return;
-  }
-
-  // Disable button while processing
-  button.disabled = true;
-  button.textContent = "Processing...";
+  // Button → Spinner anzeigen
+  btn.innerHTML = `Processing <span class="spinner"></span>`;
+  btn.disabled = true;
 
   try {
     const res = await fetch("/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: finalMessage }),
+      body: JSON.stringify({
+        message: promptSelect || messageInput,
+        user: { id: "frontend-user", name: "Web Client" }
+      })
     });
 
     const data = await res.json();
 
-    // System Log (right side)
-    const log = document.getElementById("out");
-    log.textContent += `\n\n[${data.timestamp}] USER: ${finalMessage}\nAI: ${data.response}\n`;
-
-    // AI Response Box (under button)
-    document.getElementById("claude-text").innerText =
-      data.claudeResponse || data.response || "No response from Claude.";
+    // Claude Antwort anzeigen
+    document.getElementById("claude-text").innerText = data.response;
     document.getElementById("claude-response").style.display = "block";
+
+    // In System-Log schreiben
+    const out = document.getElementById("out");
+    out.textContent += `\n\n[${new Date().toLocaleTimeString()}] ${data.response}`;
+    out.scrollTop = out.scrollHeight;
   } catch (err) {
-    console.error("Error:", err);
-    alert("Failed to get response from AI agent.");
+    console.error("Chat error:", err);
+    alert("❌ Fehler beim Senden an Agent-System");
   } finally {
-    // Re-enable button
-    button.disabled = false;
-    button.textContent = "Execute Manufacturing Command";
+    // Button wiederherstellen
+    btn.innerHTML = "Execute Manufacturing Command";
+    btn.disabled = false;
   }
 });
-
-function clearOutput() {
-  document.getElementById("out").textContent = "System log cleared...";
-}

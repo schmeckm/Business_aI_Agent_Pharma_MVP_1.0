@@ -1,0 +1,29 @@
+[
+  {
+    "orderId": "ORD-1001",
+    "material": "FG-123",
+    "qty": 2000,
+    "market": "EU",
+    "status": "created",
+    "startDate": "2025-09-20",
+    "endDate": "2025-09-22"
+  },
+  {
+    "orderId": "ORD-1002",
+    "material": "FG-456",
+    "qty": 1500,
+    "market": "US",
+    "status": "released",
+    "startDate": "2025-09-19",
+    "endDate": "2025-09-20"
+  },
+  {
+    "orderId": "ORD-1003",
+    "material": "FG-123",
+    "qty": 1000,
+    "market": "ROW",
+    "status": "closed",
+    "startDate": "2025-09-18",
+    "endDate": "2025-09-19"
+  }
+]

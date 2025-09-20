@@ -8,6 +8,8 @@
 </head>
 <body>
   <div class="container">
+    
+    <!-- Header -->
     <div class="header">
       <h1>
         Pharmaceutical Manufacturing Agent System
@@ -16,12 +18,16 @@
       <div style="font-size: 14px; opacity: 0.9;">Enterprise AI Operations Platform</div>
     </div>
 
+    <!-- Main Content -->
     <div class="main-content">
+      
+      <!-- Left: Input Section -->
       <div class="input-section">
         <div class="status" id="status">
           System Status: Initializing Agent System...
         </div>
 
+        <!-- GMP Compliance -->
         <div class="gmp-compliance">
           <div class="gmp-title">GMP Compliance & AI Audit Trail</div>
           <div class="gmp-indicators">
@@ -40,6 +46,7 @@
           </div>
         </div>
 
+        <!-- Manufacturing Templates -->
         <label for="prompt">Manufacturing Operation Templates</label>
         <select id="prompt">
           <option value="">-- Free Text Input --</option>
@@ -55,6 +62,7 @@
           <option value="test-event-publish">Test Event System</option>
         </select>
 
+        <!-- Free Input -->
         <label for="message">Manufacturing Command Input</label>
         <textarea id="message" placeholder="Manufacturing Command Examples:
 • Assess FG-123 batch 2000 units for EU market release
@@ -66,20 +74,22 @@
 
         <button id="send" class="primary-button">Execute Manufacturing Command</button>
 
-        <!-- AI Response Box -->
-        <div id="claude-response" class="claude-response-box" style="margin-top: 20px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; background: #f9f9f9; display:none;">
+        <!-- Claude Response Box -->
+        <div id="claude-response" class="claude-response-box" style="display:none;">
           <strong>AI Response:</strong>
-          <div id="claude-text" style="margin-top: 8px; white-space: pre-wrap; font-size: 14px; color: #333;">
+          <div id="claude-text">
             <!-- Claude Antwort -->
           </div>
         </div>
 
         <!-- Audit Log Link -->
         <div style="margin-top: 15px;">
-          <a href="/audit_log.json" target="_blank">🔎 View Full Audit Log (JSON)</a>
+          <a href="/audit_log.json" target="_blank">🔎 View Full Audit Log (JSON)</a> | 
+          <a href="/audit.html" target="_blank">📊 Audit Log Viewer</a>
         </div>
       </div>
 
+      <!-- Right: Output Section -->
       <div class="output-section">
         <div class="output-header">
           <label for="out">System Response & Audit Log</label>
@@ -91,6 +101,7 @@ AI Decision Logging: ENABLED
 GMP Compliance Monitoring: ACTIVE</pre>
         <div class="metrics" id="metrics">Waiting for operation metrics...</div>
       </div>
+
     </div>
   </div>
 
