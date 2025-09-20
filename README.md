@@ -1,8 +1,13 @@
 <div align="center">
-  <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="400">
+  <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="200">
 </div>
 
-# 💊 Pharmaceutical Manufacturing Agent System – MVP 1.0
+# 💊 Pharmaceutical Manufacturing Agent System – MVP 1.01
+
+<div align="center">
+  <img src="Agent_screenshot.jpg" alt="AI Agent Dashboard Interface" width="700">
+  <p><em>AI-powered pharmaceutical manufacturing dashboard with real-time decision support</em></p>
+</div>
 
 > Revolutionizing pharmaceutical manufacturing through **AI-driven decision support** with full **GMP compliance**
 
@@ -12,11 +17,6 @@
 [![Agent Evolution](https://img.shields.io/badge/Agent-Expanding-orange)](https://github.com/YOUR_USERNAME/pharma-agent-mvp)
 
 ---
-<div align="center">
-  <img src="Agent_screenshot.jpg" alt="AI Agent Dashboard Interface" width="700">
-  <p><em>AI-powered pharmaceutical manufacturing dashboard with real-time decision support</em></p>
-</div>
-
 
 ## 🌟 Why AI Agents for Pharmaceutical Manufacturing?
 
@@ -349,26 +349,23 @@ flowchart LR
 
 ```
 agent-framework/
-├── 🌐 public/                 # Frontend assets
-│   ├── index.html            # Main application interface
-│   ├── audit.html            # GMP audit log viewer
-│   ├── css/
+├── 🌐 public/                 # Static frontend files (served by Express)
+│   ├── css/                  # Stylesheets
 │   │   └── styles.css        # Enterprise-grade UI components
-│   └── js/
-│       └── app.js            # Frontend application logic
-├── 📊 mock-data/             # Manufacturing data simulation
-│   ├── orders.json           # Production orders
-│   ├── issues.json           # Quality issues & deviations
+│   ├── js/                   # Frontend logic
+│   │   └── app.js            # Frontend application logic
+│   ├── index.html            # Main UI
+│   └── audit.html            # Audit log viewer
+├── 📊 mock-data/             # Mock data simulating pharma operations
+│   ├── orders.json           # Example production orders
+│   ├── issues.json           # Example quality/compliance issues
 │   └── morning_briefing.json # Daily operations data
-├── ⚙️ config/                # System configuration
+├── ⚙️ config/                # Agent configuration
 │   └── agents.json           # AI agent definitions & evolution settings
-├── 🧬 agent-core/            # Agent intelligence framework (expanding)
-│   ├── decision-engine/      # Core decision-making logic
-│   ├── learning-models/      # Machine learning components
-│   └── compliance-engine/    # Regulatory compliance automation
-├── 📋 audit_log.json         # Compliance audit trail
-├── 🚀 app.js                 # Express server & API routes
-├── 📦 package.json           # Dependencies & scripts
+├── 📋 audit_log.json         # Part 11/ALCOA+ compliant AI audit trail
+├── 🚀 app.js                 # Main Express backend (routes, Claude API, audit logging)
+├── 📦 package.json           # NPM dependencies and scripts
+├── 🔐 .env                   # Environment variables (Claude API key, model, etc.)
 └── 📖 README.md              # This documentation
 ```
 
@@ -791,7 +788,3 @@ This project represents the beginning of a **fundamental transformation** in pha
 - **💼 Industry Leaders**: Provide real-world manufacturing challenges and requirements
 
 ---
-
-## 📞 Support & Community
-
-- **Documentation**: [Agent
