@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="200">
+</div>
+
 # 💊 Pharmaceutical Manufacturing Agent System – MVP 1.0
 
 > An AI-driven **GMP-compliant** decision support system for pharmaceutical manufacturing operations
