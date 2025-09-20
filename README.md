@@ -3,13 +3,7 @@
 </div>
 
 # 💊 Pharmaceutical Manufacturing Agent System – MVP 1.0
-
-<div align="center">
-  <img src="Agent_screenshot.jpg" alt="AI Agent Dashboard Interface" width="700">
-  <p><em>AI-powered pharmaceutical manufacturing dashboard with real-time decision support</em></p>
-</div>
-
-> Revolutionizing pharmaceutical manufacturing through **AI-driven decision support** with full **GMP compliance**
+    > Revolutionizing pharmaceutical manufacturing through **AI-driven decision support** with full **GMP compliance**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen)](https://nodejs.org/)
@@ -29,6 +23,13 @@ The pharmaceutical industry faces unprecedented challenges: **increasing regulat
 - **Make informed decisions** based on historical patterns, current conditions, and predictive analytics
 - **Ensure continuous compliance** with evolving regulatory requirements (FDA, EMA, ICH)
 - **Optimize production efficiency** while maintaining the highest quality standards
+
+<div align="center">
+  <img src="Agent_screenshot.jpg" alt="AI Agent Dashboard Interface" width="700">
+  <p><em>AI-powered pharmaceutical manufacturing dashboard with real-time decision support</em></p>
+</div>
+
+
 
 ### 💡 Key Benefits
 
