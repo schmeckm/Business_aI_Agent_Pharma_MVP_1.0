@@ -78,7 +78,7 @@ The pharmaceutical industry faces unprecedented challenges: **increasing regulat
 
 ### Technical Foundation
 - **⚡ Real-time Processing** - Async operations with loading indicators
-- **🎨 Professional UI** - McKinsey-style interface design
+- **🎨 Professional UI** - Simple Style interface design
 - **📱 Responsive Design** - Works on desktop, tablet, and mobile
 - **🏥 Health Monitoring** - System health checks and monitoring endpoints
 
