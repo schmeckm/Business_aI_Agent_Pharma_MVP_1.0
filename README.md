@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="200">
+  <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="400">
 </div>
 
 # 💊 Pharmaceutical Manufacturing Agent System – MVP 1.01
@@ -12,6 +12,11 @@
 [![Agent Evolution](https://img.shields.io/badge/Agent-Expanding-orange)](https://github.com/YOUR_USERNAME/pharma-agent-mvp)
 
 ---
+<div align="center">
+  <img src="Agent_screenshot.jpg" alt="AI Agent Dashboard Interface" width="700">
+  <p><em>AI-powered pharmaceutical manufacturing dashboard with real-time decision support</em></p>
+</div>
+
 
 ## 🌟 Why AI Agents for Pharmaceutical Manufacturing?
 
