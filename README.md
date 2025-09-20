@@ -787,5 +787,13 @@ This project represents the beginning of a **fundamental transformation** in pha
 - **💼 Industry Leaders**: Provide real-world manufacturing challenges and requirements
 
 ---
+## 🚀 Roadmap MVP 2.0
 
-📌 See the full [MVP 2.0 Roadmap](.github/project-mvp2.0.yaml)
+The detailed roadmap is defined in [project-mvp2.0.yaml](.github/project-mvp2.0.yaml).
+
+It covers:
+- Backend refactoring and audit compliance
+- AI integration with multiple providers
+- Manufacturing domain workflows
+- Improved frontend user experience
+- DevOps (Docker, CI/CD, staging deployment)
