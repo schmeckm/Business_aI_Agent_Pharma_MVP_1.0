@@ -2,7 +2,7 @@
   <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="200">
 </div>
 
-# 💊 Pharmaceutical Manufacturing Agent System – MVP 1.01
+# 💊 Pharmaceutical Manufacturing Agent System – MVP 1.0
 
 <div align="center">
   <img src="Agent_screenshot.jpg" alt="AI Agent Dashboard Interface" width="700">
@@ -14,7 +14,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen)](https://nodejs.org/)
 [![GMP Compliant](https://img.shields.io/badge/GMP-Compliant-blue)](https://www.fda.gov/drugs/pharmaceutical-quality-resources/current-good-manufacturing-practice-cgmp-regulations)
-[![Agent Evolution](https://img.shields.io/badge/Agent-Expanding-orange)](https://github.com/YOUR_USERNAME/pharma-agent-mvp)
+[![Agent Evolution](https://img.shields.io/badge/Agent-Expanding-orange)](https://github.com/schmeckm/Business_aI_Agent_Pharma_MVP_1.0)
 
 ---
 
@@ -93,7 +93,7 @@ The pharmaceutical industry faces unprecedented challenges: **increasing regulat
 
 Our pharmaceutical AI agent system is designed for **continuous expansion** and **intelligent evolution**:
 
-### 🔄 Phase 1: Foundation Agent (Current - MVP 1.01)
+### 🔄 Phase 1: Foundation Agent (Current - MVP 1.0)
 **Status: ✅ Complete**
 - Basic decision support and query processing
 - GMP-compliant audit trails
@@ -375,8 +375,8 @@ agent-framework/
 
 ```bash
 # Clone and setup
-git clone https://github.com/YOUR_USERNAME/pharma-agent-mvp.git
-cd pharma-agent-mvp/agent-framework
+git clone https://github.com/schmeckm/Business_aI_Agent_Pharma_MVP_1.0.git
+cd Business_aI_Agent_Pharma_MVP_1.0/agent-framework
 
 # Install dependencies
 npm install
@@ -405,8 +405,8 @@ open http://localhost:4000
 
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/YOUR_USERNAME/pharma-agent-mvp.git
-   cd pharma-agent-mvp/agent-framework
+   git clone https://github.com/schmeckm/Business_aI_Agent_Pharma_MVP_1.0.git
+   cd Business_aI_Agent_Pharma_MVP_1.0/agent-framework
    ```
 
 2. **Install Dependencies**
