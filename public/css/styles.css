@@ -1,12 +1,12 @@
-/* McKinsey Professional Manufacturing Agent System Styles */
+/* Professional Manufacturing Agent System Styles */
 
 :root {
-    --mckinsey-blue: #003A70;
-    --mckinsey-light-blue: #0066CC;
-    --mckinsey-navy: #002347;
-    --mckinsey-gray: #F5F7FA;
-    --mckinsey-dark-gray: #4A5568;
-    --mckinsey-accent: #00A3E0;
+    --primary-blue: #003A70;
+    --light-blue: #0066CC;
+    --navy: #002347;
+    --gray-bg: #F5F7FA;
+    --dark-gray: #4A5568;
+    --accent: #00A3E0;
     --success-green: #00B894;
     --warning-orange: #FDCB6E;
     --error-red: #E17055;
@@ -23,8 +23,8 @@ body {
     max-width: 1600px; 
     margin: 0 auto; 
     padding: 0;
-    background: linear-gradient(135deg, var(--mckinsey-gray) 0%, #FFFFFF 100%);
-    color: var(--mckinsey-navy);
+    background: linear-gradient(135deg, var(--gray-bg) 0%, #FFFFFF 100%);
+    color: var(--navy);
     line-height: 1.6;
 }
 
@@ -36,7 +36,7 @@ body {
 }
 
 .header {
-    background: linear-gradient(135deg, var(--mckinsey-blue) 0%, var(--mckinsey-navy) 100%);
+    background: linear-gradient(135deg, var(--primary-blue) 0%, var(--navy) 100%);
     color: white;
     padding: 25px 40px;
     display: flex;
@@ -55,7 +55,7 @@ body {
 }
 
 .phase-badge {
-    background: linear-gradient(45deg, var(--mckinsey-accent), var(--mckinsey-light-blue));
+    background: linear-gradient(45deg, var(--accent), var(--light-blue));
     color: white;
     padding: 6px 14px;
     border-radius: 20px;
@@ -81,18 +81,18 @@ body {
 
 .output-section {
     padding: 40px;
-    background: var(--mckinsey-gray);
+    background: var(--gray-bg);
 }
 
 .status {
     background: linear-gradient(135deg, #E6F7FF, #B3E5FC);
-    border-left: 4px solid var(--mckinsey-light-blue);
+    border-left: 4px solid var(--light-blue);
     padding: 16px 20px;
     margin-bottom: 25px;
     border-radius: 0 8px 8px 0;
     font-weight: 500;
     font-size: 14px;
-    color: var(--mckinsey-navy);
+    color: var(--navy);
 }
 
 .status.error {
@@ -103,7 +103,7 @@ body {
 
 .gmp-compliance {
     background: linear-gradient(135deg, #F0F9FF, #E0F2FE);
-    border: 1px solid var(--mckinsey-accent);
+    border: 1px solid var(--accent);
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 30px;
@@ -111,7 +111,7 @@ body {
 
 .gmp-title {
     font-weight: 600;
-    color: var(--mckinsey-blue);
+    color: var(--primary-blue);
     margin-bottom: 12px;
     font-size: 16px;
 }
@@ -142,7 +142,7 @@ label {
     font-weight: 600; 
     display: block;
     margin-bottom: 10px;
-    color: var(--mckinsey-blue);
+    color: var(--primary-blue);
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -162,7 +162,7 @@ select, textarea {
 
 select:focus, textarea:focus {
     outline: none;
-    border-color: var(--mckinsey-light-blue);
+    border-color: var(--light-blue);
     box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
 }
 
@@ -173,7 +173,7 @@ textarea {
 }
 
 button {
-    background: linear-gradient(135deg, var(--mckinsey-blue), var(--mckinsey-light-blue));
+    background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
     color: white;
     border: none;
     padding: 12px 24px;
@@ -187,7 +187,7 @@ button {
 }
 
 button:hover {
-    background: linear-gradient(135deg, var(--mckinsey-navy), var(--mckinsey-blue));
+    background: linear-gradient(135deg, var(--navy), var(--primary-blue));
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(0, 58, 112, 0.3);
 }
@@ -200,7 +200,7 @@ button:disabled {
 }
 
 .primary-button {
-    background: linear-gradient(135deg, var(--mckinsey-accent), var(--mckinsey-light-blue));
+    background: linear-gradient(135deg, var(--accent), var(--light-blue));
     padding: 16px 32px;
     font-size: 16px;
     width: 100%;
@@ -208,11 +208,11 @@ button:disabled {
 }
 
 .primary-button:hover {
-    background: linear-gradient(135deg, var(--mckinsey-light-blue), var(--mckinsey-blue));
+    background: linear-gradient(135deg, var(--light-blue), var(--primary-blue));
 }
 
 #out {
-    background: var(--mckinsey-navy);
+    background: var(--navy);
     color: #F8FAFC;
     padding: 25px;
     border-radius: 12px;
@@ -222,7 +222,7 @@ button:disabled {
     height: 500px;
     overflow-y: auto;
     white-space: pre-wrap;
-    border: 1px solid var(--mckinsey-blue);
+    border: 1px solid var(--primary-blue);
     box-shadow: inset 0 2px 8px rgba(0, 58, 112, 0.2);
 }
 
@@ -239,7 +239,7 @@ button:disabled {
 }
 
 .agent-button {
-    background: linear-gradient(135deg, var(--mckinsey-dark-gray), #64748B);
+    background: linear-gradient(135deg, var(--dark-gray), #64748B);
     padding: 10px 16px;
     font-size: 12px;
     border-radius: 8px;
@@ -247,7 +247,7 @@ button:disabled {
 }
 
 .agent-button:hover {
-    background: linear-gradient(135deg, var(--mckinsey-blue), var(--mckinsey-light-blue));
+    background: linear-gradient(135deg, var(--primary-blue), var(--light-blue));
 }
 
 .workflow-section {
@@ -281,18 +281,18 @@ button:disabled {
 
 .metrics {
     font-size: 12px;
-    color: var(--mckinsey-dark-gray);
+    color: var(--dark-gray);
     margin-top: 20px;
     padding: 15px;
     background: white;
     border-radius: 8px;
-    border-left: 4px solid var(--mckinsey-light-blue);
+    border-left: 4px solid var(--light-blue);
     font-family: 'Monaco', 'Menlo', monospace;
 }
 
 .section-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--mckinsey-light-blue), transparent);
+    background: linear-gradient(90deg, transparent, var(--light-blue), transparent);
     margin: 30px 0;
 }
 
@@ -309,13 +309,54 @@ button:disabled {
 }
 
 .clear-button {
-    background: var(--mckinsey-dark-gray);
+    background: var(--dark-gray);
     font-size: 12px;
     padding: 6px 12px;
 }
 
 .clear-button:hover {
-    background: var(--mckinsey-blue);
+    background: var(--primary-blue);
+}
+
+/* Claude AI Response Box */
+.claude-response-box {
+    margin-top: 25px;
+    padding: 20px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #F0F9FF, #E6F7FF);
+    border: 2px solid var(--light-blue);
+    box-shadow: 0 2px 10px rgba(0, 58, 112, 0.1);
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+.claude-response-box strong {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+#claude-text {
+    margin-top: 10px;
+    font-size: 13px;
+    color: var(--navy);
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.claude-response-box.error {
+    background: linear-gradient(135deg, #FFEBEE, #FFCDD2);
+    border-color: var(--error-red);
+}
+
+.claude-response-box.error strong {
+    color: var(--error-red);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @media (max-width: 1200px) {

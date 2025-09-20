@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audit Trail Viewer</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    body { padding: 20px; font-family: Arial, sans-serif; }
+    h1 { color: #003A70; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 8px; font-size: 14px; vertical-align: top; }
+    th { background: #003A70; color: white; text-align: left; }
+    tr:nth-child(even) { background: #f9f9f9; }
+    .json-cell { font-family: monospace; white-space: pre-wrap; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>📂 Audit Trail Viewer</h1>
+  <p>This page displays all logged system actions in compliance with GMP / Part 11.</p>
+  <table id="audit-table">
+    <thead>
+      <tr>
+        <th>Timestamp</th>
+        <th>Type</th>
+        <th>User Input</th>
+        <th>AI Response</th>
+        <th>Payload</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td colspan="5">Loading...</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    async function loadAudit() {
+      try {
+        const resp = await fetch("/audit_log.json");
+        const data = await resp.json();
+        const tbody = document.querySelector("#audit-table tbody");
+        tbody.innerHTML = "";
+
+        if (!Array.isArray(data) || data.length === 0) {
+          tbody.innerHTML = "<tr><td colspan='5'>No audit entries found</td></tr>";
+          return;
+        }
+
+        data.forEach(entry => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${entry.timestamp || ""}</td>
+            <td>${entry.type || ""}</td>
+            <td class="json-cell">${entry.input || ""}</td>
+            <td class="json-cell">${entry.response ? entry.response.substring(0,200) + "..." : ""}</td>
+            <td class="json-cell">${entry.payload ? JSON.stringify(entry.payload, null, 2) : ""}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      } catch (err) {
+        console.error("Error loading audit:", err);
+      }
+    }
+
+    loadAudit();
+  </script>
+</body>
+</html>
+
