@@ -29,8 +29,6 @@ The pharmaceutical industry faces unprecedented challenges: **increasing regulat
   <p><em>AI-powered pharmaceutical manufacturing dashboard with real-time decision support</em></p>
 </div>
 
-
-
 ### 💡 Key Benefits
 
 | Traditional Approach | AI Agent Approach | Impact |
