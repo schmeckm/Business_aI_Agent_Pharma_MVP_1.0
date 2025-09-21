@@ -333,7 +333,6 @@ app.listen(PORT, () => {
   console.log(`📡 Events stream: http://localhost:${PORT}/events`);
   console.log(`📋 API Documentation: http://localhost:${PORT}/api`);
   console.log(`👨‍💻 Developer: Markus Schmeckenbecher`);
-  console.log(`📋 Version: MVP 1.2.1 - Modular Architecture`);
   console.log(`🎯 Architecture: Event-Driven Microservices Pattern`);
   
   // Log successful startup

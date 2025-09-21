@@ -2,7 +2,7 @@
   <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="500">
 </div>
 
-# 💊 Pharmaceutical Manufacturing Agent System – MVP 1.0
+# 💊 Pharmaceutical Manufacturing Agent System – MVP 2.0
     > Revolutionizing pharmaceutical manufacturing through **AI-driven decision support** with full **GMP compliance**
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
