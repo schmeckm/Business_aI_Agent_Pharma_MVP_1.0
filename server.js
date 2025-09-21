@@ -332,7 +332,7 @@ app.listen(PORT, () => {
   console.log(`📊 Health check: http://localhost:${PORT}/api/system/health`);
   console.log(`📡 Events stream: http://localhost:${PORT}/events`);
   console.log(`📋 API Documentation: http://localhost:${PORT}/api`);
-  console.log(`👨‍💻 Developer: Markus Schmeckenbecher2`);
+  console.log(`👨‍💻 Developer: Markus Schmeckenbecher`);
   console.log(`🎯 Architecture: Event-Driven Microservices Pattern`);
   
   // Log successful startup
