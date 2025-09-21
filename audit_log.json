@@ -13421,5 +13421,53 @@
     },
     "timestamp": "2025-09-21T19:18:57.710Z",
     "auditId": "AUD-1758482337710-401szs"
+  },
+  {
+    "type": "system",
+    "event": "system_startup",
+    "details": {
+      "version": "1.2.1",
+      "components": [
+        "EventBusManager",
+        "AgentManager",
+        "DataManager",
+        "AuditLogger"
+      ],
+      "configuration": {
+        "USE_LANGCHAIN": true,
+        "USE_ACTIONS": false,
+        "AGENT_MODE": "langchain"
+      }
+    },
+    "timestamp": "2025-09-21T19:19:15.121Z",
+    "auditId": "AUD-1758482355121-d8vjk3"
+  },
+  {
+    "type": "system",
+    "event": "server_started",
+    "details": {
+      "port": "4000",
+      "version": "1.2.1",
+      "architecture": "modular",
+      "endpoints": [
+        "/api/chat",
+        "/api/agents",
+        "/api/data",
+        "/api/events",
+        "/api/audit",
+        "/api/system"
+      ]
+    },
+    "timestamp": "2025-09-21T19:19:15.149Z",
+    "auditId": "AUD-1758482355149-zzs7uv"
+  },
+  {
+    "type": "system",
+    "event": "system_shutdown",
+    "details": {
+      "reason": "SIGINT"
+    },
+    "timestamp": "2025-09-21T19:20:37.316Z",
+    "auditId": "AUD-1758482437316-9vl55i"
   }
 ]
