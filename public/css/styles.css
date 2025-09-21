@@ -221,12 +221,11 @@ a:hover {
   text-decoration: underline;
 }
 
-/* === Enhanced Response Formatting - Add to existing styles.css === */
+/* === Enhanced Response Formatting === */
 
 /* Response Header */
 .response-header {
-  background: #0a2540; /* Matches your McKinsey theme */
-  color: white;
+  background: #0a2540; /* McKinsey dark blue */
   padding: 12px 15px;
   border-radius: 8px 8px 0 0;
   display: flex;
@@ -235,9 +234,14 @@ a:hover {
   font-weight: 600;
 }
 
+.response-header strong {
+  color: #000;  /* Titel schwarz */
+}
+
 .response-meta {
   font-size: 12px;
   opacity: 0.8;
+  color: #fff;  /* Meta-Infos weiß */
 }
 
 /* Response Content */
@@ -254,6 +258,7 @@ a:hover {
   line-height: 1.6;
   font-family: 'Segoe UI', Roboto, sans-serif;
   color: #1f2937;
+  white-space: pre-wrap;
 }
 
 .formatted-response h3 {

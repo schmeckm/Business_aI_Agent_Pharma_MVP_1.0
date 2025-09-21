@@ -7,11 +7,20 @@
  * Modular route organization for better maintainability
  * 
  * Developer: Markus Schmeckenbecher
- * Version: 1.2.0
+ * Version: 2.0.1
  * ========================================================================
  */
 
 import express from "express";
+import { readFileSync } from "fs";
+
+// Read package.json for dynamic versioning
+let packageJson;
+try {
+  packageJson = JSON.parse(readFileSync('./package.json', 'utf8'));
+} catch (error) {
+  packageJson = { version: "2.0.1" }; // Fallback version
+}
 
 // ========================================================================
 // MAIN ROUTER FACTORY
@@ -302,7 +311,7 @@ function createSystemRoutes(agentManager, dataManager, eventBusManager) {
   router.get("/health", (req, res) => {
     res.json({
       status: "ok",
-      version: "1.2.0",
+      version: packageJson.version, // FIXED: Now reads from package.json
       developer: "Markus Schmeckenbecher",
       components: {
         agentManager: {
@@ -327,12 +336,30 @@ function createSystemRoutes(agentManager, dataManager, eventBusManager) {
    */
   router.get("/status", (req, res) => {
     res.json({
+      version: packageJson.version, // ADDED: Version in status too
       agents: agentManager.getStats(),
       data: dataManager.getDataStats(),
       events: eventBusManager.getEventSubscriptions(),
       uptime: process.uptime(),
       memory: process.memoryUsage(),
       timestamp: new Date().toISOString()
+    });
+  });
+
+  /**
+   * Version Route - FIXED: Now uses router instead of app
+   */
+  router.get('/version', (req, res) => {
+    res.json({
+      version: packageJson.version,
+      buildDate: new Date().toISOString(),
+      environment: process.env.NODE_ENV,
+      developer: "Markus Schmeckenbecher",
+      components: {
+        eventBus: "1.3.0",
+        agentManager: "1.2.1", 
+        dataManager: "1.3.0"
+      }
     });
   });
 

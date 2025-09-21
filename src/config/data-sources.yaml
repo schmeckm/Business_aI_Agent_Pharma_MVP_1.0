@@ -43,6 +43,31 @@ dataSources:
     config:
       basePath: mock-data
 
+  # ========================================================================
+  # ADD THESE THREE MISSING DATA SOURCES:
+  # ========================================================================
+  
+  # BOM Data Source (Mock) - Bill of Materials
+  bom:
+    type: mock
+    file: bom
+    config:
+      basePath: mock-data
+      
+  # Inventory Data Source (Mock) - Stock/Warehouse data
+  inventory:
+    type: mock
+    file: inventory
+    config:
+      basePath: mock-data
+      
+  # QA Data Source (Mock) - Quality Assurance data
+  qa:
+    type: mock
+    file: qa
+    config:
+      basePath: mock-data
+
 # For SAP integration, set environment variables:
 # NODE_ENV=production
 # ORDERS_SOURCE_TYPE=sap

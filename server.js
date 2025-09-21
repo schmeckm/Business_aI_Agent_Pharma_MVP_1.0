@@ -120,7 +120,6 @@ const USE_ACTIONS = process.env.USE_ACTIONS === "true" || false;
 const AGENT_MODE = process.env.AGENT_MODE || "simple";
 
 console.log(`🔧 System Configuration:`);
-console.log(`   Version: MVP 1.2.1 - Modular Architecture`);
 console.log(`   Developer: Markus Schmeckenbecher`);
 console.log(`   USE_LANGCHAIN: ${USE_LANGCHAIN}`);
 console.log(`   USE_ACTIONS: ${USE_ACTIONS}`);

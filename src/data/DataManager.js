@@ -452,7 +452,7 @@ class DataSourceFactory {
 // ========================================================================
 
 export class DataManager {
-  constructor(configPath = "config/data-sources.yaml") {
+  constructor(configPath = "src/config/data-sources.yaml") {
     this.dataSources = new Map();
     this.dataCache = new Map();
     this.sourceConfigs = new Map();

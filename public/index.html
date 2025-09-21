@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pharmaceutical Manufacturing Agentic Business Agent - MVP 1.1</title>
+  <title>Pharmaceutical Manufacturing Agent Framewwork - MVP 1.2</title>
   <link rel="stylesheet" href="css/styles.css">
   <style>
     /* Formatierte AI Response */
@@ -34,6 +34,48 @@
       font-size: 12px;
       cursor: pointer;
     }
+    /* Version Display Styles */
+    .version-info {
+      font-size: 11px;
+      color: #666;
+      margin-top: 10px;
+      padding: 5px;
+      background: #f8f9fa;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
+    /* Health Indicator Styles (Ampel) */
+    .health-indicator {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      background: white;
+      padding: 5px 10px;
+      border-radius: 15px;
+      border: 1px solid #ddd;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .health-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 5px;
+      font-size: 12px;
+      text-align: center;
+      line-height: 12px;
+    }
+    .health-green { color: #28a745; }
+    .health-yellow { color: #ffc107; }
+    .health-red { color: #dc3545; }
+    .health-gray { color: #6c757d; }
+    
+    /* Header positioning fix */
+    .header {
+      position: relative;
+    }
   </style>
 </head>
 <body>
@@ -42,10 +84,15 @@
     <!-- Header -->
     <div class="header">
       <h1>
-        Agentic Business Agent - MVP 1.1 Plan-Make-Assess-Release Process
-        <div class="phase-badge">MVP 1.1</div>
+        Pharmaceutical Manufacturing Agentic Business Agent - MAR Process
+        <div class="phase-badge">MVP 2.0</div>
+        <!-- System Health Indicator -->
+        <div id="health-indicator" class="health-indicator" title="System Health Status">
+          <div class="health-dot" id="health-dot">●</div>
+          <span id="health-text">Checking...</span>
+        </div>
       </h1>
-      <div style="font-size: 14px; opacity: 0.9;">Enterprise AI Operations Platform</div>
+      <div style="font-size: 14px; opacity: 0.9;">Enterprise AI Operations Platform - Modular Architecture</div>
     </div>
 
     <!-- Main Content -->
@@ -86,12 +133,12 @@
         <!-- Free Input -->
         <label for="message">Manufacturing Command Input</label>
         <textarea id="message" placeholder="Manufacturing Command Examples:
-• Assess FG-123 batch 2000 units for EU market release
-• Schedule production of FG-456 1500 units on line PCK-01
-• Execute quality prioritization for material FG-789
-• Book transport to Germany for batch BATCH-001
-• Check material availability for urgent production
-• Trigger quality alert for contamination issue"></textarea>
+• ask-today-orders - Get current open orders
+• morning-briefing - Get daily operations summary  
+• general-assessment - Get production batch assessment
+• compliance-check - Check regulatory compliance
+• system-status - Get system overview
+• help - Show available commands"></textarea>
 
         <button id="send" class="primary-button">Execute Manufacturing Command</button>
 
@@ -111,10 +158,32 @@
           </div>
         </div>
 
-        <!-- Audit Log Link -->
+        <!-- Enhanced API Links with Legacy Support -->
         <div style="margin-top: 15px;">
-          <a href="/audit_log.json" target="_blank">View Full Audit Log (JSON)</a> | 
-          <a href="/audit.html" target="_blank">Audit Log Viewer</a>
+          <div style="margin-bottom: 8px;">
+            <strong>Audit & System Links:</strong><br>
+            <a href="/api/audit" target="_blank">View Full Audit Log (JSON)</a> | 
+            <a href="/audit.html" target="_blank">Recent Audit Entries</a> |
+            <a href="/api/system/health" target="_blank">System Health</a>
+          </div>
+          
+          <div class="version-info">
+            <strong>System APIs:</strong><br>
+            <a href="/api/system/status" target="_blank">Detailed Status</a> | 
+            <a href="/api/data" target="_blank">Data Overview</a> | 
+            <a href="/api/events/subscriptions" target="_blank">Event Mappings</a><br>
+            <a href="/api/agents" target="_blank">Agent Registry</a> | 
+            <a href="/api/audit/stats" target="_blank">Audit Statistics</a> | 
+            <a href="/health" target="_blank">Legacy Health</a>
+          </div>
+          
+          <!-- Manual Version Display (Fallback) -->
+          <div style="margin-top: 8px; font-size: 11px; color: #888;">
+            <span>System Version: </span>
+            <span id="manual-version">v2.0.1</span> | 
+            <span>Architecture: Modular</span> | 
+            <span>Developer: Markus Schmeckenbecher</span>
+          </div>
         </div>
       </div>
 
@@ -130,9 +199,10 @@
             </tr>
           </table>
           <pre id="out">Pharmaceutical Manufacturing Agent System Ready...
-MVP 1.1 Architecture
+MVP 1.2 - Modular Architecture
 AI Decision Logging: ENABLED
-GMP Compliance Monitoring: ACTIVE</pre>
+GMP Compliance Monitoring: ACTIVE
+Event-Driven Agent System: ACTIVE</pre>
           <div class="metrics" id="metrics">Waiting for operation metrics...</div>
         </div>
 
@@ -152,7 +222,7 @@ GMP Compliance Monitoring: ACTIVE</pre>
     </div>
   </div>
 
-  <!-- Wichtig: Dein Frontend Script -->
+  <!-- JavaScript -->
   <script src="js/app.js"></script>
 </body>
 </html>
