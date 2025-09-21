@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="200">
+  <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="500">
 </div>
 
 # 💊 Pharmaceutical Manufacturing Agent System – MVP 1.0

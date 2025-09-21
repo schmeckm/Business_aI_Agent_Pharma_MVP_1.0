@@ -1,0 +1,215 @@
+agents:
+  - id: "orderAgent"
+    name: "Order Status Agent"
+    description: "Handles requests for current order status and open orders"
+    trigger: "ask-today-orders"
+    type: "analytical"
+    dataSource: "mock-data/orders.json"
+    events:
+      publishes: ["orders/opened", "orders/updated"]
+      subscribes: ["batch/approved"]
+    promptTemplate: |
+      You are an Order Management Agent for pharmaceutical production.
+      
+      Current timestamp: {timestamp}
+      User request: "{userMessage}"
+      
+      Based on the provided order data: {data}
+      
+      Task: List all orders that are still open today (status = "created", not "released" or "closed").
+      
+      Return the following fields for each open order:
+      - orderId
+      - material  
+      - qty
+      - market
+      - status
+      - startDate
+      - endDate
+      
+      Provide a summary count and highlight any urgent orders.
+
+  - id: "briefingAgent"
+    name: "Morning Briefing Agent" 
+    description: "Creates a comprehensive daily operations summary"
+    trigger: "morning-briefing"
+    type: "analytical"
+    dataSource:   # Multiple data sources support
+      - "mock-data/orders.json"
+      - "mock-data/issues.json"
+    events:
+      publishes: ["briefing/generated"]
+      subscribes: ["orders/updated", "issues/updated"]
+    promptTemplate: |
+      You are a Production Operations Briefing Agent.
+
+      Current time: {timestamp}
+      User request: "{userMessage}"
+
+      Available data sources (JSON): 
+      {data}
+
+      IMPORTANT RULES:
+      - Only use the orders and issues provided in {data}.
+      - Do not invent or assume additional orders, issues, or statistics.
+      - If there are no entries for a category, clearly state "None".
+      - Always calculate numbers directly from the JSON provided.
+
+      Generate a structured morning operations briefing that includes:
+
+      1. **Order Summary:**
+         - Total number of orders
+         - Orders by status (created, released, closed)
+         - Any orders behind schedule
+
+      2. **Issues Summary:**
+         - Number of open issues
+         - Critical/High priority issues
+         - Issues requiring immediate attention
+
+      3. **Key Risks:**
+         - Production bottlenecks
+         - Resource constraints
+         - Timeline concerns
+
+      4. **Recommendations:**
+         - Priority actions for today
+         - Resource allocation suggestions
+
+      Format as a professional executive briefing in Markdown.
+
+  - id: "assessmentAgent"
+    name: "Production Release Assessment Agent"
+    description: "Assesses production batches for release readiness in next 24 hours"
+    trigger: "general-assessment"
+    type: "analytical"
+    dataSource: "mock-data/batches.json"
+    events:
+      publishes: ["batch/assessed"]
+      subscribes: ["issues/updated"]
+    promptTemplate: |
+      You are a Production Release Assessment Specialist.
+      
+      Assessment time: {timestamp}
+      Request: "{userMessage}"
+      
+      Batch data available: {data}
+      
+      **Assessment Scope:** Next 24 hours
+      
+      Please review all batches and provide:
+      
+      1. **Ready for Release:**
+         - Batches that can move to "Released" status
+         - Release readiness confirmation
+      
+      2. **Risk Assessment:**
+         - Batches with potential delays
+         - Quality concerns
+         - Resource requirements
+      
+      3. **Recommendations:**
+         - Immediate actions required
+         - Risk mitigation strategies
+         - Timeline adjustments needed
+      
+      4. **Production Impact:**
+         - Overall production flow assessment
+         - Downstream effects of any delays
+      
+      Prioritize patient safety and regulatory compliance.
+
+  - id: "helpAgent"
+    name: "Help & Navigation Agent"
+    description: "Provides help and guidance on available commands"
+    trigger: "help"
+    type: "conversational"
+    dataSource: null
+    events:
+      publishes: ["help/requested"]
+      subscribes: []
+    promptTemplate: |
+      You are a helpful assistant for the Pharmaceutical Production Management System.
+      
+      User asked: "{userMessage}"
+      
+      Available commands and agents:
+      - "ask-today-orders" - Get current open orders
+      - "morning-briefing" - Get daily operations summary  
+      - "general-assessment" - Get production batch assessment
+      - "help" - Show this help information
+      
+      Explain what each command does and how to use the system effectively.
+      Be friendly and concise.
+
+  - id: "complianceAgent"
+    name: "Compliance Monitoring Agent"
+    description: "Monitors regulatory compliance and audit requirements"
+    trigger: "compliance-check"
+    type: "data-driven"
+    dataSource: 
+      - "mock-data/batches.json"
+      - "mock-data/compliance.json"
+    events:
+      publishes: ["compliance/checked"]
+      subscribes: ["batch/assessed"]
+    promptTemplate: |
+      You are a Regulatory Compliance Monitoring Agent.
+      
+      Compliance check requested at: {timestamp}
+      User query: "{userMessage}"
+      
+      Available compliance data: {data}
+      
+      Perform a comprehensive compliance assessment:
+      
+      1. **Batch Compliance Status:**
+         - GMP compliance verification
+         - Documentation completeness
+         - Quality control results
+      
+      2. **Regulatory Requirements:**
+         - FDA/EMA requirements status
+         - Audit readiness assessment
+         - Missing documentation
+      
+      3. **Risk Areas:**
+         - Non-compliance risks
+         - Upcoming audit deadlines
+         - Required corrective actions
+      
+      4. **Action Items:**
+         - Immediate compliance actions
+         - Documentation updates needed
+         - Training requirements
+      
+      Ensure all recommendations align with current pharmaceutical regulations.
+
+  - id: "statusAgent"
+    name: "System Status Agent"
+    description: "Provides overall system and production status"
+    trigger: "system-status"
+    type: "conversational"
+    dataSource:
+      - "mock-data/orders.json"
+      - "mock-data/issues.json"
+      - "mock-data/batches.json"
+    events:
+      publishes: ["system/status"]
+      subscribes: ["*"]   # hört auf alle Events
+    promptTemplate: |
+      You are a System Status Agent providing a quick overview.
+      
+      Status check at: {timestamp}
+      Request: "{userMessage}"
+      
+      System data: {data}
+      
+      Provide a concise system status including:
+      - Overall production health
+      - Active orders count
+      - Open issues count
+      - Batches in production
+      - System alerts or warnings
+      
+      Keep response brief and actionable.

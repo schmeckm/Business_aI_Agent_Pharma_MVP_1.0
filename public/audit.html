@@ -67,75 +67,75 @@
       <tr><td colspan="5">Loading audit log...</td></tr>
     </tbody>
   </table>
+<script>
+  async function loadAuditLog() {
+    try {
+      const res = await fetch("/audit");
+      const data = await res.json();
 
-  <script>
-    async function loadAuditLog() {
-      try {
-        const res = await fetch("/audit_log.json");
-        const data = await res.json();
+      const tbody = document.getElementById("log-rows");
+      tbody.innerHTML = "";
 
-        const tbody = document.getElementById("log-rows");
-        tbody.innerHTML = "";
+      if (!data.entries || data.entries.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='5'>No audit entries found.</td></tr>";
+        return;
+      }
 
-        if (!data || data.length === 0) {
-          tbody.innerHTML = "<tr><td colspan='5'>No audit entries found.</td></tr>";
-          return;
+      data.entries.forEach(entry => {
+        const tr = document.createElement("tr");
+
+        // Timestamp in Browser-Zeit
+        const tdTime = document.createElement("td");
+        if (entry.timestamp) {
+          const localTime = new Date(entry.timestamp).toLocaleString(undefined, {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false
+          });
+          tdTime.innerHTML = `<div class="timestamp">${localTime}</div>`;
+        } else {
+          tdTime.innerHTML = "-";
         }
 
-        data.forEach(entry => {
-          const tr = document.createElement("tr");
+        // User
+        const tdUser = document.createElement("td");
+        tdUser.textContent = entry.user || entry.userName || entry.userId || "unknown";
 
-          // Timestamp in Browser-Zeit
-          const tdTime = document.createElement("td");
-          if (entry.timestamp) {
-            const localTime = new Date(entry.timestamp).toLocaleString(undefined, {
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-              hour12: false
-            });
-            tdTime.innerHTML = `<div class="timestamp">${localTime}</div>`;
-          } else {
-            tdTime.innerHTML = "-";
-          }
+        // Command
+        const tdCommand = document.createElement("td");
+        tdCommand.textContent = entry.message || entry.action || entry.userMessage || "-";
 
-          // User
-          const tdUser = document.createElement("td");
-          tdUser.textContent = entry.userName || entry.userId || "unknown";
+        // AI Response
+        const tdAI = document.createElement("td");
+        tdAI.className = "response";
+        tdAI.textContent = entry.response || entry.claudeResponse || "-";
 
-          // Command
-          const tdCommand = document.createElement("td");
-          tdCommand.textContent = entry.action || entry.userMessage || "-";
+        // Status
+        const tdStatus = document.createElement("td");
+        tdStatus.textContent = entry.status || "-";
+        if (entry.status === "success") tdStatus.className = "status-success";
+        if (entry.status === "error") tdStatus.className = "status-error";
 
-          // AI Response
-          const tdAI = document.createElement("td");
-          tdAI.className = "response";
-          tdAI.textContent = entry.claudeResponse || entry.response || "-";
-
-          // Status
-          const tdStatus = document.createElement("td");
-          tdStatus.textContent = entry.status || "-";
-          if (entry.status === "success") tdStatus.className = "status-success";
-          if (entry.status === "error") tdStatus.className = "status-error";
-
-          tr.appendChild(tdTime);
-          tr.appendChild(tdUser);
-          tr.appendChild(tdCommand);
-          tr.appendChild(tdAI);
-          tr.appendChild(tdStatus);
-          tbody.appendChild(tr);
-        });
-      } catch (err) {
-        console.error("Failed to load audit log:", err);
-        document.getElementById("log-rows").innerHTML =
-          "<tr><td colspan='5'>Error loading audit log.</td></tr>";
-      }
+        tr.appendChild(tdTime);
+        tr.appendChild(tdUser);
+        tr.appendChild(tdCommand);
+        tr.appendChild(tdAI);
+        tr.appendChild(tdStatus);
+        tbody.appendChild(tr);
+      });
+    } catch (err) {
+      console.error("Failed to load audit log:", err);
+      document.getElementById("log-rows").innerHTML =
+        "<tr><td colspan='5'>Error loading audit log.</td></tr>";
     }
+  }
 
-    loadAuditLog();
-  </script>
-</body>
+  loadAuditLog();
+</script>
+
+
 </html>
