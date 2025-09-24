@@ -1,19 +1,21 @@
 /**
  * ========================================================================
- * EVENT BUS MANAGER
+ * EVENT BUS MANAGER (A2A ENHANCED)
  * ========================================================================
  * 
  * Handles all event-driven communication between agents
  * Supports both local EventEmitter and production message brokers
+ * Enhanced with A2A (Agent-to-Agent) communication support
  * 
  * Developer: Markus Schmeckenbecher
- * Version: 1.2.0
+ * Version: 1.3.0 - A2A Integration
  * 
  * Features:
  * - Event publishing and subscription management
  * - Agent auto-triggering based on event subscriptions
  * - Loop prevention for cascading events
  * - Audit logging integration
+ * - A2A communication support with AgentManager integration
  * ========================================================================
  */
 
@@ -24,8 +26,18 @@ export class EventBusManager {
     this.eventBus = new EventEmitter();
     this.auditLogger = auditLogger;
     this.agentSubscriptions = new Map();
+    this.agentManager = null; // Will be set by server.js for A2A support
     
     console.log("🔗 EventBusManager initialized");
+  }
+
+  /**
+   * Set AgentManager Reference for A2A Communication
+   * Called by server.js after AgentManager initialization
+   */
+  setAgentManager(agentManager) {
+    this.agentManager = agentManager;
+    console.log("🔗 EventBusManager linked to AgentManager for A2A communication");
   }
 
   /**
@@ -54,10 +66,11 @@ export class EventBusManager {
   }
 
   /**
-   * Publish Agent Event
+   * Publish Agent Event (Enhanced for A2A)
    * Distributes events to all subscribing agents
+   * Now supports both legacy agentProcessor and new A2A agentManager
    */
-  async publishEvent(eventType, data, sourceAgentId, agentProcessor) {
+  async publishEvent(eventType, data, sourceAgentId, agentProcessor = null) {
     console.log(`📡 Publishing event: ${eventType} from ${sourceAgentId}`);
     
     // Audit logging for GMP compliance
@@ -88,7 +101,20 @@ export class EventBusManager {
           console.log(`⚡ Auto-triggering agent: ${subscribingAgent.id}`);
           
           const autoMessage = `Auto-triggered by event: ${eventType} from ${sourceAgentId}`;
-          const response = await agentProcessor.processAgent(subscribingAgent, autoMessage, true);
+          let response = null;
+          
+          // ENHANCED: Support both legacy agentProcessor and new A2A agentManager
+          if (agentProcessor && typeof agentProcessor.processAgent === 'function') {
+            // Legacy event system
+            response = await agentProcessor.processAgent(subscribingAgent, autoMessage, true);
+          } else if (this.agentManager && typeof this.agentManager.processAgent === 'function') {
+            // A2A system
+            response = await this.agentManager.processAgent(subscribingAgent, autoMessage, true);
+          } else {
+            console.warn(`⚠️ No agent processor available for ${subscribingAgent.id}`);
+            console.log(`📋 Event ${eventType} logged for ${subscribingAgent.id} (no processing)`);
+            continue; // Skip to next agent
+          }
           
           // Log auto-triggered response
           const autoEvent = {
@@ -96,7 +122,7 @@ export class EventBusManager {
             triggeredAgent: subscribingAgent.id,
             triggerEvent: eventType,
             sourceAgent: sourceAgentId,
-            response: response.substring(0, 200) + '...',
+            response: response ? response.substring(0, 200) + '...' : 'No response',
             timestamp: new Date().toISOString()
           };
           
@@ -104,19 +130,26 @@ export class EventBusManager {
           this.emit("event", autoEvent);
           
           // Handle cascading events with delay to prevent overload
-          if (subscribingAgent.events && subscribingAgent.events.publishes) {
-            for (const publishedEvent of subscribingAgent.events.publishes) {
-              setTimeout(() => {
-                this.publishEvent(publishedEvent, { response }, subscribingAgent.id, agentProcessor);
-              }, 100);
-            }
-          }
+// OPTION B: Disable cascading events to prevent infinite loops
+// Cascading events replaced by controlled A2A workflows
+console.log(`Cascading events disabled for ${subscribingAgent.id} (Option B: A2A workflows)`);
+// No automatic event cascading - use controlled A2A workflows instead
           
         } catch (error) {
-          console.error(`❌ Error auto-triggering agent ${subscribingAgent.id}:`, error);
+          console.error(`❌ Error auto-triggering agent ${subscribingAgent.id}:`, error.message);
+          // Continue with other agents even if one fails
         }
       }
     }
+  }
+
+  /**
+   * Subscribe to Event (Enhanced for A2A)
+   * Register event listener with A2A callback support
+   */
+  subscribe(eventPattern, callback) {
+    this.eventBus.on(eventPattern, callback);
+    console.log(`📩 Subscribed to event pattern: ${eventPattern}`);
   }
 
   /**
@@ -155,6 +188,7 @@ export class EventBusManager {
     return {
       subscriptions,
       totalEvents: this.agentSubscriptions.size,
+      a2aEnabled: !!this.agentManager,
       timestamp: new Date().toISOString()
     };
   }
@@ -164,7 +198,23 @@ export class EventBusManager {
    * Returns array of agent IDs subscribed to specific event
    */
   getSubscribers(eventType) {
-    return this.agentSubscriptions.get(eventType)?.map(a => a.id) || [];
+    const directSubscribers = this.agentSubscriptions.get(eventType)?.map(a => a.id) || [];
+    const wildcardSubscribers = this.agentSubscriptions.get("*")?.map(a => a.id) || [];
+    
+    // Combine and deduplicate
+    return [...new Set([...directSubscribers, ...wildcardSubscribers])];
+  }
+
+  /**
+   * Health Check for A2A Integration
+   */
+  getA2AStatus() {
+    return {
+      agentManagerLinked: !!this.agentManager,
+      eventSubscriptions: this.agentSubscriptions.size,
+      canProcessAgents: !!(this.agentManager?.processAgent),
+      timestamp: new Date().toISOString()
+    };
   }
 }
 

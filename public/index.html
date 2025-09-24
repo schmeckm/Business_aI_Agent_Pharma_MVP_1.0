@@ -3,146 +3,66 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pharmaceutical Manufacturing Agent Framewwork - MVP 1.2</title>
+  <title>Pharmaceutical Manufacturing Agent Framework - MVP</title>
   <link rel="stylesheet" href="css/styles.css">
   <style>
-    /* Formatierte AI Response */
-    .formatted-response {
-      white-space: pre-wrap; /* Zeilenumbrüche behalten */
-      font-family: monospace;
-      background: #f8f9fa;
-      border: 1px solid #ddd;
-      padding: 10px;
-      border-radius: 6px;
-      margin-top: 5px;
-      line-height: 1.4;
-    }
-    .response-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #eef2f6;
-      padding: 5px 10px;
-      border-bottom: 1px solid #ccc;
-    }
-    .response-actions {
-      margin-top: 8px;
-    }
-    .response-actions .action-btn {
-      margin-right: 5px;
-      padding: 3px 8px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    /* Version Display Styles */
-    .version-info {
-      font-size: 11px;
-      color: #666;
-      margin-top: 10px;
-      padding: 5px;
-      background: #f8f9fa;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-    }
-    /* Health Indicator Styles (Ampel) */
-    .health-indicator {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      display: flex;
-      align-items: center;
-      font-size: 12px;
-      background: white;
-      padding: 5px 10px;
-      border-radius: 15px;
-      border: 1px solid #ddd;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-    .health-dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      margin-right: 5px;
-      font-size: 12px;
-      text-align: center;
-      line-height: 12px;
-    }
+    .formatted-response { white-space: pre-wrap; font-family: monospace; background: #f8f9fa; border: 1px solid #ddd; padding: 10px; border-radius: 6px; margin-top: 5px; line-height: 1.4; }
+    .response-header { display: flex; justify-content: space-between; align-items: center; background: #eef2f6; padding: 5px 10px; border-bottom: 1px solid #ccc; }
+    .response-actions { margin-top: 8px; }
+    .response-actions .action-btn { margin-right: 5px; padding: 3px 8px; font-size: 12px; cursor: pointer; }
+    .version-info { font-size: 11px; color: #666; margin-top: 10px; padding: 5px; background: #f8f9fa; border-radius: 4px; border: 1px solid #ddd; }
+    .health-indicator { position: absolute; top: 15px; right: 20px; display: flex; align-items: center; font-size: 12px; background: white; padding: 5px 10px; border-radius: 15px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .health-dot { width: 12px; height: 12px; border-radius: 50%; margin-right: 5px; font-size: 12px; text-align: center; line-height: 12px; }
     .health-green { color: #28a745; }
     .health-yellow { color: #ffc107; }
     .health-red { color: #dc3545; }
     .health-gray { color: #6c757d; }
-    
-    /* Header positioning fix */
-    .header {
-      position: relative;
-    }
+    .header { position: relative; }
   </style>
 </head>
 <body>
   <div class="container">
-    
-    <!-- Header -->
     <div class="header">
       <h1>
         Pharmaceutical Manufacturing Agentic Business Agent - MAR Process
-        <div class="phase-badge">MVP 2.0</div>
-        <!-- System Health Indicator -->
-        <div id="health-indicator" class="health-indicator" title="System Health Status">
-          <div class="health-dot" id="health-dot">●</div>
-          <span id="health-text">Checking...</span>
-        </div>
+        <div class="phase-badge">MVP <span id="app-version">...</span></div>
       </h1>
+      <div id="health-indicator" class="health-indicator">
+        <div class="health-dot" id="health-dot">●</div>
+        <span id="health-text">Checking...</span>
+      </div>
       <div style="font-size: 14px; opacity: 0.9;">Enterprise AI Operations Platform - Modular Architecture</div>
     </div>
 
-    <!-- Main Content -->
     <div class="main-content">
-      
-      <!-- Left: Input Section -->
       <div class="input-section">
-        <div class="status" id="status">
-          System Status: Initializing Agent System...
-        </div>
+        <div class="status" id="status">System Status: Initializing Agent System...</div>
 
-        <!-- GMP Compliance -->
         <div class="gmp-compliance">
           <div class="gmp-title">GMP Compliance & AI Audit Trail</div>
           <div class="gmp-indicators">
-            <div class="gmp-indicator">
-              <span>AI Decision Logging:</span>
-              <span id="gmp-status">Active</span>
-            </div>
-            <div class="gmp-indicator">
-              <span>Data Integrity:</span>
-              <span id="data-integrity">Verified</span>
-            </div>
-            <div class="gmp-indicator">
-              <span>Audit Trail:</span>
-              <span id="audit-trail">Complete</span>
-            </div>
+            <div class="gmp-indicator"><span>AI Decision Logging:</span><span id="gmp-status">Active</span></div>
+            <div class="gmp-indicator"><span>Data Integrity:</span><span id="data-integrity">Verified</span></div>
+            <div class="gmp-indicator"><span>Audit Trail:</span><span id="audit-trail">Complete</span></div>
           </div>
         </div>
 
-        <!-- Manufacturing Templates -->
         <label for="prompt">Manufacturing Operation Templates</label>
         <select id="prompt">
           <option value="">-- Free Text Input --</option>
-          <!-- Templates werden automatisch aus agents.yaml geladen -->
         </select>
 
-        <!-- Free Input -->
         <label for="message">Manufacturing Command Input</label>
         <textarea id="message" placeholder="Manufacturing Command Examples:
-• ask-today-orders - Get current open orders
-• morning-briefing - Get daily operations summary  
-• general-assessment - Get production batch assessment
-• compliance-check - Check regulatory compliance
-• system-status - Get system overview
-• help - Show available commands"></textarea>
+- ask-today-orders
+- morning-briefing
+- general-assessment
+- compliance-check
+- system-status
+- help"></textarea>
 
         <button id="send" class="primary-button">Execute Manufacturing Command</button>
 
-        <!-- Enhanced Claude Response Box -->
         <div id="claude-response" class="claude-response-box enhanced" style="display:none;">
           <div class="response-header">
             <strong>AI Agent Response</strong>
@@ -158,7 +78,6 @@
           </div>
         </div>
 
-        <!-- Enhanced API Links with Legacy Support -->
         <div style="margin-top: 15px;">
           <div style="margin-bottom: 8px;">
             <strong>Audit & System Links:</strong><br>
@@ -166,31 +85,23 @@
             <a href="/audit.html" target="_blank">Recent Audit Entries</a> |
             <a href="/api/system/health" target="_blank">System Health</a>
           </div>
-          
           <div class="version-info">
             <strong>System APIs:</strong><br>
             <a href="/api/system/status" target="_blank">Detailed Status</a> | 
+            <a href="/api/version" target="_blank">API Version Info</a> | 
             <a href="/api/data" target="_blank">Data Overview</a> | 
-            <a href="/api/events/subscriptions" target="_blank">Event Mappings</a><br>
-            <a href="/api/agents" target="_blank">Agent Registry</a> | 
-            <a href="/api/audit/stats" target="_blank">Audit Statistics</a> | 
-            <a href="/health" target="_blank">Legacy Health</a>
+            <a href="/api/events/subscriptions" target="_blank">Event Mappings</a> | 
+            <a href="/api/agents" target="_blank">Agent Registry</a>
           </div>
-          
-          <!-- Manual Version Display (Fallback) -->
           <div style="margin-top: 8px; font-size: 11px; color: #888;">
-            <span>System Version: </span>
-            <span id="manual-version">v2.0.1</span> | 
+            <span>System Version: </span><span id="manual-version">...</span> | 
             <span>Architecture: Modular</span> | 
             <span>Developer: Markus Schmeckenbecher</span>
           </div>
         </div>
       </div>
 
-      <!-- Right: Output Section -->
       <div class="output-section">
-        
-        <!-- System Response Block -->
         <div class="system-response-block">
           <table style="width: 100%; margin-bottom: 5px;">
             <tr>
@@ -199,14 +110,13 @@
             </tr>
           </table>
           <pre id="out">Pharmaceutical Manufacturing Agent System Ready...
-MVP 1.2 - Modular Architecture
+MVP <span id="log-version">...</span> - Modular Architecture
 AI Decision Logging: ENABLED
 GMP Compliance Monitoring: ACTIVE
 Event-Driven Agent System: ACTIVE</pre>
           <div class="metrics" id="metrics">Waiting for operation metrics...</div>
         </div>
 
-        <!-- Event Monitor Block -->
         <div class="event-monitor-block">
           <table style="width: 100%; margin-bottom: 5px;">
             <tr>
@@ -216,13 +126,10 @@ Event-Driven Agent System: ACTIVE</pre>
           </table>
           <pre id="event-monitor" class="event-monitor">Waiting for events...</pre>
         </div>
-        
       </div>
-
     </div>
   </div>
 
-  <!-- JavaScript -->
   <script src="js/app.js"></script>
 </body>
 </html>
