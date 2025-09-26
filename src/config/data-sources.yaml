@@ -10,6 +10,7 @@
 # ========================================================================
 
 # Environment-based configuration switching
+# Environment-based configuration switching
 environment: development
 
 # Data source mappings per data type
@@ -67,6 +68,15 @@ dataSources:
     file: qa
     config:
       basePath: mock-data
+
+  # ========================================================================
+  # 🆕 OEE Data Source (MQTT Realtime)
+  # ========================================================================
+  oee:
+    type: oee
+    config:
+      brokerUrl: ${MQTT_BROKER_URL}
+      topicBase: ${MQTT_TOPIC_BASE:plc}
 
 # For SAP integration, set environment variables:
 # NODE_ENV=production

@@ -1,20 +1,22 @@
 /**
  * ========================================================================
- * FLEXIBLE DATA MANAGER WITH SAP API SUPPORT
+ * FLEXIBLE DATA MANAGER WITH SAP API + OEE MQTT SUPPORT
  * ========================================================================
  * 
  * Multi-source data management system supporting:
  * - Mock JSON files (Development)
  * - SAP APIs (Production)
- * - Other external APIs
+ * - REST APIs
+ * - OEE MQTT (Realtime)
  * 
  * Developer: Markus Schmeckenbecher
- * Version: 1.3.0
+ * Version: 1.4.0
  * ========================================================================
  */
 
 import fs from "fs";
 import path from "path";
+import mqtt from "mqtt";
 
 // ========================================================================
 // DATA SOURCE INTERFACES
@@ -101,7 +103,7 @@ class MockDataSource extends DataSource {
 }
 
 // ========================================================================
-// SAP API DATA SOURCE (Production) - Enhanced with Parameters
+// SAP API DATA SOURCE (Production)
 // ========================================================================
 
 class SAPDataSource extends DataSource {
@@ -136,8 +138,6 @@ class SAPDataSource extends DataSource {
       }
 
       const data = await response.json();
-      
-      // Transform SAP response to expected format
       const transformedData = this.transformSAPResponse(data, sourceConfig);
       
       console.log(`✅ SAP: Loaded ${sourceConfig.file} (${transformedData.length || Object.keys(transformedData).length} entries)`);
@@ -149,116 +149,37 @@ class SAPDataSource extends DataSource {
     }
   }
 
-  /**
-   * Build SAP URL with Parameters and Filters
-   */
   buildSAPUrl(sourceConfig) {
     let url = `${this.baseUrl}${sourceConfig.endpoint}`;
-    
-    // Build query parameters
     const queryParams = new URLSearchParams();
     
-    // Add static parameters from config
     if (sourceConfig.staticParams) {
       Object.entries(sourceConfig.staticParams).forEach(([key, value]) => {
-        // Replace environment variables in static params
         const resolvedValue = this.resolveEnvironmentVariable(value);
         queryParams.append(key, resolvedValue);
       });
     }
     
-    // Add SAP OData filters
     const filters = this.buildSAPFilters(sourceConfig);
-    if (filters) {
-      queryParams.append('$filter', filters);
-    }
-    
-    // Add SAP OData select fields
-    if (sourceConfig.selectFields) {
-      queryParams.append('$select', sourceConfig.selectFields.join(','));
-    }
-    
-    // Add SAP OData ordering
-    if (sourceConfig.orderBy) {
-      queryParams.append('$orderby', sourceConfig.orderBy);
-    }
-    
-    // Add SAP OData top (limit)
-    if (sourceConfig.top) {
-      queryParams.append('$top', sourceConfig.top.toString());
-    }
-    
-    // Add format parameter for JSON
+    if (filters) queryParams.append('$filter', filters);
+    if (sourceConfig.selectFields) queryParams.append('$select', sourceConfig.selectFields.join(','));
+    if (sourceConfig.orderBy) queryParams.append('$orderby', sourceConfig.orderBy);
+    if (sourceConfig.top) queryParams.append('$top', sourceConfig.top.toString());
     queryParams.append('$format', 'json');
     
     const queryString = queryParams.toString();
     return queryString ? `${url}?${queryString}` : url;
   }
 
-  /**
-   * Build SAP OData Filters
-   */
   buildSAPFilters(sourceConfig) {
     const filters = [];
-    
-    // Plant filter (most important for SAP)
     const plant = sourceConfig.plant || this.defaultPlant;
-    if (plant) {
-      filters.push(`Plant eq '${plant}'`);
-    }
-    
-    // Order Type filter
-    if (sourceConfig.orderType) {
-      filters.push(`OrderType eq '${sourceConfig.orderType}'`);
-    }
-    
-    // MRP Controller filter
-    if (sourceConfig.mrpController) {
-      filters.push(`MRPController eq '${sourceConfig.mrpController}'`);
-    }
-    
-    // Status filters
-    if (sourceConfig.statusFilter) {
-      if (Array.isArray(sourceConfig.statusFilter)) {
-        const statusFilters = sourceConfig.statusFilter.map(status => `Status eq '${status}'`);
-        filters.push(`(${statusFilters.join(' or ')})`);
-      } else {
-        filters.push(`Status eq '${sourceConfig.statusFilter}'`);
-      }
-    }
-    
-    // Date range filters
-    if (sourceConfig.dateFilter) {
-      const { field, from, to } = sourceConfig.dateFilter;
-      if (from) {
-        filters.push(`${field} ge datetime'${from}'`);
-      }
-      if (to) {
-        filters.push(`${field} le datetime'${to}'`);
-      }
-    }
-    
-    // Material filter
-    if (sourceConfig.materialFilter) {
-      if (Array.isArray(sourceConfig.materialFilter)) {
-        const materialFilters = sourceConfig.materialFilter.map(mat => `Material eq '${mat}'`);
-        filters.push(`(${materialFilters.join(' or ')})`);
-      } else {
-        filters.push(`Material eq '${sourceConfig.materialFilter}'`);
-      }
-    }
-    
-    // Custom filters from config
-    if (sourceConfig.customFilters) {
-      filters.push(...sourceConfig.customFilters);
-    }
-    
+    if (plant) filters.push(`Plant eq '${plant}'`);
+    if (sourceConfig.orderType) filters.push(`OrderType eq '${sourceConfig.orderType}'`);
+    if (sourceConfig.mrpController) filters.push(`MRPController eq '${sourceConfig.mrpController}'`);
     return filters.length > 0 ? filters.join(' and ') : null;
   }
 
-  /**
-   * Resolve Environment Variables in Config
-   */
   resolveEnvironmentVariable(value) {
     if (typeof value === 'string' && value.startsWith('${') && value.endsWith('}')) {
       const envVar = value.slice(2, -1);
@@ -268,53 +189,8 @@ class SAPDataSource extends DataSource {
     return value;
   }
 
-  async updateData(sourceConfig, entryId, updates) {
-    try {
-      // For updates, we might need to include plant in the URL
-      const plant = sourceConfig.plant || this.defaultPlant;
-      let url = `${this.baseUrl}${sourceConfig.updateEndpoint || sourceConfig.endpoint}`;
-      
-      // Some SAP services require plant in the key
-      if (sourceConfig.requirePlantInKey && plant) {
-        url += `(OrderId='${entryId}',Plant='${plant}')`;
-      } else {
-        url += `('${entryId}')`;
-      }
-      
-      // Transform updates to SAP format
-      const sapData = this.transformToSAPFormat(updates, sourceConfig);
-      
-      // Add plant to update data if required
-      if (plant && sourceConfig.includePlantInUpdate) {
-        sapData.Plant = plant;
-      }
-      
-      const response = await fetch(url, {
-        method: 'PATCH',
-        headers: {
-          'Authorization': this.getAuthHeader(),
-          'Content-Type': 'application/json',
-          'sap-client': this.client,
-          'X-Requested-With': 'XMLHttpRequest',
-          ...sourceConfig.headers
-        },
-        body: JSON.stringify(sapData),
-        timeout: this.timeout
-      });
-
-      if (!response.ok) {
-        throw new Error(`SAP update error: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      console.log(`💾 SAP: Updated ${entryId} in plant ${plant}`);
-      
-      return this.transformSAPResponse(result, sourceConfig);
-      
-    } catch (error) {
-      console.error(`❌ SAP: Update failed:`, error.message);
-      throw error;
-    }
+  async updateData() {
+    throw new Error("SAPDataSource update not implemented in this version");
   }
 
   getAuthHeader() {
@@ -323,30 +199,12 @@ class SAPDataSource extends DataSource {
   }
 
   transformSAPResponse(sapData, sourceConfig) {
-    // Default transformation - can be overridden per source
     if (sourceConfig.transform && typeof sourceConfig.transform === 'function') {
       return sourceConfig.transform(sapData);
     }
-    
-    // Standard SAP OData response handling
-    if (sapData.d && sapData.d.results) {
-      return sapData.d.results;
-    }
-    
-    if (sapData.value) {
-      return sapData.value;
-    }
-    
+    if (sapData.d && sapData.d.results) return sapData.d.results;
+    if (sapData.value) return sapData.value;
     return sapData;
-  }
-
-  transformToSAPFormat(data, sourceConfig) {
-    // Transform our format to SAP format
-    if (sourceConfig.reverseTransform && typeof sourceConfig.reverseTransform === 'function') {
-      return sourceConfig.reverseTransform(data);
-    }
-    
-    return data;
   }
 
   getName() {
@@ -355,7 +213,7 @@ class SAPDataSource extends DataSource {
 }
 
 // ========================================================================
-// GENERIC REST API DATA SOURCE
+// REST API DATA SOURCE
 // ========================================================================
 
 class RestAPIDataSource extends DataSource {
@@ -391,56 +249,110 @@ class RestAPIDataSource extends DataSource {
     }
   }
 
-  async updateData(sourceConfig, entryId, updates) {
-    try {
-      const url = `${this.baseUrl}${sourceConfig.updateEndpoint || sourceConfig.endpoint}/${entryId}`;
-      
-      const response = await fetch(url, {
-        method: 'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
-          ...this.headers, 
-          ...sourceConfig.headers 
-        },
-        body: JSON.stringify(updates),
-        timeout: this.timeout
-      });
-
-      if (!response.ok) {
-        throw new Error(`REST update error: ${response.status} ${response.statusText}`);
-      }
-
-      const result = await response.json();
-      console.log(`💾 REST: Updated ${entryId}`);
-      return result;
-      
-    } catch (error) {
-      console.error(`❌ REST: Update failed:`, error.message);
-      throw error;
-    }
+  async updateData() {
+    throw new Error("RestAPIDataSource update not implemented in this version");
   }
 
   getName() {
     return "RestAPIDataSource";
   }
 }
+// ========================================================================
+// OEE MQTT DATA SOURCE (Realtime OEE from MQTT)
+// ========================================================================
+
+class OEEDataSource extends DataSource {
+  constructor(config) {
+    super();
+    this.brokerUrl = config.brokerUrl || process.env.MQTT_BROKER_URL;
+    this.topicBase = config.topicBase || process.env.MQTT_TOPIC_BASE || "plc";
+    this.client = null;
+    this.data = new Map(); // line → last payload
+    this.connect();
+  }
+
+  connect() {
+    const options = {};
+
+    // Prüfen, ob User/Pass gesetzt sind
+    if (process.env.MQTT_USER && process.env.MQTT_PASS) {
+      options.username = process.env.MQTT_USER;
+      options.password = process.env.MQTT_PASS;
+      console.log(`🔑 Using MQTT authentication with user "${process.env.MQTT_USER}"`);
+    } else {
+      console.log("🔓 Connecting to MQTT broker without authentication");
+    }
+
+    this.client = mqtt.connect(this.brokerUrl, options);
+
+this.client.on("connect", () => {
+  console.log(`📡 OEEDataSource connected to MQTT: ${this.brokerUrl}`);
+  const topic = `${this.topicBase}/+/status`;
+  console.log(`🔍 Subscribing to MQTT topic: ${topic}`);
+  this.client.subscribe(topic);
+});
+
+this.client.on("message", (topic, message) => {
+  try {
+    const msgStr = message.toString();
+    console.log(`🔍 MQTT DEBUG: Topic=${topic}, Message=${msgStr}`);
+    
+    if (!msgStr.startsWith("{") && !msgStr.startsWith("[")) {
+      console.warn(`⚠️ Ignored non-JSON MQTT message on ${topic}: ${msgStr}`);
+      return;
+    }
+
+    const payload = JSON.parse(msgStr);
+    console.log(`🔍 MQTT DEBUG: Parsed payload=`, payload);
+
+    if (payload && payload.line && payload.metrics) {
+      this.data.set(payload.line, payload);
+      console.log(`📊 OEE update received for ${payload.line}, total entries: ${this.data.size}`);
+    } else {
+      console.warn(`⚠️ Ignored invalid OEE payload on ${topic}:`, payload);
+    }
+
+  } catch (err) {
+    console.error(`❌ OEEDataSource parse error on ${topic}:`, err.message);
+  }
+});
+
+    this.client.on("error", (err) => {
+      console.error("❌ OEEDataSource MQTT error:", err.message);
+    });
+  }
+
+async fetchData() {
+  console.log(`🔍 OEE fetchData called, data.size=${this.data.size}`);
+  const result = Array.from(this.data.values());
+  console.log(`🔍 OEE fetchData returning:`, result);
+  return result;
+}
+
+  async updateData() {
+    throw new Error("OEEDataSource is read-only");
+  }
+
+  getName() {
+    return "OEEDataSource";
+  }
+}
+
 
 // ========================================================================
 // DATA SOURCE FACTORY
 // ========================================================================
-
 class DataSourceFactory {
   static createDataSource(type, config = {}) {
     switch (type.toLowerCase()) {
       case 'mock':
         return new MockDataSource(config.basePath);
-      
       case 'sap':
         return new SAPDataSource(config);
-      
       case 'rest':
         return new RestAPIDataSource(config);
-      
+      case 'oee': // 🆕
+        return new OEEDataSource(config);
       default:
         throw new Error(`Unknown data source type: ${type}`);
     }
@@ -461,14 +373,9 @@ export class DataManager {
     console.log("📊 Enhanced DataManager initialized");
   }
 
-  /**
-   * Load Data Source Configuration
-   * Defines which data source to use for each data type
-   */
   async loadDataSourceConfig() {
     try {
       const configFile = path.join(process.cwd(), this.configPath);
-      
       if (!fs.existsSync(configFile)) {
         console.log("📋 No data source config found, using defaults");
         this.setDefaultConfig();
@@ -478,10 +385,8 @@ export class DataManager {
       const yaml = await import('js-yaml');
       const config = yaml.load(fs.readFileSync(configFile, 'utf8'));
       
-      // Initialize data sources based on config
       for (const [dataType, sourceConfig] of Object.entries(config.dataSources)) {
         this.sourceConfigs.set(dataType, sourceConfig);
-        
         if (!this.dataSources.has(sourceConfig.type)) {
           const dataSource = DataSourceFactory.createDataSource(sourceConfig.type, sourceConfig.config);
           this.dataSources.set(sourceConfig.type, dataSource);
@@ -498,9 +403,7 @@ export class DataManager {
   }
 
   setDefaultConfig() {
-    // Default to mock data for all sources
     const defaultSources = ['orders', 'issues', 'batches', 'compliance'];
-    
     defaultSources.forEach(source => {
       this.sourceConfigs.set(source, {
         type: 'mock',
@@ -509,117 +412,107 @@ export class DataManager {
       });
     });
 
+    // 🆕 Add OEE MQTT as default
+    this.sourceConfigs.set("oee", {
+      type: "oee",
+      config: {
+        brokerUrl: process.env.MQTT_BROKER_URL,
+        topicBase: process.env.MQTT_TOPIC_BASE || "plc"
+      }
+    });
+
     const mockSource = DataSourceFactory.createDataSource('mock');
     this.dataSources.set('mock', mockSource);
+
+    const oeeSource = DataSourceFactory.createDataSource('oee', {
+      brokerUrl: process.env.MQTT_BROKER_URL,
+      topicBase: process.env.MQTT_TOPIC_BASE || "plc"
+    });
+    this.dataSources.set('oee', oeeSource);
   }
 
-  /**
-   * Load All Data from Configured Sources
-   */
   async loadAllData() {
     console.log("🔄 Loading data from configured sources...");
-    
-    for (const [dataType, sourceConfig] of this.sourceConfigs.entries()) {
+    for (const [dataType] of this.sourceConfigs.entries()) {
       try {
         await this.loadDataType(dataType);
       } catch (error) {
         console.error(`❌ Failed to load ${dataType}:`, error.message);
       }
     }
-    
     console.log(`🎯 Data loading completed. Cached: ${Array.from(this.dataCache.keys()).join(', ')}`);
   }
 
-  /**
-   * Load Specific Data Type
-   */
   async loadDataType(dataType) {
     const sourceConfig = this.sourceConfigs.get(dataType);
-    if (!sourceConfig) {
-      throw new Error(`No source configuration for ${dataType}`);
-    }
-
+    if (!sourceConfig) throw new Error(`No source configuration for ${dataType}`);
     const dataSource = this.dataSources.get(sourceConfig.type);
-    if (!dataSource) {
-      throw new Error(`No data source available for type ${sourceConfig.type}`);
-    }
-
+    if (!dataSource) throw new Error(`No data source available for type ${sourceConfig.type}`);
     const data = await dataSource.fetchData(sourceConfig);
     if (data !== null) {
       this.dataCache.set(dataType, data);
       console.log(`📦 Cached ${dataType} from ${dataSource.getName()}`);
     }
-    
     return data;
   }
 
-  /**
-   * Get Mock Data for Agent (Enhanced)
-   * Supports both cached and live data fetching
-   */
-  getMockDataForAgent(dataSource, forceRefresh = false) {
-    if (!dataSource) return "No data source configured";
-    
-    try {
-      if (Array.isArray(dataSource)) {
-        // Multiple data sources
-        const allData = {};
-        dataSource.forEach(source => {
-          const fileName = this.extractFileName(source);
-          const data = this.getCachedData(fileName, forceRefresh);
-          allData[fileName] = data;
-        });
-        return JSON.stringify(allData, null, 2);
-      } else {
-        // Single data source
-        const fileName = this.extractFileName(dataSource);
-        const data = this.getCachedData(fileName, forceRefresh);
-        return JSON.stringify(data, null, 2);
-      }
-    } catch (error) {
-      console.error('❌ Error preparing data for agent:', error);
-      return `Error preparing data: ${error.message}`;
-    }
+async getCachedData(dataType, forceRefresh = false) {
+  if (forceRefresh || !this.dataCache.has(dataType)) {
+    await this.loadDataType(dataType);
   }
+  return this.dataCache.get(dataType) || null;
+}
 
-  getCachedData(dataType, forceRefresh = false) {
-    if (forceRefresh || !this.dataCache.has(dataType)) {
-      // Trigger async reload but return cached data if available
-      this.loadDataType(dataType).catch(error => 
-        console.error(`Background reload failed for ${dataType}:`, error)
-      );
-    }
-    
-    return this.dataCache.get(dataType) || null;
-  }
 
-  /**
-   * Update Data Entry (Enhanced)
-   * Routes to appropriate data source for updates
-   */
   async updateDataEntry(dataType, entryId, updates) {
     const sourceConfig = this.sourceConfigs.get(dataType);
-    if (!sourceConfig) {
-      throw new Error(`No source configuration for ${dataType}`);
-    }
-
+    if (!sourceConfig) throw new Error(`No source configuration for ${dataType}`);
     const dataSource = this.dataSources.get(sourceConfig.type);
-    if (!dataSource) {
-      throw new Error(`No data source available for type ${sourceConfig.type}`);
-    }
-
+    if (!dataSource) throw new Error(`No data source available for type ${sourceConfig.type}`);
     try {
       const result = await dataSource.updateData(sourceConfig, entryId, updates);
-      
-      // Update cache
       await this.loadDataType(dataType);
-      
       return result;
     } catch (error) {
       console.error(`❌ Error updating ${dataType}:`, error);
       throw error;
     }
   }
+
+async getOrdersWithOEE() {
+  const orders = (await this.getCachedData("orders", true)) || [];
+  const oeeData = (await this.getCachedData("oee", true)) || [];
+
+  if (!Array.isArray(orders)) {
+    console.warn("⚠️ Orders data is not an array, normalizing...");
+    return [];
+  }  
+
+  return orders.map(order => {
+    // Falls mehrere Operationen → nimm die erste mit Workcenter
+    const opWithWorkCenter = order.operations?.find(op => op.workCenter) || null;
+    const workCenter = opWithWorkCenter ? opWithWorkCenter.workCenter : "UNKNOWN";
+
+    const oeeMatch = oeeData.find(o => o.line === workCenter);
+
+    return {
+      ...order,
+      workCenter,
+      oee: oeeMatch || { status: "no-data", metrics: {} }
+    };
+  });
+}
+
+getRealtimeOEEData() {
+  const oeeSource = this.dataSources.get('oee');
+  if (oeeSource && oeeSource.data) {
+    const data = Array.from(oeeSource.data.values());
+    console.log(`📊 Real-time OEE: ${data.length} production lines`);
+    return data;
+  }
+  console.warn("⚠️ OEE DataSource not available for real-time access");
+  return [];
+}
 
   extractFileName(source) {
     return path.basename(source, '.json');
@@ -674,10 +567,9 @@ export class DataManager {
     };
   }
 
-  validateDataIntegrity(requiredFiles = ['orders', 'issues', 'batches', 'compliance']) {
+  validateDataIntegrity(requiredFiles = ['orders', 'issues', 'batches', 'compliance', 'oee']) {
     const missing = requiredFiles.filter(file => !this.dataCache.has(file));
     const isValid = missing.length === 0;
-    
     return {
       isValid,
       missing,
@@ -688,6 +580,35 @@ export class DataManager {
       timestamp: new Date().toISOString()
     };
   }
+
+/**
+ * Compatibility helper for agents.yaml
+ * Returns all data for the configured agent sources
+ */
+getMockDataForAgent(agentConfig) {
+  const results = {};
+
+  if (!agentConfig?.dataSource) {
+    return results;
+  }
+
+  agentConfig.dataSource.forEach(src => {
+    try {
+      // Datei-Namen aus dem Pfad ziehen (z.B. "mock-data/orders.json" → "orders")
+      const key = this.extractFileName(src.replace(/^mock-data\//, ''));
+      const data = this.getCachedData(key);
+      if (data) {
+        results[key] = data;
+      }
+    } catch (err) {
+      console.warn(`⚠️ Could not load mock data for ${src}:`, err.message);
+    }
+  });
+
+  return results;
+}
+
+
 }
 
 export default DataManager;

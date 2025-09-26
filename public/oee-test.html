@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>OEE MQTT Browser Test</title>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h1 { color: #0066cc; }
+    pre {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 5px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .line {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #fafafa;
+    }
+    .line h2 { margin-top: 0; }
+  </style>
+</head>
+<body>
+  <h1>📊 OEE Live MQTT Monitor</h1>
+  <div id="lines"></div>
+
+  <script>
+    // Verbindung mit HiveMQ über WebSockets (TLS)
+    const client = mqtt.connect("wss://broker.hivemq.com:8884/mqtt");
+
+    const linesDiv = document.getElementById("lines");
+    const lineData = {};
+
+    client.on("connect", () => {
+      console.log("✅ Connected to HiveMQ via WebSockets");
+      client.subscribe("plc/+/status", (err) => {
+        if (!err) {
+          console.log("📡 Subscribed to plc/+/status");
+        }
+      });
+    });
+
+    client.on("message", (topic, message) => {
+      try {
+        const raw = message.toString();
+
+        // Nur JSON verarbeiten
+        if (!raw.startsWith("{")) {
+          console.warn("⚠️ Ignored non-JSON message:", raw);
+          return;
+        }
+
+        const payload = JSON.parse(raw);
+        if (payload.line) {
+          lineData[payload.line] = payload;
+          renderLines();
+        }
+      } catch (err) {
+        console.error("❌ Parse error:", err.message);
+      }
+    });
+
+    function renderLines() {
+      linesDiv.innerHTML = "";
+      Object.values(lineData).forEach((line) => {
+        const div = document.createElement("div");
+        div.className = "line";
+        div.innerHTML = `
+          <h2>${line.line} - Status: ${line.status}</h2>
+          <p><b>Batch:</b> ${line.batchId}</p>
+          <p><b>OEE:</b> ${line.metrics.oee}%</p>
+          <pre>${JSON.stringify(line, null, 2)}</pre>
+        `;
+        linesDiv.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>

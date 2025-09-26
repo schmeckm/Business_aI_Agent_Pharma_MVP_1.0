@@ -150,10 +150,11 @@ async function updateHealthIndicator() {
     let response = await fetch('/api/system/health');
     const health = await response.json();
 
-    if (health.status === 'ok') {
+    // Fix: Sowohl 'ok' als auch 'healthy' als gesund bewerten
+    if (health.status === 'ok' || health.status === 'healthy') {
       healthDot.className = 'health-dot health-green';
       healthText.textContent = 'System OK';
-    } else if (health.status === 'error') {
+    } else if (health.status === 'error' || health.status === 'unhealthy') {
       healthDot.className = 'health-dot health-red';
       healthText.textContent = 'Error';
     } else {
