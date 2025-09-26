@@ -3,288 +3,135 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agent Configuration Editor - Pharmaceutical Manufacturing System</title>
+  <title>YAML Agent Configuration Editor</title>
+
+  <!-- CodeMirror CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/dracula.min.css">
+
+  <!-- Custom CSS -->
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Editor Styling -->
   <style>
-    body { 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-      margin: 0; 
-      padding: 20px; 
-      background: #f5f5f5; 
-    }
-    .container { 
-      max-width: 1400px; 
-      margin: 0 auto; 
-      background: white; 
-      border-radius: 8px; 
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
-      overflow: hidden; 
-    }
-    .header { 
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
-      color: white; 
-      padding: 20px; 
-      text-align: center; 
-    }
-    .header h1 { 
-      margin: 0; 
-      font-size: 24px; 
-    }
-    .header p { 
-      margin: 5px 0 0 0; 
-      opacity: 0.9; 
-    }
-    .main-content { 
-      display: flex; 
-      height: 80vh; 
-    }
-    .sidebar { 
-      width: 300px; 
-      background: #f8f9fa; 
-      border-right: 1px solid #ddd; 
-      padding: 20px; 
-      overflow-y: auto; 
-    }
-    .editor-area { 
-      flex: 1; 
-      padding: 20px; 
-      display: flex; 
-      flex-direction: column; 
-    }
-    .agent-list { 
-      list-style: none; 
-      padding: 0; 
-      margin: 0; 
-    }
-    .agent-item { 
-      background: white; 
-      margin-bottom: 8px; 
-      padding: 12px; 
-      border-radius: 6px; 
-      border: 1px solid #ddd; 
-      cursor: pointer; 
-      transition: all 0.2s; 
-    }
-    .agent-item:hover { 
-      background: #e3f2fd; 
-      border-color: #2196f3; 
-    }
-    .agent-item.active { 
-      background: #1976d2; 
-      color: white; 
-      border-color: #1976d2; 
-    }
-    .agent-name { 
-      font-weight: bold; 
-      margin-bottom: 4px; 
-    }
-    .agent-trigger { 
-      font-size: 12px; 
-      color: #666; 
-      font-family: monospace; 
-    }
-    .agent-item.active .agent-trigger { 
-      color: #bbdefb; 
-    }
-    .oee-badge { 
-      background: #4caf50; 
-      color: white; 
-      font-size: 10px; 
-      padding: 2px 6px; 
-      border-radius: 10px; 
-      margin-left: 8px; 
-    }
-    .a2a-badge { 
-      background: #ff9800; 
-      color: white; 
-      font-size: 10px; 
-      padding: 2px 6px; 
-      border-radius: 10px; 
-      margin-left: 4px; 
-    }
-    .editor-header { 
-      display: flex; 
-      justify-content: space-between; 
-      align-items: center; 
-      margin-bottom: 20px; 
-      padding-bottom: 10px; 
-      border-bottom: 1px solid #ddd; 
-    }
-    .editor-title { 
-      font-size: 18px; 
-      font-weight: bold; 
-      color: #333; 
-    }
-    .editor-actions { 
-      display: flex; 
-      gap: 10px; 
-    }
-    .btn { 
-      padding: 8px 16px; 
-      border: none; 
-      border-radius: 4px; 
-      cursor: pointer; 
-      font-size: 14px; 
-      transition: background-color 0.2s; 
-    }
-    .btn-primary { 
-      background: #2196f3; 
-      color: white; 
-    }
-    .btn-primary:hover { 
-      background: #1976d2; 
-    }
-    .btn-success { 
-      background: #4caf50; 
-      color: white; 
-    }
-    .btn-success:hover { 
-      background: #388e3c; 
-    }
-    .btn-warning { 
-      background: #ff9800; 
-      color: white; 
-    }
-    .btn-warning:hover { 
-      background: #f57c00; 
-    }
-    .yaml-editor { 
-      flex: 1; 
-      border: 1px solid #ddd; 
-      border-radius: 4px; 
-      font-family: 'Courier New', monospace; 
-      font-size: 13px; 
-      padding: 15px; 
-      background: #fafafa; 
-      resize: none; 
-      line-height: 1.4; 
-    }
-    .status-bar { 
-      background: #f8f9fa; 
-      padding: 10px 20px; 
-      border-top: 1px solid #ddd; 
-      font-size: 12px; 
-      color: #666; 
-      display: flex; 
-      justify-content: space-between; 
-    }
-    .status-message { 
-      display: flex; 
-      align-items: center; 
-      gap: 8px; 
-    }
-    .status-success { 
-      color: #4caf50; 
-    }
-    .status-error { 
-      color: #f44336; 
-    }
-    .loading { 
-      display: inline-block; 
-      width: 12px; 
-      height: 12px; 
-      border: 2px solid #ddd; 
-      border-top: 2px solid #2196f3; 
-      border-radius: 50%; 
-      animation: spin 1s linear infinite; 
-    }
-    @keyframes spin { 
-      0% { transform: rotate(0deg); } 
-      100% { transform: rotate(360deg); } 
-    }
-    .nav-back { 
-      position: absolute; 
-      top: 20px; 
-      left: 20px; 
-      background: rgba(255,255,255,0.2); 
-      color: white; 
-      padding: 8px 12px; 
-      text-decoration: none; 
-      border-radius: 4px; 
-      transition: background-color 0.2s; 
-    }
-    .nav-back:hover { 
-      background: rgba(255,255,255,0.3); 
-      color: white; 
+    .CodeMirror {
+      height: 600px;     /* Editor height */
+      font-size: 14px;   /* Font size */
     }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <a href="/" class="nav-back">← Back to Main Dashboard</a>
+      <a href="/" class="nav-back">← Back to Dashboard</a>
       <h1>Agent Configuration Editor</h1>
-      <p>View and edit pharmaceutical manufacturing agents (agents.yaml)</p>
+      <p>Edit YAML configuration for pharmaceutical agents</p>
     </div>
-    
+
     <div class="main-content">
+      <!-- Sidebar -->
       <div class="sidebar">
         <h3>Available Agents</h3>
+        <div class="agent-count" id="agentCount">
+          <div class="loading"></div> Loading agents...
+        </div>
+
+        <div class="view-toggle">
+          <button class="toggle-btn active" onclick="setView('individual')">Individual</button>
+          <button class="toggle-btn" onclick="setView('full')">Full</button>
+        </div>
+
         <ul class="agent-list" id="agentList">
           <li class="agent-item">
             <div class="loading"></div> Loading agents...
           </li>
         </ul>
       </div>
-      
+
+      <!-- Editor Area -->
       <div class="editor-area">
         <div class="editor-header">
           <div class="editor-title" id="editorTitle">Select an agent to edit</div>
           <div class="editor-actions">
-            <button class="btn btn-warning" onclick="reloadAgents()" id="reloadBtn">Reload Agents</button>
-            <button class="btn btn-primary" onclick="loadFullYaml()" id="fullYamlBtn">View Full YAML</button>
-            <button class="btn btn-success" onclick="validateYaml()" id="validateBtn" disabled>Validate</button>
+            <button class="btn btn-warning" onclick="reloadAgents()" id="reloadBtn">Reload</button>
+            <button class="btn btn-success" onclick="validateYaml()" id="validateBtn">Validate</button>
+            <button class="btn btn-primary" onclick="saveChanges()" id="saveBtn" disabled>Save</button>
           </div>
         </div>
-        
-        <textarea class="yaml-editor" id="yamlEditor" placeholder="Select an agent from the sidebar to view and edit its configuration..."></textarea>
+
+        <!-- CodeMirror replaces the textarea -->
+        <textarea id="yamlEditor"></textarea>
       </div>
     </div>
-    
+
     <div class="status-bar">
       <div class="status-message" id="statusMessage">
-        Ready - Select an agent to begin editing
+        Ready - Select an agent to edit
       </div>
       <div id="editorInfo">
-        Read-only mode | Use API to save changes
+        Using CodeMirror | YAML Syntax Highlighting
       </div>
     </div>
   </div>
 
+  <!-- CodeMirror Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/yaml/yaml.min.js"></script>
+
   <script>
+    let editor;
     let currentAgent = null;
     let allAgents = [];
+    let currentView = 'individual';
 
-    // Load agents on page load
-    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize editor
+    document.addEventListener('DOMContentLoaded', function () {
+      editor = CodeMirror.fromTextArea(document.getElementById("yamlEditor"), {
+        mode: "yaml",
+        theme: "dracula",   // Dark theme
+        lineNumbers: true,
+        indentUnit: 2,
+        tabSize: 2,
+        lineWrapping: true,
+        matchBrackets: true,
+        autoCloseBrackets: true
+      });
+
+      editor.on("change", () => {
+        document.getElementById('saveBtn').disabled = false;
+      });
+
       loadAgents();
     });
 
+    // ===============================
+    // LOAD AGENTS & LIST
+    // ===============================
     async function loadAgents() {
       try {
         setStatus('Loading agents...', 'loading');
-        
         const response = await fetch('/api/agents');
         const data = await response.json();
-        
+
         allAgents = data.agents || [];
         displayAgentList(allAgents);
-        
-        setStatus(`Loaded ${allAgents.length} agents successfully`, 'success');
+        updateAgentCount(allAgents.length);
+
+        setStatus(`${allAgents.length} agents loaded successfully`, 'success');
       } catch (error) {
-        console.error('Failed to load agents:', error);
-        setStatus('Failed to load agents: ' + error.message, 'error');
+        console.error('Error loading agents:', error);
+        setStatus('Error loading agents: ' + error.message, 'error');
       }
     }
 
     function displayAgentList(agents) {
       const agentList = document.getElementById('agentList');
-      
+
       if (agents.length === 0) {
         agentList.innerHTML = '<li class="agent-item">No agents found</li>';
         return;
       }
-      
+
       agentList.innerHTML = agents.map(agent => `
         <li class="agent-item" onclick="selectAgent('${agent.id}')">
           <div class="agent-name">
@@ -297,37 +144,36 @@
       `).join('');
     }
 
+    function updateAgentCount(count) {
+      document.getElementById('agentCount').innerHTML = `📊 ${count} agents found`;
+    }
+
+    // ===============================
+    // SELECT AGENT
+    // ===============================
     function selectAgent(agentId) {
-      // Remove active class from all items
       document.querySelectorAll('.agent-item').forEach(item => {
         item.classList.remove('active');
       });
-      
-      // Add active class to selected item
       event.target.closest('.agent-item').classList.add('active');
-      
+
       const agent = allAgents.find(a => a.id === agentId);
       if (agent) {
         currentAgent = agent;
-        displayAgentYaml(agent);
-        document.getElementById('validateBtn').disabled = false;
+        if (currentView === 'individual') {
+          displayAgentYaml(agent);
+        } else {
+          displayFullYaml();
+        }
+        document.getElementById('saveBtn').disabled = true;
       }
     }
 
     function displayAgentYaml(agent) {
-      const editor = document.getElementById('yamlEditor');
       const title = document.getElementById('editorTitle');
-      
-      title.textContent = `${agent.name || agent.id} Configuration`;
-      
-      // Convert agent object to YAML-like format for editing
-      const yamlContent = `# Agent: ${agent.id}
-# Name: ${agent.name || 'Not specified'}
-# Type: ${agent.type || 'Not specified'}
-# OEE Enabled: ${agent.oeeEnabled || false}
-# A2A Capabilities: ${agent.a2aCapabilities ? agent.a2aCapabilities.length : 0}
+      title.textContent = `Agent: ${agent.name || agent.id}`;
 
-id: "${agent.id}"
+      const agentYaml = `id: "${agent.id}"
 name: "${agent.name || ''}"
 description: "${agent.description || ''}"
 trigger: "${agent.trigger || ''}"
@@ -335,94 +181,96 @@ type: "${agent.type || 'data-driven'}"
 oeeEnabled: ${agent.oeeEnabled || false}
 oeeEnhanced: ${agent.oeeEnhanced || false}
 
-${agent.dataSource ? `dataSource:
-${agent.dataSource.map(ds => `  - "${ds}"`).join('\n')}` : '# No dataSource configured'}
+${agent.dataSource ? `dataSource:\n${agent.dataSource.map(ds => `  - "${ds}"`).join('\n')}` : '# No dataSource configured'}
 
-${agent.a2aCapabilities && agent.a2aCapabilities.length > 0 ? `a2aCapabilities:
-${agent.a2aCapabilities.map(cap => `  - "${cap}"`).join('\n')}` : '# No A2A capabilities'}
+${agent.a2aCapabilities && agent.a2aCapabilities.length > 0 ? `a2aCapabilities:\n${agent.a2aCapabilities.map(cap => `  - "${cap}"`).join('\n')}` : '# No A2A capabilities'}
 
-${agent.events ? `events:
-  publishes:
-${agent.events.publishes ? agent.events.publishes.map(p => `    - "${p}"`).join('\n') : '    # No events published'}
-  subscribes:
-${agent.events.subscribes ? agent.events.subscribes.map(s => `    - "${s}"`).join('\n') : '    # No events subscribed'}` : '# No events configured'}
+${agent.events ? `events:\n  publishes:\n${agent.events.publishes ? agent.events.publishes.map(p => `    - "${p}"`).join('\n') : '    # No events published'}\n  subscribes:\n${agent.events.subscribes ? agent.events.subscribes.map(s => `    - "${s}"`).join('\n') : '    # No events subscribed'}` : '# No events configured'}
 
-# Prompt Template (truncated for display)
 promptTemplate: |
-  ${agent.promptTemplate ? agent.promptTemplate.substring(0, 200) + '...' : 'No prompt template defined'}`;
-
-      editor.value = yamlContent;
-      setStatus(`Displaying configuration for ${agent.id}`, 'success');
+  ${agent.promptTemplate ? agent.promptTemplate.substring(0, 200) + '...' : 'No prompt template defined'}
+`;
+      editor.setValue(agentYaml);
+      setStatus(`Configuration for ${agent.id} displayed`, 'success');
     }
 
-    async function loadFullYaml() {
+    async function displayFullYaml() {
       try {
         setStatus('Loading full agents.yaml...', 'loading');
-        
-        // Try to load the raw YAML file
         const response = await fetch('/agents.yaml');
         if (response.ok) {
           const yamlContent = await response.text();
-          document.getElementById('yamlEditor').value = yamlContent;
-          document.getElementById('editorTitle').textContent = 'Full agents.yaml Configuration';
+          const title = document.getElementById('editorTitle');
+          title.textContent = 'Full agents.yaml configuration';
+          editor.setValue(yamlContent);
           setStatus('Full YAML loaded successfully', 'success');
         } else {
-          setStatus('Full YAML file not available via HTTP', 'error');
+          setStatus('Full YAML file not available', 'error');
         }
       } catch (error) {
-        setStatus('Could not load full YAML: ' + error.message, 'error');
+        setStatus('Failed to load full YAML: ' + error.message, 'error');
       }
+    }
+
+    function setView(view) {
+      document.querySelectorAll('.toggle-btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      currentView = view;
+
+      if (currentAgent) {
+        if (view === 'individual') displayAgentYaml(currentAgent);
+        else displayFullYaml();
+      }
+    }
+
+    // ===============================
+    // YAML VALIDATION & SAVE
+    // ===============================
+    function validateYaml() {
+      const content = editor.getValue();
+      if (!content.trim()) {
+        setStatus('⚠️ No content to validate', 'error');
+        return;
+      }
+      try {
+        if (content.includes('\t')) {
+          setStatus('❌ Error: Tabs found – use spaces only!', 'error');
+          return;
+        }
+        setStatus('✅ YAML appears syntactically correct', 'success');
+      } catch (err) {
+        setStatus(`❌ Validation error: ${err.message}`, 'error');
+      }
+    }
+
+    function saveChanges() {
+      const content = editor.getValue();
+      console.log("💾 Saving:", content);
+      setStatus('💾 Changes saved (Demo)', 'success');
+      document.getElementById('saveBtn').disabled = true;
     }
 
     async function reloadAgents() {
       try {
-        setStatus('Reloading agents from server...', 'loading');
-        
+        setStatus('Reloading agents...', 'loading');
         const response = await fetch('/api/agents/reload', { method: 'POST' });
         const result = await response.json();
-        
         if (result.status === 'success') {
           await loadAgents();
           setStatus('Agents reloaded successfully', 'success');
         } else {
-          setStatus('Failed to reload agents: ' + result.message, 'error');
+          setStatus('Reload failed: ' + result.message, 'error');
         }
-      } catch (error) {
-        setStatus('Reload failed: ' + error.message, 'error');
+      } catch (err) {
+        setStatus('❌ Error reloading: ' + err.message, 'error');
       }
     }
 
-    function validateYaml() {
-      const editor = document.getElementById('yamlEditor');
-      const content = editor.value;
-      
-      try {
-        // Basic YAML syntax validation
-        const lines = content.split('\n');
-        let errors = [];
-        
-        lines.forEach((line, index) => {
-          if (line.trim() && !line.startsWith('#') && !line.includes(':') && !line.startsWith(' ') && !line.startsWith('-')) {
-            if (!line.endsWith(':')) {
-              errors.push(`Line ${index + 1}: Possible syntax error`);
-            }
-          }
-        });
-        
-        if (errors.length === 0) {
-          setStatus('YAML syntax appears valid', 'success');
-        } else {
-          setStatus('Potential YAML issues found: ' + errors.join(', '), 'error');
-        }
-      } catch (error) {
-        setStatus('YAML validation error: ' + error.message, 'error');
-      }
-    }
-
+    // ===============================
+    // STATUS DISPLAY
+    // ===============================
     function setStatus(message, type) {
       const statusElement = document.getElementById('statusMessage');
-      statusElement.innerHTML = '';
-      
       if (type === 'loading') {
         statusElement.innerHTML = '<div class="loading"></div> ' + message;
       } else {

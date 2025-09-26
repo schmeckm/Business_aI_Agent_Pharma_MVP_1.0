@@ -687,28 +687,34 @@ function createAuditRoutes(auditLogger) {
    * GET /api/audit
    * Returns audit log entries with filtering options
    */
-  router.get("/", (req, res) => {
-    try {
-      const limit = parseInt(req.query.limit) || 100;
-      const type = req.query.type;
-      const since = req.query.since;
-      
-      const auditEntries = auditLogger.getAuditEntries({
-        limit,
-        type,
-        since
-      });
-      
-      res.json({
-        entries: auditEntries,
-        count: auditEntries.length,
-        filters: { limit, type, since },
-        timestamp: new Date().toISOString()
-      });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  });
+router.get("/", (req, res) => {
+  try {
+    const limit = req.query.limit ? parseInt(req.query.limit) : 100;
+    const filter = {};
+
+    if (req.query.type) filter.type = req.query.type;
+    if (req.query.agent) filter.agent = req.query.agent;
+    if (req.query.startDate) filter.startDate = req.query.startDate;
+    if (req.query.endDate) filter.endDate = req.query.endDate;
+
+    // 👉 Nutze die Methode, die dein AuditLogger wirklich hat
+    const auditLog = auditLogger.getAuditLog(
+      Object.keys(filter).length > 0 ? filter : null,
+      limit
+    );
+
+    res.json({
+      entries: auditLog,
+      count: auditLog.length,
+      filters: { ...filter, limit },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error("❌ Audit route error:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 
   /**
    * GET /api/audit/summary

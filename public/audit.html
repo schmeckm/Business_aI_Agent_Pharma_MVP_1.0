@@ -5,86 +5,187 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Audit Log Viewer</title>
   <style>
+    /* Global Styles from the reference CSS */
     body {
-      font-family: Arial, sans-serif;
-      background: #f8f9fa;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background: #f5f7fa; /* Light gray background */
       margin: 0;
+      padding: 0;
+      color: #1f2937;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 20px auto; /* Added margin for centering */
+      background: #ffffff; /* White container background */
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      overflow: hidden;
+      padding-bottom: 20px; /* Add some padding at the bottom */
+    }
+
+    /* Header Styles from the reference CSS */
+    .header {
+      background: linear-gradient(135deg, #0a2540 0%, #2563eb 100%);
+      color: white;
       padding: 20px;
+      text-align: center;
+      position: relative;
+      /* Adjusted to fit the audit log page header layout */
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: left;
     }
-    h1 {
-      color: #003366;
-      margin-bottom: 20px;
+
+    .header-content {
+        flex-grow: 1;
+        text-align: center;
+        margin-left: -120px; /* Offset the nav-back to center the title better */
     }
+
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .nav-back {
+      /* Position adjusted for the flex header */
+      background: rgba(255,255,255,0.2);
+      color: white;
+      padding: 8px 12px;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.2s;
+    }
+
+    .nav-back:hover {
+      background: rgba(255,255,255,0.3);
+      color: white;
+    }
+    
+    /* Audit Table Specific Styles */
+    .content-area {
+        padding: 20px;
+    }
+
     table {
       border-collapse: collapse;
       width: 100%;
       background: white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 0 0 rgba(0,0,0,0.1); /* Remove external shadow as container has it */
+      margin-top: 0;
+      border-radius: 0;
     }
     th, td {
-      padding: 10px;
-      border: 1px solid #ccc;
+      padding: 12px;
+      border: 1px solid #d1d5db; /* Light gray border */
       text-align: left;
       vertical-align: top;
+      color: #1f2937;
     }
     th {
-      background: #003366;
-      color: white;
+      background: #f3f4f6; /* Very light gray header background */
+      color: #374151; /* Darker text for header */
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 13px;
     }
     tr:nth-child(even) {
-      background: #f2f2f2;
+      background: #f9fafb; /* Slight alternate row color */
     }
+
+    /* Cell Content Styles */
     .timestamp {
-      font-size: 12px;
-      color: #666;
+      font-size: 11px;
+      color: #6b7280; /* Gray color for timestamp */
     }
     .response {
       white-space: pre-wrap;
+      font-family: monospace;
+      font-size: 0.9em;
+      background: #fcfdfe; /* Slightly different background for code/details area */
     }
+
+    /* Status Colors based on the reference .status-success/.status-error */
     .status-success {
-      color: green;
-      font-weight: bold;
+      color: #059669; /* Green from .btn-success */
+      font-weight: 600;
     }
     .status-error {
-      color: red;
-      font-weight: bold;
+      color: #dc2626; /* Red from .status-error */
+      font-weight: 600;
+    }
+    .status-info {
+      color: #2563eb; /* Blue from .status-info */
+      font-weight: 600;
+    }
+    .status-warning {
+        color: #f59e0b; /* Orange from .btn-warning */
+        font-weight: 600;
+    }
+    .status-default {
+        color: #6b7280; /* Gray */
     }
   </style>
 </head>
 <body>
-  <h1>Audit Log (Part 11 / ALCOA+)</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Timestamp</th>
-        <th>User</th>
-        <th>Command</th>
-        <th>AI Response</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody id="log-rows">
-      <tr><td colspan="5">Loading audit log...</td></tr>
-    </tbody>
-  </table>
+  <div class="container">
+    <div class="header">
+      <a href="/" class="nav-back">← Back to Dashboard</a>
+      <div class="header-content">
+        <h1>Audit Log (Part 11 / ALCOA+)</h1>
+      </div>
+      <div style="width: 120px;"></div> 
+    </div>
+
+    <div class="content-area">
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>User</th>
+            <th>Command/Event</th>
+            <th>AI Response / Details</th>
+            <th>Status/Type</th>
+          </tr>
+        </thead>
+        <tbody id="log-rows">
+          <tr><td colspan="5">Loading audit log...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 <script>
   async function loadAuditLog() {
     try {
-      const res = await fetch("/audit");
+      const res = await fetch("/api/audit");
       const data = await res.json();
 
       const tbody = document.getElementById("log-rows");
       tbody.innerHTML = "";
 
-      if (!data.entries || data.entries.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='5'>No audit entries found.</td></tr>";
+      // Normalize nested structures
+      let entries = [];
+      if (Array.isArray(data)) {
+        entries = data;
+      } else if (Array.isArray(data.entries)) {
+        entries = data.entries;
+      } else if (data.entries && Array.isArray(data.entries.entries)) {
+        entries = data.entries.entries;
+      }
+
+      if (entries.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='5' style='text-align: center; color: #6b7280; padding: 30px;'>No audit entries found.</td></tr>";
         return;
       }
 
-      data.entries.forEach(entry => {
+      entries.forEach(entry => {
         const tr = document.createElement("tr");
 
-        // Timestamp in Browser-Zeit
+        // Timestamp
         const tdTime = document.createElement("td");
         if (entry.timestamp) {
           const localTime = new Date(entry.timestamp).toLocaleString(undefined, {
@@ -98,27 +199,42 @@
           });
           tdTime.innerHTML = `<div class="timestamp">${localTime}</div>`;
         } else {
-          tdTime.innerHTML = "-";
+          tdTime.innerHTML = "<div class='timestamp'>-</div>";
         }
 
         // User
         const tdUser = document.createElement("td");
-        tdUser.textContent = entry.user || entry.userName || entry.userId || "unknown";
+        tdUser.textContent = entry.user || entry.userName || entry.userId || "-";
 
-        // Command
+        // Command/Event
         const tdCommand = document.createElement("td");
-        tdCommand.textContent = entry.message || entry.action || entry.userMessage || "-";
+        tdCommand.textContent = entry.message || entry.action || entry.event || "-";
 
-        // AI Response
+        // AI Response / Details
         const tdAI = document.createElement("td");
         tdAI.className = "response";
-        tdAI.textContent = entry.response || entry.claudeResponse || "-";
+        try {
+            tdAI.textContent = entry.response || (entry.details ? JSON.stringify(entry.details, null, 2) : "-");
+        } catch (e) {
+            tdAI.textContent = entry.response || String(entry.details) || "-";
+        }
 
-        // Status
+        // Status/Type
         const tdStatus = document.createElement("td");
-        tdStatus.textContent = entry.status || "-";
-        if (entry.status === "success") tdStatus.className = "status-success";
-        if (entry.status === "error") tdStatus.className = "status-error";
+        const statusText = (entry.status || entry.type || "").toLowerCase();
+        tdStatus.textContent = entry.status || entry.type || "-";
+        
+        if (statusText === "success" || statusText === "ok" || statusText === "verified" || statusText === "complete" || statusText.includes("enabled") || statusText.includes("active")) {
+            tdStatus.className = "status-success";
+        } else if (statusText === "error" || statusText === "failed" || statusText === "critical" || statusText.includes("fail") || statusText.includes("issue")) {
+            tdStatus.className = "status-error";
+        } else if (statusText === "warning" || statusText === "pending" || statusText.includes("alert")) {
+            tdStatus.className = "status-warning";
+        } else if (statusText === "info" || statusText === "processing" || statusText.includes("running")) {
+            tdStatus.className = "status-info";
+        } else {
+            tdStatus.className = "status-default";
+        }
 
         tr.appendChild(tdTime);
         tr.appendChild(tdUser);
@@ -130,12 +246,11 @@
     } catch (err) {
       console.error("Failed to load audit log:", err);
       document.getElementById("log-rows").innerHTML =
-        "<tr><td colspan='5'>Error loading audit log.</td></tr>";
+        `<tr class='status-error'><td colspan='5' style='text-align: center; color: #dc2626; padding: 20px;'>Error loading audit log: ${err.message}.</td></tr>`;
     }
   }
 
   loadAuditLog();
 </script>
-
-
+</body>
 </html>

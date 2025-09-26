@@ -1,32 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>OEE MQTT Browser Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📊 OEE Live MQTT Monitor</title>
+  <link rel="stylesheet" href="css/styles.css">
   <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    h1 { color: #0066cc; }
-    pre {
-      background: #f4f4f4;
-      padding: 10px;
-      border-radius: 5px;
-      max-height: 200px;
-      overflow-y: auto;
+    .line-card {
+      background: #ffffff;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
     }
-    .line {
-      margin-bottom: 20px;
-      padding: 10px;
-      border: 1px solid #ddd;
+    .line-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .line-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .line-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: #0a2540;
+    }
+    .line-status {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+    .status-running { background: #d1fae5; color: #065f46; }
+    .status-stopped { background: #fee2e2; color: #991b1b; }
+    .status-idle { background: #fef3c7; color: #92400e; }
+
+    .oee-value {
+      font-weight: 600;
+      padding: 3px 8px;
       border-radius: 6px;
-      background: #fafafa;
+      display: inline-block;
     }
-    .line h2 { margin-top: 0; }
+    .oee-good { background: #d1fae5; color: #065f46; }
+    .oee-medium { background: #fef3c7; color: #92400e; }
+    .oee-bad { background: #fee2e2; color: #991b1b; }
+
+    pre {
+      background: #f9fafb;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid #e5e7eb;
+    }
   </style>
 </head>
 <body>
-  <h1>📊 OEE Live MQTT Monitor</h1>
-  <div id="lines"></div>
+  <div class="container">
+    <div class="header">
+      <a href="/" class="nav-back">← Zurück zum Dashboard</a>
+      <h1>📊 OEE Live MQTT Monitor</h1>
+      <p>Echtzeit-Überwachung von Produktionslinien via HiveMQ</p>
+    </div>
+
+    <div class="main-content" style="flex-direction: column; padding:20px; overflow-y:auto;">
+      <div id="lines"></div>
+    </div>
+  </div>
 
   <script>
     // Verbindung mit HiveMQ über WebSockets (TLS)
@@ -47,13 +94,7 @@
     client.on("message", (topic, message) => {
       try {
         const raw = message.toString();
-
-        // Nur JSON verarbeiten
-        if (!raw.startsWith("{")) {
-          console.warn("⚠️ Ignored non-JSON message:", raw);
-          return;
-        }
-
+        if (!raw.startsWith("{")) return; // Nur JSON verarbeiten
         const payload = JSON.parse(raw);
         if (payload.line) {
           lineData[payload.line] = payload;
@@ -68,11 +109,25 @@
       linesDiv.innerHTML = "";
       Object.values(lineData).forEach((line) => {
         const div = document.createElement("div");
-        div.className = "line";
+        div.className = "line-card";
+
+        const statusClass = line.status === "Running" ? "status-running"
+                         : line.status === "Stopped" ? "status-stopped"
+                         : "status-idle";
+
+        // OEE farblich hervorheben
+        const oee = line.metrics?.oee ?? null;
+        let oeeClass = "oee-bad";
+        if (oee >= 80) oeeClass = "oee-good";
+        else if (oee >= 50) oeeClass = "oee-medium";
+
         div.innerHTML = `
-          <h2>${line.line} - Status: ${line.status}</h2>
-          <p><b>Batch:</b> ${line.batchId}</p>
-          <p><b>OEE:</b> ${line.metrics.oee}%</p>
+          <div class="line-header">
+            <div class="line-title">${line.line}</div>
+            <div class="line-status ${statusClass}">${line.status}</div>
+          </div>
+          <p><b>Batch:</b> ${line.batchId || '-'}</p>
+          <p><b>OEE:</b> <span class="oee-value ${oeeClass}">${oee ?? '-' }%</span></p>
           <pre>${JSON.stringify(line, null, 2)}</pre>
         `;
         linesDiv.appendChild(div);
