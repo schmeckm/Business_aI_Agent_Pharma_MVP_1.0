@@ -417,6 +417,15 @@ app.get("/api/system/health", (req, res) => {
   }
 });
 
+app.get('/agents.yaml', (req, res) => {
+  try {
+    const yamlPath = path.join(process.cwd(), 'agents.yaml');
+    res.sendFile(yamlPath);
+  } catch (error) {
+    res.status(404).send('agents.yaml not found');
+  }
+});
+
 // ========================================================================
 // ERROR HANDLING & GRACEFUL SHUTDOWN
 // ========================================================================

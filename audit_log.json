@@ -29944,5 +29944,285 @@
     },
     "timestamp": "2025-09-26T18:13:10.226Z",
     "auditId": "AUD-1758910390226-rx891w"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:23:15.885Z",
+    "agentId": "orderAgent",
+    "capabilities": [
+      "analyzeOrders",
+      "checkMaterialAvailability",
+      "validateProductionReadiness",
+      "assessOrderImpact"
+    ],
+    "auditId": "AUD-1758910995910-h11njq"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:23:15.935Z",
+    "agentId": "briefingAgent",
+    "capabilities": [
+      "generateExecutiveBriefing",
+      "summarizeOperations",
+      "identifyTrends",
+      "createActionPlan"
+    ],
+    "auditId": "AUD-1758910995996-a6sqxb"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:23:16.019Z",
+    "agentId": "assessmentAgent",
+    "capabilities": [
+      "assessBatchImpact",
+      "evaluateRisk",
+      "generateReleaseRecommendation",
+      "validateBatchCompliance"
+    ],
+    "auditId": "AUD-1758910996051-oqfhov"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:23:16.068Z",
+    "agentId": "complianceAgent",
+    "capabilities": [
+      "validateOrder",
+      "checkCompliance",
+      "generateAuditReport",
+      "assessRegulatoryRisk"
+    ],
+    "auditId": "AUD-1758910996096-udogwu"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:23:16.117Z",
+    "agentId": "statusAgent",
+    "capabilities": [
+      "updateSystemStatus",
+      "generateDashboard",
+      "monitorHealth",
+      "analyzePerformance"
+    ],
+    "auditId": "AUD-1758910996142-v5fsz0"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:23:16.158Z",
+    "agentId": "helpAgent",
+    "capabilities": [
+      "provideHelp",
+      "explainWorkflow",
+      "guideTroubleshooting",
+      "trainUser"
+    ],
+    "auditId": "AUD-1758910996191-um79w4"
+  },
+  {
+    "type": "system",
+    "event": "system_startup",
+    "details": {
+      "version": "1.0.2",
+      "components": [
+        "EventBusManager",
+        "AgentManager",
+        "DataManager",
+        "AuditLogger",
+        "A2AManager",
+        "MCPServer"
+      ],
+      "configuration": {
+        "USE_LANGCHAIN": true,
+        "USE_ACTIONS": false,
+        "AGENT_MODE": "langchain",
+        "ENABLE_A2A": true
+      },
+      "eventBusIntegration": "Working - EventBusManager provides EventEmitter interface",
+      "mcpIntegration": "Successful"
+    },
+    "timestamp": "2025-09-26T18:23:16.246Z",
+    "auditId": "AUD-1758910996246-kbvvqf"
+  },
+  {
+    "type": "system",
+    "event": "server_started",
+    "details": {
+      "port": "4000",
+      "version": "1.2.5",
+      "architecture": "modular+a2a",
+      "a2aEnabled": true,
+      "eventBusIntegration": "EventBusManager",
+      "mcpIntegration": "Active",
+      "frontendRoutesEnabled": true,
+      "endpoints": [
+        "/api/chat",
+        "/api/agents",
+        "/api/data",
+        "/api/events",
+        "/api/audit",
+        "/api/system",
+        "/api/workflows",
+        "/api/a2a/test",
+        "/api/a2a/status",
+        "/templates",
+        "/events",
+        "/api/oee"
+      ]
+    },
+    "timestamp": "2025-09-26T18:23:19.677Z",
+    "auditId": "AUD-1758910999677-fyflgi"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:23:44.190Z",
+    "agentId": "orderAgent",
+    "capabilities": [
+      "analyzeOrders",
+      "checkMaterialAvailability",
+      "validateProductionReadiness",
+      "assessOrderImpact"
+    ],
+    "auditId": "AUD-1758911024209-bvdnr8"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:23:44.228Z",
+    "agentId": "briefingAgent",
+    "capabilities": [
+      "generateExecutiveBriefing",
+      "summarizeOperations",
+      "identifyTrends",
+      "createActionPlan"
+    ],
+    "auditId": "AUD-1758911024249-dkc87h"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:23:44.272Z",
+    "agentId": "assessmentAgent",
+    "capabilities": [
+      "assessBatchImpact",
+      "evaluateRisk",
+      "generateReleaseRecommendation",
+      "validateBatchCompliance"
+    ],
+    "auditId": "AUD-1758911024299-ilhgqq"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:23:44.312Z",
+    "agentId": "complianceAgent",
+    "capabilities": [
+      "validateOrder",
+      "checkCompliance",
+      "generateAuditReport",
+      "assessRegulatoryRisk"
+    ],
+    "auditId": "AUD-1758911024344-j1t5cf"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:23:44.358Z",
+    "agentId": "statusAgent",
+    "capabilities": [
+      "updateSystemStatus",
+      "generateDashboard",
+      "monitorHealth",
+      "analyzePerformance"
+    ],
+    "auditId": "AUD-1758911024387-eo2961"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:23:44.403Z",
+    "agentId": "helpAgent",
+    "capabilities": [
+      "provideHelp",
+      "explainWorkflow",
+      "guideTroubleshooting",
+      "trainUser"
+    ],
+    "auditId": "AUD-1758911024432-ynhnpm"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:24:03.248Z",
+    "agentId": "orderAgent",
+    "capabilities": [
+      "analyzeOrders",
+      "checkMaterialAvailability",
+      "validateProductionReadiness",
+      "assessOrderImpact"
+    ],
+    "auditId": "AUD-1758911043268-epz4qu"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:24:03.285Z",
+    "agentId": "briefingAgent",
+    "capabilities": [
+      "generateExecutiveBriefing",
+      "summarizeOperations",
+      "identifyTrends",
+      "createActionPlan"
+    ],
+    "auditId": "AUD-1758911043310-3gs5t9"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:24:03.334Z",
+    "agentId": "assessmentAgent",
+    "capabilities": [
+      "assessBatchImpact",
+      "evaluateRisk",
+      "generateReleaseRecommendation",
+      "validateBatchCompliance"
+    ],
+    "auditId": "AUD-1758911043356-jsvxg0"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:24:03.373Z",
+    "agentId": "complianceAgent",
+    "capabilities": [
+      "validateOrder",
+      "checkCompliance",
+      "generateAuditReport",
+      "assessRegulatoryRisk"
+    ],
+    "auditId": "AUD-1758911043396-i3gvab"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:24:03.408Z",
+    "agentId": "statusAgent",
+    "capabilities": [
+      "updateSystemStatus",
+      "generateDashboard",
+      "monitorHealth",
+      "analyzePerformance"
+    ],
+    "auditId": "AUD-1758911043430-4zw0dx"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-26T18:24:03.442Z",
+    "agentId": "helpAgent",
+    "capabilities": [
+      "provideHelp",
+      "explainWorkflow",
+      "guideTroubleshooting",
+      "trainUser"
+    ],
+    "auditId": "AUD-1758911043465-4u4vft"
+  },
+  {
+    "type": "system",
+    "event": "system_shutdown",
+    "details": {
+      "reason": "SIGINT",
+      "version": "1.2.5"
+    },
+    "timestamp": "2025-09-26T18:28:33.085Z",
+    "auditId": "AUD-1758911313085-bnyfdw"
   }
 ]
