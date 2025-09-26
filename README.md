@@ -2,9 +2,7 @@
   <img src="logo.png" alt="Pharmaceutical Manufacturing Agent System Logo" width="500">
 </div>
 
-# 💊 Pharmaceutical Manufacturing Agent System – MVP 1.3.0
-    > **AI-driven pharmaceutical manufacturing** with **real-time OEE monitoring** and **GMP compliance**
-
+# 💊 Pharmaceutical Manufacturing Agent System
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js Version](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen)](https://nodejs.org/)
 [![GMP Compliant](https://img.shields.io/badge/GMP-Compliant-blue)](https://www.fda.gov/drugs/pharmaceutical-quality-resources/current-good-manufacturing-practice-cgmp-regulations)
