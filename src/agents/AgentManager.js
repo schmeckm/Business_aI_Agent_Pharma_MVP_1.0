@@ -39,7 +39,7 @@ export class AgentManager {
     this.useLangChain = process.env.USE_LANGCHAIN === 'true' || false;
     
     // Ollama AI Configuration
-    this.ollamaModel = process.env.OLLAMA_MODEL || 'llama3';
+    this.ollamaModel = process.env.OLLAMA_MODEL || 'llama2';
     this.ollamaUrl = process.env.OLLAMA_URL || 'http://localhost:11434';
     
     this.initializeLLM(); // NEU: Zentralisierte Initialisierung

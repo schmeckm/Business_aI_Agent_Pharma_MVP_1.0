@@ -52,17 +52,17 @@ body {
     background: rgba(255,255,255,0.3);
     color: white;
 }
-
 .phase-badge {
-    background: #2563eb;
-    color: #fff;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 4px 10px;
-    border-radius: 20px;
-    margin-left: 10px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 4px 4px;  /* Gleiche Höhe, aber weniger horizontaler Platz */
+  border-radius: 10px;
+  margin-left: 6px;
+  display: inline-block;
+  min-width: auto;
 }
-
 /* === Layout === */
 .main-content {
     display: flex;
@@ -746,6 +746,7 @@ a:hover {
     align-items: center; 
     font-size: 12px; 
     background: white; 
+    color: #333; /* ← Diese Zeile hinzufügen */
     padding: 5px 10px; 
     border-radius: 15px; 
     border: 1px solid #ddd; 

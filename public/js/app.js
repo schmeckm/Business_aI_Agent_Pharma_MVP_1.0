@@ -147,7 +147,7 @@ async function updateHealthIndicator() {
   const healthText = document.getElementById('health-text');
 
   try {
-    let response = await fetch('/api/system/health');
+    let response = await fetch('http://localhost:4000/api/system/health');
     const health = await response.json();
 
     // Fix: Sowohl 'ok' als auch 'healthy' als gesund bewerten

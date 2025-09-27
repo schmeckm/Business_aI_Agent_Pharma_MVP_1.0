@@ -32693,5 +32693,1337 @@
     },
     "timestamp": "2025-09-26T20:24:17.941Z",
     "auditId": "AUD-1758918257941-7g5z0o"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T15:56:48.825Z",
+    "agentId": "orderAgent",
+    "capabilities": [
+      "analyzeOrders",
+      "checkMaterialAvailability",
+      "validateProductionReadiness",
+      "assessOrderImpact"
+    ],
+    "auditId": "AUD-1758988608856-p8kj69"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T15:56:48.880Z",
+    "agentId": "briefingAgent",
+    "capabilities": [
+      "generateExecutiveBriefing",
+      "summarizeOperations",
+      "identifyTrends",
+      "createActionPlan"
+    ],
+    "auditId": "AUD-1758988608919-e3ty12"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T15:56:48.930Z",
+    "agentId": "assessmentAgent",
+    "capabilities": [
+      "assessBatchImpact",
+      "evaluateRisk",
+      "generateReleaseRecommendation",
+      "validateBatchCompliance"
+    ],
+    "auditId": "AUD-1758988608955-3515km"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T15:56:48.967Z",
+    "agentId": "complianceAgent",
+    "capabilities": [
+      "validateOrder",
+      "checkCompliance",
+      "generateAuditReport",
+      "assessRegulatoryRisk"
+    ],
+    "auditId": "AUD-1758988608991-k1bckb"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T15:56:49.006Z",
+    "agentId": "statusAgent",
+    "capabilities": [
+      "updateSystemStatus",
+      "generateDashboard",
+      "monitorHealth",
+      "analyzePerformance"
+    ],
+    "auditId": "AUD-1758988609027-l9rok3"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T15:56:49.041Z",
+    "agentId": "helpAgent",
+    "capabilities": [
+      "provideHelp",
+      "explainWorkflow",
+      "guideTroubleshooting",
+      "trainUser"
+    ],
+    "auditId": "AUD-1758988609066-1f9pr9"
+  },
+  {
+    "type": "system",
+    "event": "system_startup",
+    "details": {
+      "version": "1.0.2",
+      "components": [
+        "EventBusManager",
+        "AgentManager",
+        "DataManager",
+        "AuditLogger",
+        "A2AManager",
+        "MCPServer"
+      ],
+      "configuration": {
+        "USE_LANGCHAIN": true,
+        "USE_ACTIONS": false,
+        "AGENT_MODE": "langchain",
+        "ENABLE_A2A": true
+      },
+      "eventBusIntegration": "Working - EventBusManager provides EventEmitter interface",
+      "mcpIntegration": "Successful"
+    },
+    "timestamp": "2025-09-27T15:56:49.104Z",
+    "auditId": "AUD-1758988609104-z60nge"
+  },
+  {
+    "type": "system",
+    "event": "server_started",
+    "details": {
+      "port": "4000",
+      "version": "1.2.5",
+      "architecture": "modular+a2a",
+      "a2aEnabled": true,
+      "eventBusIntegration": "EventBusManager",
+      "mcpIntegration": "Active",
+      "frontendRoutesEnabled": true,
+      "endpoints": [
+        "/api/chat",
+        "/api/agents",
+        "/api/data",
+        "/api/events",
+        "/api/audit",
+        "/api/system",
+        "/api/workflows",
+        "/api/a2a/test",
+        "/api/a2a/status",
+        "/templates",
+        "/events",
+        "/api/oee"
+      ]
+    },
+    "timestamp": "2025-09-27T15:56:49.242Z",
+    "auditId": "AUD-1758988609242-s9tuui"
+  },
+  {
+    "type": "chat",
+    "user": "Manufacturing Operator",
+    "agent": "briefingAgent",
+    "message": "morning-briefing",
+    "response": "Agent processing failed: fetch failed",
+    "timestamp": "2025-09-27T15:56:53.461Z",
+    "auditId": "AUD-1758988613461-1k9qas"
+  },
+  {
+    "type": "chat",
+    "user": "Manufacturing Operator",
+    "agent": "briefingAgent",
+    "message": "morning-briefing",
+    "response": "Agent processing failed: fetch failed",
+    "timestamp": "2025-09-27T15:56:56.623Z",
+    "auditId": "AUD-1758988616623-zq2ysz"
+  },
+  {
+    "type": "chat",
+    "user": "Manufacturing Operator",
+    "agent": "briefingAgent",
+    "message": "morning-briefing",
+    "response": "Agent processing failed: fetch failed",
+    "timestamp": "2025-09-27T15:56:57.780Z",
+    "auditId": "AUD-1758988617780-lp4t2f"
+  },
+  {
+    "type": "system",
+    "event": "system_shutdown",
+    "details": {
+      "reason": "SIGINT",
+      "version": "1.2.5"
+    },
+    "timestamp": "2025-09-27T15:57:23.884Z",
+    "auditId": "AUD-1758988643884-uq5fsl"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T15:57:27.591Z",
+    "agentId": "orderAgent",
+    "capabilities": [
+      "analyzeOrders",
+      "checkMaterialAvailability",
+      "validateProductionReadiness",
+      "assessOrderImpact"
+    ],
+    "auditId": "AUD-1758988647606-23j3vs"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T15:57:27.628Z",
+    "agentId": "briefingAgent",
+    "capabilities": [
+      "generateExecutiveBriefing",
+      "summarizeOperations",
+      "identifyTrends",
+      "createActionPlan"
+    ],
+    "auditId": "AUD-1758988647660-nnolwa"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T15:57:27.673Z",
+    "agentId": "assessmentAgent",
+    "capabilities": [
+      "assessBatchImpact",
+      "evaluateRisk",
+      "generateReleaseRecommendation",
+      "validateBatchCompliance"
+    ],
+    "auditId": "AUD-1758988647697-45t3xb"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T15:57:27.711Z",
+    "agentId": "complianceAgent",
+    "capabilities": [
+      "validateOrder",
+      "checkCompliance",
+      "generateAuditReport",
+      "assessRegulatoryRisk"
+    ],
+    "auditId": "AUD-1758988647733-x2ue5x"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T15:57:27.748Z",
+    "agentId": "statusAgent",
+    "capabilities": [
+      "updateSystemStatus",
+      "generateDashboard",
+      "monitorHealth",
+      "analyzePerformance"
+    ],
+    "auditId": "AUD-1758988647772-b5e29p"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T15:57:27.784Z",
+    "agentId": "helpAgent",
+    "capabilities": [
+      "provideHelp",
+      "explainWorkflow",
+      "guideTroubleshooting",
+      "trainUser"
+    ],
+    "auditId": "AUD-1758988647807-r51jne"
+  },
+  {
+    "type": "system",
+    "event": "system_startup",
+    "details": {
+      "version": "1.0.2",
+      "components": [
+        "EventBusManager",
+        "AgentManager",
+        "DataManager",
+        "AuditLogger",
+        "A2AManager",
+        "MCPServer"
+      ],
+      "configuration": {
+        "USE_LANGCHAIN": true,
+        "USE_ACTIONS": false,
+        "AGENT_MODE": "langchain",
+        "ENABLE_A2A": true
+      },
+      "eventBusIntegration": "Working - EventBusManager provides EventEmitter interface",
+      "mcpIntegration": "Successful"
+    },
+    "timestamp": "2025-09-27T15:57:27.842Z",
+    "auditId": "AUD-1758988647842-sa2bdz"
+  },
+  {
+    "type": "system",
+    "event": "server_started",
+    "details": {
+      "port": "4000",
+      "version": "1.2.5",
+      "architecture": "modular+a2a",
+      "a2aEnabled": true,
+      "eventBusIntegration": "EventBusManager",
+      "mcpIntegration": "Active",
+      "frontendRoutesEnabled": true,
+      "endpoints": [
+        "/api/chat",
+        "/api/agents",
+        "/api/data",
+        "/api/events",
+        "/api/audit",
+        "/api/system",
+        "/api/workflows",
+        "/api/a2a/test",
+        "/api/a2a/status",
+        "/templates",
+        "/events",
+        "/api/oee"
+      ]
+    },
+    "timestamp": "2025-09-27T15:57:27.926Z",
+    "auditId": "AUD-1758988647926-72sbr1"
+  },
+  {
+    "type": "chat",
+    "user": "Manufacturing Operator",
+    "agent": "briefingAgent",
+    "message": "morning-briefing",
+    "response": "Agent processing failed: fetch failed",
+    "timestamp": "2025-09-27T15:57:37.056Z",
+    "auditId": "AUD-1758988657056-rx1nfs"
+  },
+  {
+    "type": "chat",
+    "user": "Manufacturing Operator",
+    "agent": "briefingAgent",
+    "message": "morning-briefing",
+    "response": "Agent processing failed: fetch failed",
+    "timestamp": "2025-09-27T15:57:43.113Z",
+    "auditId": "AUD-1758988663114-u4w5vy"
+  },
+  {
+    "type": "chat",
+    "user": "Manufacturing Operator",
+    "agent": "briefingAgent",
+    "message": "morning-briefing",
+    "response": "Agent processing failed: fetch failed",
+    "timestamp": "2025-09-27T15:58:12.188Z",
+    "auditId": "AUD-1758988692188-heo6zc"
+  },
+  {
+    "type": "system",
+    "event": "system_shutdown",
+    "details": {
+      "reason": "SIGINT",
+      "version": "1.2.5"
+    },
+    "timestamp": "2025-09-27T15:58:17.069Z",
+    "auditId": "AUD-1758988697069-kb706s"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:01:16.134Z",
+    "agentId": "orderAgent",
+    "capabilities": [
+      "analyzeOrders",
+      "checkMaterialAvailability",
+      "validateProductionReadiness",
+      "assessOrderImpact"
+    ],
+    "auditId": "AUD-1758988876148-wrq59d"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:01:16.170Z",
+    "agentId": "briefingAgent",
+    "capabilities": [
+      "generateExecutiveBriefing",
+      "summarizeOperations",
+      "identifyTrends",
+      "createActionPlan"
+    ],
+    "auditId": "AUD-1758988876199-xkx7b7"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:01:16.212Z",
+    "agentId": "assessmentAgent",
+    "capabilities": [
+      "assessBatchImpact",
+      "evaluateRisk",
+      "generateReleaseRecommendation",
+      "validateBatchCompliance"
+    ],
+    "auditId": "AUD-1758988876236-fcro2x"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:01:16.249Z",
+    "agentId": "complianceAgent",
+    "capabilities": [
+      "validateOrder",
+      "checkCompliance",
+      "generateAuditReport",
+      "assessRegulatoryRisk"
+    ],
+    "auditId": "AUD-1758988876276-6i6082"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:01:16.290Z",
+    "agentId": "statusAgent",
+    "capabilities": [
+      "updateSystemStatus",
+      "generateDashboard",
+      "monitorHealth",
+      "analyzePerformance"
+    ],
+    "auditId": "AUD-1758988876313-g23svd"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:01:16.327Z",
+    "agentId": "helpAgent",
+    "capabilities": [
+      "provideHelp",
+      "explainWorkflow",
+      "guideTroubleshooting",
+      "trainUser"
+    ],
+    "auditId": "AUD-1758988876349-yg7ikv"
+  },
+  {
+    "type": "system",
+    "event": "system_startup",
+    "details": {
+      "version": "1.0.2",
+      "components": [
+        "EventBusManager",
+        "AgentManager",
+        "DataManager",
+        "AuditLogger",
+        "A2AManager",
+        "MCPServer"
+      ],
+      "configuration": {
+        "USE_LANGCHAIN": true,
+        "USE_ACTIONS": false,
+        "AGENT_MODE": "langchain",
+        "ENABLE_A2A": true
+      },
+      "eventBusIntegration": "Working - EventBusManager provides EventEmitter interface",
+      "mcpIntegration": "Successful"
+    },
+    "timestamp": "2025-09-27T16:01:16.386Z",
+    "auditId": "AUD-1758988876386-soqgu6"
+  },
+  {
+    "type": "system",
+    "event": "server_started",
+    "details": {
+      "port": "4000",
+      "version": "1.2.5",
+      "architecture": "modular+a2a",
+      "a2aEnabled": true,
+      "eventBusIntegration": "EventBusManager",
+      "mcpIntegration": "Active",
+      "frontendRoutesEnabled": true,
+      "endpoints": [
+        "/api/chat",
+        "/api/agents",
+        "/api/data",
+        "/api/events",
+        "/api/audit",
+        "/api/system",
+        "/api/workflows",
+        "/api/a2a/test",
+        "/api/a2a/status",
+        "/templates",
+        "/events",
+        "/api/oee"
+      ]
+    },
+    "timestamp": "2025-09-27T16:01:16.465Z",
+    "auditId": "AUD-1758988876465-t62p17"
+  },
+  {
+    "type": "chat",
+    "user": "Manufacturing Operator",
+    "agent": "briefingAgent",
+    "message": "morning-briefing",
+    "response": "Agent processing failed: Ollama call failed with status code 500: model requires more system memory (6.0 GiB) than is available (5.6 GiB)",
+    "timestamp": "2025-09-27T16:01:22.914Z",
+    "auditId": "AUD-1758988882914-a8c7nm"
+  },
+  {
+    "type": "chat",
+    "user": "Manufacturing Operator",
+    "agent": "briefingAgent",
+    "message": "morning-briefing",
+    "response": "Agent processing failed: fetch failed",
+    "timestamp": "2025-09-27T16:08:23.955Z",
+    "auditId": "AUD-1758989303955-aewc30"
+  },
+  {
+    "type": "system",
+    "event": "system_shutdown",
+    "details": {
+      "reason": "SIGINT",
+      "version": "1.2.5"
+    },
+    "timestamp": "2025-09-27T16:08:29.283Z",
+    "auditId": "AUD-1758989309283-e1p4yt"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:08:33.063Z",
+    "agentId": "orderAgent",
+    "capabilities": [
+      "analyzeOrders",
+      "checkMaterialAvailability",
+      "validateProductionReadiness",
+      "assessOrderImpact"
+    ],
+    "auditId": "AUD-1758989313075-c98iqg"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:08:33.096Z",
+    "agentId": "briefingAgent",
+    "capabilities": [
+      "generateExecutiveBriefing",
+      "summarizeOperations",
+      "identifyTrends",
+      "createActionPlan"
+    ],
+    "auditId": "AUD-1758989313122-ikkyue"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:08:33.135Z",
+    "agentId": "assessmentAgent",
+    "capabilities": [
+      "assessBatchImpact",
+      "evaluateRisk",
+      "generateReleaseRecommendation",
+      "validateBatchCompliance"
+    ],
+    "auditId": "AUD-1758989313156-2oxl1f"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:08:33.168Z",
+    "agentId": "complianceAgent",
+    "capabilities": [
+      "validateOrder",
+      "checkCompliance",
+      "generateAuditReport",
+      "assessRegulatoryRisk"
+    ],
+    "auditId": "AUD-1758989313191-vquo8c"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:08:33.205Z",
+    "agentId": "statusAgent",
+    "capabilities": [
+      "updateSystemStatus",
+      "generateDashboard",
+      "monitorHealth",
+      "analyzePerformance"
+    ],
+    "auditId": "AUD-1758989313228-asv7rl"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:08:33.240Z",
+    "agentId": "helpAgent",
+    "capabilities": [
+      "provideHelp",
+      "explainWorkflow",
+      "guideTroubleshooting",
+      "trainUser"
+    ],
+    "auditId": "AUD-1758989313264-jgliii"
+  },
+  {
+    "type": "system",
+    "event": "system_startup",
+    "details": {
+      "version": "1.0.2",
+      "components": [
+        "EventBusManager",
+        "AgentManager",
+        "DataManager",
+        "AuditLogger",
+        "A2AManager",
+        "MCPServer"
+      ],
+      "configuration": {
+        "USE_LANGCHAIN": true,
+        "USE_ACTIONS": false,
+        "AGENT_MODE": "langchain",
+        "ENABLE_A2A": true
+      },
+      "eventBusIntegration": "Working - EventBusManager provides EventEmitter interface",
+      "mcpIntegration": "Successful"
+    },
+    "timestamp": "2025-09-27T16:08:33.299Z",
+    "auditId": "AUD-1758989313299-tn23kc"
+  },
+  {
+    "type": "system",
+    "event": "server_started",
+    "details": {
+      "port": "4000",
+      "version": "1.2.5",
+      "architecture": "modular+a2a",
+      "a2aEnabled": true,
+      "eventBusIntegration": "EventBusManager",
+      "mcpIntegration": "Active",
+      "frontendRoutesEnabled": true,
+      "endpoints": [
+        "/api/chat",
+        "/api/agents",
+        "/api/data",
+        "/api/events",
+        "/api/audit",
+        "/api/system",
+        "/api/workflows",
+        "/api/a2a/test",
+        "/api/a2a/status",
+        "/templates",
+        "/events",
+        "/api/oee"
+      ]
+    },
+    "timestamp": "2025-09-27T16:08:33.370Z",
+    "auditId": "AUD-1758989313370-etvjq8"
+  },
+  {
+    "type": "system",
+    "event": "system_shutdown",
+    "details": {
+      "reason": "SIGINT",
+      "version": "1.2.5"
+    },
+    "timestamp": "2025-09-27T16:10:52.480Z",
+    "auditId": "AUD-1758989452480-ij6l0z"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:10:57.133Z",
+    "agentId": "orderAgent",
+    "capabilities": [
+      "analyzeOrders",
+      "checkMaterialAvailability",
+      "validateProductionReadiness",
+      "assessOrderImpact"
+    ],
+    "auditId": "AUD-1758989457146-3858mg"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:10:57.167Z",
+    "agentId": "briefingAgent",
+    "capabilities": [
+      "generateExecutiveBriefing",
+      "summarizeOperations",
+      "identifyTrends",
+      "createActionPlan"
+    ],
+    "auditId": "AUD-1758989457188-8lpg67"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:10:57.200Z",
+    "agentId": "assessmentAgent",
+    "capabilities": [
+      "assessBatchImpact",
+      "evaluateRisk",
+      "generateReleaseRecommendation",
+      "validateBatchCompliance"
+    ],
+    "auditId": "AUD-1758989457222-beort6"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:10:57.235Z",
+    "agentId": "complianceAgent",
+    "capabilities": [
+      "validateOrder",
+      "checkCompliance",
+      "generateAuditReport",
+      "assessRegulatoryRisk"
+    ],
+    "auditId": "AUD-1758989457256-ety3w1"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:10:57.269Z",
+    "agentId": "statusAgent",
+    "capabilities": [
+      "updateSystemStatus",
+      "generateDashboard",
+      "monitorHealth",
+      "analyzePerformance"
+    ],
+    "auditId": "AUD-1758989457292-lx7fxm"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:10:57.306Z",
+    "agentId": "helpAgent",
+    "capabilities": [
+      "provideHelp",
+      "explainWorkflow",
+      "guideTroubleshooting",
+      "trainUser"
+    ],
+    "auditId": "AUD-1758989457327-v31qdq"
+  },
+  {
+    "type": "system",
+    "event": "system_startup",
+    "details": {
+      "version": "1.0.2",
+      "components": [
+        "EventBusManager",
+        "AgentManager",
+        "DataManager",
+        "AuditLogger",
+        "A2AManager",
+        "MCPServer"
+      ],
+      "configuration": {
+        "USE_LANGCHAIN": true,
+        "USE_ACTIONS": false,
+        "AGENT_MODE": "langchain",
+        "ENABLE_A2A": true
+      },
+      "eventBusIntegration": "Working - EventBusManager provides EventEmitter interface",
+      "mcpIntegration": "Successful"
+    },
+    "timestamp": "2025-09-27T16:10:57.363Z",
+    "auditId": "AUD-1758989457363-4xrlix"
+  },
+  {
+    "type": "system",
+    "event": "server_started",
+    "details": {
+      "port": "4000",
+      "version": "1.2.5",
+      "architecture": "modular+a2a",
+      "a2aEnabled": true,
+      "eventBusIntegration": "EventBusManager",
+      "mcpIntegration": "Active",
+      "frontendRoutesEnabled": true,
+      "endpoints": [
+        "/api/chat",
+        "/api/agents",
+        "/api/data",
+        "/api/events",
+        "/api/audit",
+        "/api/system",
+        "/api/workflows",
+        "/api/a2a/test",
+        "/api/a2a/status",
+        "/templates",
+        "/events",
+        "/api/oee"
+      ]
+    },
+    "timestamp": "2025-09-27T16:10:57.442Z",
+    "auditId": "AUD-1758989457442-0g4ibo"
+  },
+  {
+    "type": "chat",
+    "user": "Manufacturing Operator",
+    "agent": "briefingAgent",
+    "message": "morning-briefing",
+    "response": "# 📊 DAILY OPERATIONS BRIEFING WITH OEE ANALYSIS - 2025-09-27T16:11:06.405Z\n\n## 🎯 EXECUTIVE SUMMARY\n- **Overall Status**: RED\n- **Production Readiness**: 16.7%\n- **Critical Alerts**: 1\n- **Immediate Action Required**: YES\n- **OEE Performance**: 50% (average of running lines)\n\n## 🏭 PRODUCTION STATUS + OEE METRICS\n\n**Active Batches**: 3\n**Status Overview**:\n  - In Production: 0\n  - Stopped: 2\n  - Error: 1\n\n**Production Lines Status**:\n- LINE-01: STOPPED (BATCH-100)\n  - Availability: 50%\n  - Performance: 300% (data anomaly detected)\n  - Quality: 100%\n  - Overall OEE: 150% (requires data validation)\n\n- LINE-02: STOPPED (BATCH-101)\n  - Availability: 0%\n  - Performance: 0%\n  - Quality: 0%\n  - Overall OEE: 0%\n\n- LINE-03: ERROR (BATCH-102)\n  - Availability: 0%\n  - Performance: 0%\n  - Quality: 0%\n  - Overall OEE: 0%\n  - Alarms: \"Critical fault detected\"\n\n**Process Parameters**:\n- Temperature Range: 21.5-22.8°C (within normal limits)\n- Pressure Range: 1.00-1.07 bar (within normal limits)\n\n## ⚠️ CRITICAL ISSUES + OEE IMPACT\n```\nCRITICAL: 1 | HIGH: 0 | MEDIUM: 0\n\n🚨 IMMEDIATE ACTION REQUIRED:\n- LINE-03 has a critical fault with BATCH-102\n- Impact: Complete production stoppage on LINE-03, zero OEE\n- Responsible department: Maintenance/Engineering\n- OEE recovery timeline: Unknown until fault investigation complete\n```\n\n## 📋 COMPLIANCE & QUALITY + OEE CORRELATION\n- **Quality Status**: 100% quality on LINE-01 (no bad count reported)\n- **Data Integrity Concern**: LINE-01 shows performance of 300%, indicating possible sensor or counter calibration issue\n\n## 🎯 ACTION RECOMMENDATIONS WITH OEE FOCUS\n\n**IMMEDIATE ACTIONS (today):**\n1. Dispatch maintenance team to investigate and resolve critical fault on LINE-03\n2. Investigate abnormal OEE data on LINE-01 (performance at 300%)\n3. Determine cause of stoppage on LINE-01 and LINE-02\n4. Validate production counters on LINE-01\n\n**SHORT-TERM (this week):**\n1. Review OEE calculation methodology across all lines\n2. Implement preventive maintenance for LINE-03 after fault resolution\n3. Recalibrate sensors on LINE-01 if required\n\n**ESCALATION REQUIRED:**\n- Critical fault on LINE-03 to Operations Management\n- Data integrity concerns to Quality Assurance team\n- Production stoppage impact to Production Planning\n\n## 📈 KPIs & METRICS WITH OEE INTEGRATION\n- **Line Availability**: 16.7% (only LINE-01 showing partial availability)\n- **Overall Equipment Effectiveness**: Production lines showing 0% OEE (2 lines) and 150% OEE (1 line, likely erroneous)\n- **OEE Trend**: CRITICAL (2 of 3 lines at zero OEE)\n- **Equipment Reliability**: CRITICAL (1 line in error state)\n\n**NOTE**: The performance metric of 300% on LINE-01 suggests a potential data collection issue or misconfiguration. Performance values over 100% generally indicate incorrect standards or measurement errors. This requires immediate validation.",
+    "timestamp": "2025-09-27T16:11:22.389Z",
+    "auditId": "AUD-1758989482390-0uox3x"
+  },
+  {
+    "type": "system",
+    "event": "system_shutdown",
+    "details": {
+      "reason": "SIGINT",
+      "version": "1.2.5"
+    },
+    "timestamp": "2025-09-27T16:19:43.151Z",
+    "auditId": "AUD-1758989983151-liw0me"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:19:47.190Z",
+    "agentId": "orderAgent",
+    "capabilities": [
+      "analyzeOrders",
+      "checkMaterialAvailability",
+      "validateProductionReadiness",
+      "assessOrderImpact"
+    ],
+    "auditId": "AUD-1758989987204-j4pk1l"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:19:47.223Z",
+    "agentId": "briefingAgent",
+    "capabilities": [
+      "generateExecutiveBriefing",
+      "summarizeOperations",
+      "identifyTrends",
+      "createActionPlan"
+    ],
+    "auditId": "AUD-1758989987248-zfw3fo"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:19:47.259Z",
+    "agentId": "assessmentAgent",
+    "capabilities": [
+      "assessBatchImpact",
+      "evaluateRisk",
+      "generateReleaseRecommendation",
+      "validateBatchCompliance"
+    ],
+    "auditId": "AUD-1758989987286-vmljfr"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:19:47.298Z",
+    "agentId": "complianceAgent",
+    "capabilities": [
+      "validateOrder",
+      "checkCompliance",
+      "generateAuditReport",
+      "assessRegulatoryRisk"
+    ],
+    "auditId": "AUD-1758989987319-71b13n"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:19:47.331Z",
+    "agentId": "statusAgent",
+    "capabilities": [
+      "updateSystemStatus",
+      "generateDashboard",
+      "monitorHealth",
+      "analyzePerformance"
+    ],
+    "auditId": "AUD-1758989987353-q6xxlv"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:19:47.368Z",
+    "agentId": "helpAgent",
+    "capabilities": [
+      "provideHelp",
+      "explainWorkflow",
+      "guideTroubleshooting",
+      "trainUser"
+    ],
+    "auditId": "AUD-1758989987388-x99zz1"
+  },
+  {
+    "type": "system",
+    "event": "system_startup",
+    "details": {
+      "version": "1.0.2",
+      "components": [
+        "EventBusManager",
+        "AgentManager",
+        "DataManager",
+        "AuditLogger",
+        "A2AManager",
+        "MCPServer"
+      ],
+      "configuration": {
+        "USE_LANGCHAIN": true,
+        "USE_ACTIONS": false,
+        "AGENT_MODE": "langchain",
+        "ENABLE_A2A": true
+      },
+      "eventBusIntegration": "Working - EventBusManager provides EventEmitter interface",
+      "mcpIntegration": "Successful"
+    },
+    "timestamp": "2025-09-27T16:19:47.423Z",
+    "auditId": "AUD-1758989987423-8gbcib"
+  },
+  {
+    "type": "system",
+    "event": "server_started",
+    "details": {
+      "port": "4000",
+      "version": "1.2.5",
+      "architecture": "modular+a2a",
+      "a2aEnabled": true,
+      "eventBusIntegration": "EventBusManager",
+      "mcpIntegration": "Active",
+      "frontendRoutesEnabled": true,
+      "endpoints": [
+        "/api/chat",
+        "/api/agents",
+        "/api/data",
+        "/api/events",
+        "/api/audit",
+        "/api/system",
+        "/api/workflows",
+        "/api/a2a/test",
+        "/api/a2a/status",
+        "/templates",
+        "/events",
+        "/api/oee"
+      ]
+    },
+    "timestamp": "2025-09-27T16:19:47.502Z",
+    "auditId": "AUD-1758989987502-yl72oh"
+  },
+  {
+    "type": "chat",
+    "user": "Manufacturing Operator",
+    "agent": "briefingAgent",
+    "message": "morning-briefing",
+    "response": "# 📊 DAILY OPERATIONS BRIEFING WITH OEE ANALYSIS - 2025-09-27T16:19:52.733Z\n\n## 🎯 EXECUTIVE SUMMARY\n- **Overall Status**: 🔴 RED\n- **Production Readiness**: 0%\n- **Critical Alerts**: 2\n- **Immediate Action Required**: YES\n- **OEE Performance**: 0% (All lines at zero OEE)\n\n## 🏭 PRODUCTION STATUS + OEE METRICS\n- **Active Batches**: 3 (BATCH-100, BATCH-101, BATCH-102)\n- **Status Overview**:\n  - In Production: 0\n  - Idle: 1 (LINE-01)\n  - Error: 2 (LINE-02, LINE-03)\n- **Production Lines**:\n  - LINE-01: IDLE with BATCH-100 (OEE: 0%)\n  - LINE-02: ERROR with BATCH-101 (OEE: 0%)\n  - LINE-03: ERROR with BATCH-102 (OEE: 0%)\n- **OEE Performance**:\n  - Availability: 0% (all lines)\n  - Performance: 0% (all lines)\n  - Quality: 0% (all lines)\n  - Overall OEE: 0% (all lines)\n\n## ⚠️ CRITICAL ISSUES + OEE IMPACT\n```\nCRITICAL: 2 | HIGH: 0 | MEDIUM: 0\n\n🚨 IMMEDIATE ACTION REQUIRED:\n- LINE-02: Critical fault detected with BATCH-101\n  - Impact: Complete production stoppage (0% OEE)\n  - Responsible: Manufacturing Engineering\n  \n- LINE-03: Critical fault detected with BATCH-102\n  - Impact: Complete production stoppage (0% OEE)\n  - Responsible: Manufacturing Engineering\n```\n\n## 🎯 ACTION RECOMMENDATIONS WITH OEE FOCUS\n\n**IMMEDIATE ACTIONS (today):**\n1. Dispatch emergency maintenance team to diagnose and resolve critical faults on LINE-02 and LINE-03\n2. Investigate why LINE-01 is idle and prepare for production start\n3. Perform systems diagnostic on all lines to identify potential systemic issues\n4. Establish temporary manual monitoring of temperature and pressure parameters\n\n**SHORT-TERM (this week):**\n1. Conduct root cause analysis of critical faults\n2. Implement preventive maintenance schedule to avoid recurrence\n3. Review production schedule and adjust for current downtime\n4. Develop OEE recovery plan to restore normal operations\n\n**ESCALATION REQUIRED:**\n- Escalate critical fault conditions to Production Director and Engineering Lead\n- Alert Quality Department of potential batch impact\n- Notify Supply Chain of potential delivery delays\n- Report zero OEE performance to executive leadership\n\n## 📈 KPIs & METRICS WITH OEE INTEGRATION\n- **Production Efficiency**: 0% (all lines non-operational)\n- **Overall Equipment Effectiveness (OEE)**: 0%\n- **OEE Components**: Availability (0%), Performance (0%), Quality (0%)\n- **Parameter Monitoring**:\n  - LINE-01: Temperature: 22.02°C, Pressure: 1.07 bar\n  - LINE-02: Temperature: 23.78°C, Pressure: 1.03 bar\n  - LINE-03: Temperature: 23.61°C, Pressure: 1.08 bar\n\n**IMPORTANT NOTE**: This morning briefing reflects a critical production situation with all production lines at 0% OEE. Immediate intervention is required to restore operations and minimize impact on scheduled production.",
+    "timestamp": "2025-09-27T16:20:06.935Z",
+    "auditId": "AUD-1758990006935-s6ylvy"
+  },
+  {
+    "type": "chat",
+    "user": "Manufacturing Operator",
+    "agent": "briefingAgent",
+    "message": "morning-briefing",
+    "response": "# 📊 DAILY OPERATIONS BRIEFING WITH OEE ANALYSIS - 2025-09-27T16:20:26.440Z\n\n## 🎯 EXECUTIVE SUMMARY\n- **Overall Status**: 🔴 RED\n- **Production Readiness**: 33.3%\n- **Critical Alerts**: 2\n- **Immediate Action Required**: YES\n- **OEE Performance**: 30.56% (average of all lines)\n\n## 🏭 PRODUCTION STATUS + OEE METRICS\n**Line Status Overview:**\n- **Active Lines**: 3\n- **Status Distribution**:\n  - Running: 0\n  - Stopped: 1 (LINE-01)\n  - Error: 2 (LINE-02, LINE-03)\n\n**OEE Performance by Line:**\n| Line | Status | Availability | Performance | Quality | Overall OEE |\n|------|--------|--------------|-------------|---------|------------|\n| LINE-01 | Stopped | 0% | 0% | 0% | 0% |\n| LINE-02 | Error | 41.67% | 220% | 100% | 91.67% |\n| LINE-03 | Error | 0% | 0% | 0% | 0% |\n\n**Production Parameters:**\n- Temperature range: 21.46°C - 23.32°C\n- Pressure range: 1.02 - 1.08 bar\n\n## ⚠️ CRITICAL ISSUES + OEE IMPACT\n```\nCRITICAL: 2 | HIGH: 0 | MEDIUM: 0\n\n🚨 IMMEDIATE ACTION REQUIRED:\n- LINE-02: Critical fault detected despite high OEE (91.67%)\n- LINE-03: Critical fault detected with complete production stoppage (0% OEE)\n- LINE-01: Planned production not started (0% OEE)\n```\n\n## 🎯 ACTION RECOMMENDATIONS WITH OEE FOCUS\n\n**IMMEDIATE ACTIONS (today):**\n1. Dispatch maintenance team to investigate critical faults on LINE-02 and LINE-03\n2. Prioritize LINE-02 troubleshooting as it was performing at high efficiency before fault\n3. Schedule LINE-01 startup after resolving critical issues on other lines\n4. Evaluate batch BATCH-101 for potential product quality impact due to error state\n\n**SHORT-TERM (this week):**\n1. Perform root cause analysis on LINE-02 and LINE-03 failures\n2. Implement preventive maintenance for all production lines\n3. Review alarm triggering thresholds for early detection of potential issues\n4. Develop standard operating procedure for rapid response to critical faults\n\n**ESCALATION REQUIRED:**\n- Escalate both critical faults to Production Management and Engineering\n- Alert Quality Assurance to evaluate potential product impact on BATCH-101\n- Request additional maintenance resources for parallel fault resolution\n\n## 📈 KPIs & METRICS WITH OEE INTEGRATION\n- **Line Availability**: 13.89% (average across all lines)\n- **Production Performance**: 73.33% (average across all lines)\n- **Product Quality**: 33.33% (average across all lines)\n- **Overall Equipment Effectiveness (OEE)**: 30.56% (average across all lines)\n- **OEE Trend**: Critical Decline (two lines at 0% OEE)\n- **Critical Alarm Rate**: 66.7% of lines affected\n\n## ADDITIONAL INSIGHTS\n- LINE-02 shows unusual metrics with 220% performance despite error state, suggesting possible calibration or measurement issues\n- All production lines show suboptimal status, with no line currently in normal running condition\n- Temperature in LINE-03 is notably higher than other lines, which may be related to the critical fault\n\nThis briefing is based exclusively on the provided OEE data as of 2025-09-27T16:20:26.440Z.",
+    "timestamp": "2025-09-27T16:20:43.284Z",
+    "auditId": "AUD-1758990043284-xfujjn"
+  },
+  {
+    "type": "chat",
+    "user": "Manufacturing Operator",
+    "agent": "complianceAgent",
+    "message": "compliance-check",
+    "response": "# 🛡️ COMPLIANCE STATUS REPORT WITH OEE COMPLIANCE - 2025-09-27T16:22:27.317Z\n\n## 🎯 COMPLIANCE OVERVIEW\n- **Overall Status**: AT RISK\n- **Critical Findings**: 1\n- **Audit Readiness**: 65%\n- **Regulatory Alerts**: 1\n- **OEE Compliance Status**: UNSATISFACTORY\n\n## 📋 BATCH COMPLIANCE MATRIX WITH OEE\n\n```\n**BATCH:** BATCH-102 - LINE-01\n\n🛡️ GMP COMPLIANCE:\n- GMP Status: At Risk\n- Compliance Level: non-compliant\n- Last Validation: N/A\n- OEE Compliance: NON-COMPLIANT - Critical fault detected affecting equipment reliability\n\n🌍 REGULATORY STATUS:\n- FDA Status: At Risk\n- EMA Status: At Risk\n- Other Markets: At Risk\n- OEE Regulatory Alignment: Equipment operation does not align with regulatory expectations\n\n📄 DOCUMENTATION COMPLIANCE:\n- Batch Records: incomplete - critical equipment fault must be documented\n- QA Documentation: required for equipment fault investigation\n- Operator Qualification: verification required\n- OEE Documentation: anomalous performance metrics require investigation and documentation\n\n⚠️ COMPLIANCE ISSUES:\n- Open Issues: Critical equipment fault on LINE-01\n- Risk Level: HIGH\n- Corrective Actions: required immediately\n- OEE Compliance Gaps: Invalid performance value (266.67%) indicates measurement or calculation error\n\n📊 COMPLIANCE SCORE: 35/100 (FAILED)\n```\n\n```\n**BATCH:** BATCH-103 - LINE-02\n\n🛡️ GMP COMPLIANCE:\n- GMP Status: At Risk\n- Compliance Level: pending\n- Last Validation: N/A\n- OEE Compliance: NON-COMPLIANT - Zero productivity\n\n🌍 REGULATORY STATUS:\n- FDA Status: At Risk\n- EMA Status: At Risk\n- Other Markets: At Risk\n- OEE Regulatory Alignment: Requires justification for zero productivity\n\n📄 DOCUMENTATION COMPLIANCE:\n- Batch Records: incomplete - equipment stoppage must be documented\n- QA Documentation: required for production stoppage\n- Operator Qualification: verification required\n- OEE Documentation: zero OEE requires investigation and documentation\n\n⚠️ COMPLIANCE ISSUES:\n- Open Issues: Stopped production line with no alarms\n- Risk Level: MEDIUM\n- Corrective Actions: required\n- OEE Compliance Gaps: Zero productivity without documented cause\n\n📊 COMPLIANCE SCORE: 55/100 (AT RISK)\n```\n\n```\n**BATCH:** BATCH-104 - LINE-03\n\n🛡️ GMP COMPLIANCE:\n- GMP Status: At Risk\n- Compliance Level: pending\n- Last Validation: N/A\n- OEE Compliance: NON-COMPLIANT - Zero productivity\n\n🌍 REGULATORY STATUS:\n- FDA Status: At Risk\n- EMA Status: At Risk\n- Other Markets: At Risk\n- OEE Regulatory Alignment: Requires justification for zero productivity\n\n📄 DOCUMENTATION COMPLIANCE:\n- Batch Records: incomplete - equipment stoppage must be documented\n- QA Documentation: required for production stoppage\n- Operator Qualification: verification required\n- OEE Documentation: zero OEE requires investigation and documentation\n\n⚠️ COMPLIANCE ISSUES:\n- Open Issues: Stopped production line with no alarms\n- Risk Level: MEDIUM\n- Corrective Actions: required\n- OEE Compliance Gaps: Zero productivity without documented cause\n\n📊 COMPLIANCE SCORE: 55/100 (AT RISK)\n```\n\n## 🚨 CRITICAL COMPLIANCE FINDINGS + OEE IMPACT\n\n**NON-COMPLIANCE ISSUES:**\n- Critical fault detected on LINE-01 (BATCH-102) indicating potential equipment malfunction\n- Abnormal performance metric on LINE-01 (266.67%) suggests data integrity or measurement system failure\n- All three production lines showing significant OEE issues (critical fault or complete stoppage)\n- OEE calculations show possible data integrity issues (impossible performance value >100%)\n- No documented justification for production line stoppages on LINE-02 and LINE-03\n\n**AT-RISK AREAS:**\n- Equipment reliability and qualification appears compromised\n- Data integrity of OEE monitoring system (performance calculations)\n- Batch documentation completeness for all three batches\n- Equipment effectiveness significantly below regulatory expectations (0% for two lines)\n- Lack of documented alarm triggers for stopped equipment on LINE-02 and LINE-03\n\n## 📊 REGULATORY FRAMEWORK STATUS + OEE STANDARDS\n\n**Active Regulations:**\n- **FDA CFR 211.63-211.68**: AT RISK - Equipment design, size, location, and maintenance requirements not met\n- **FDA CFR 211.100-211.103**: AT RISK - Production and process controls appear inadequate\n- **FDA CFR 211.180-211.198**: AT RISK - Equipment records and logs appear incomplete\n- **EU GMP Annex 15**: AT RISK - Equipment qualification and validation concerns\n- **ICH Q7**: AT RISK - Good Manufacturing Practice for Active Pharmaceutical Ingredients\n- **OEE Regulatory Requirements**: NON-COMPLIANT - Equipment effectiveness does not meet minimum standards\n\n**Compliance Gaps:**\n- Immediate investigation needed for critical fault on LINE-01\n- Documentation required for equipment stoppage justification on LINE-02 and LINE-03\n- OEE measurement system validation required (impossible performance metrics)\n- Corrective action plan required for all three production lines\n- OEE improvement plan required to meet minimum regulatory standards\n\n## 🔍 AUDIT READINESS ASSESSMENT + OEE AUDIT\n\n**Documentation Completeness:**\n- Batch Records: 40% - Critical incidents not fully documented\n- QA Releases: 0% - Cannot proceed with current equipment issues\n- Deviation Reports: INCOMPLETE - Required for all three lines\n- Training Records: REQUIRES VERIFICATION - Operator competency assessment needed\n- OEE Documentation: 30% - Critical gaps in equipment effectiveness records\n\n**System Compliance:**\n- Data Integrity: AT RISK - OEE calculation issues suggest data integrity concerns\n- Electronic Records: AT RISK - Equipment monitoring system requires validation\n- Change Control: UNKNOWN - No change control documentation provided\n- OEE System Validation: FAILED - System producing impossible performance metrics (>100%)\n\n## 🎯 COMPLIANCE ACTION PLAN + OEE IMPROVEMENTS\n\n**IMMEDIATE MEASURES (< 24h):**\n1. Investigate and document critical fault on LINE-01 (BATCH-102)\n2. Validate OEE calculation system to address impossible performance metrics\n3. Document justification for production stoppages on LINE-02 and LINE-03\n4. Implement equipment quarantine procedure for LINE-01 pending investigation\n5. Notify QA management of critical equipment effectiveness issues\n\n**SHORT-TERM (this week):**\n1. Conduct equipment requalification for all three production lines\n2. Perform OEE monitoring system validation\n3. Complete deviation reports for all affected batches\n4. Retrain operators on equipment operation and monitoring\n5. Implement enhanced equipment monitoring protocols\n\n**MEDIUM-TERM (next 30 days):**\n1. Develop comprehensive equipment effectiveness improvement plan\n2. Update equipment maintenance and calibration procedures\n3. Enhance OEE monitoring system with automated alerts for anomalous readings\n4. Conduct preventive maintenance audit across all production lines\n5. Implement regular OEE compliance verification procedures\n\n## 📈 COMPLIANCE METRICS & KPIs + OEE COMPLIANCE\n- **Compliance Rate**: 0% (all batches have significant issues)\n- **Audit Score**: 35/100 (FAILED)\n- **Deviation Rate**: 3 deviations/3 batches (100% deviation rate)\n- **Regulatory Response Time**: IMMEDIATE ACTION REQUIRED\n- **OEE Compliance Rate**: 0% (all lines have critical OEE issues)\n- **OEE Audit Readiness**: 30% (significant gaps in equipment monitoring)\n\n**CRITICAL NOTE**: The observed OEE metrics indicate serious compliance issues that could impact product quality and regulatory compliance. All production must be placed on hold until equipment issues are resolved and properly documented. The performance metric of 266.67% on LINE-01 is mathematically impossible and indicates a critical data integrity or calculation issue that requires immediate investigation and correction.",
+    "timestamp": "2025-09-27T16:23:01.534Z",
+    "auditId": "AUD-1758990181534-chukd3"
+  },
+  {
+    "type": "system",
+    "event": "system_shutdown",
+    "details": {
+      "reason": "SIGINT",
+      "version": "1.2.5"
+    },
+    "timestamp": "2025-09-27T16:28:40.467Z",
+    "auditId": "AUD-1758990520467-45h7ih"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:28:44.578Z",
+    "agentId": "orderAgent",
+    "capabilities": [
+      "analyzeOrders",
+      "checkMaterialAvailability",
+      "validateProductionReadiness",
+      "assessOrderImpact"
+    ],
+    "auditId": "AUD-1758990524604-lj4otw"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:28:44.631Z",
+    "agentId": "briefingAgent",
+    "capabilities": [
+      "generateExecutiveBriefing",
+      "summarizeOperations",
+      "identifyTrends",
+      "createActionPlan"
+    ],
+    "auditId": "AUD-1758990524677-j9kr1w"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:28:44.691Z",
+    "agentId": "assessmentAgent",
+    "capabilities": [
+      "assessBatchImpact",
+      "evaluateRisk",
+      "generateReleaseRecommendation",
+      "validateBatchCompliance"
+    ],
+    "auditId": "AUD-1758990524720-0ri4ti"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:28:44.735Z",
+    "agentId": "complianceAgent",
+    "capabilities": [
+      "validateOrder",
+      "checkCompliance",
+      "generateAuditReport",
+      "assessRegulatoryRisk"
+    ],
+    "auditId": "AUD-1758990524762-u0gb75"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:28:44.776Z",
+    "agentId": "statusAgent",
+    "capabilities": [
+      "updateSystemStatus",
+      "generateDashboard",
+      "monitorHealth",
+      "analyzePerformance"
+    ],
+    "auditId": "AUD-1758990524799-nj10th"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:28:44.813Z",
+    "agentId": "helpAgent",
+    "capabilities": [
+      "provideHelp",
+      "explainWorkflow",
+      "guideTroubleshooting",
+      "trainUser"
+    ],
+    "auditId": "AUD-1758990524841-vgpxgq"
+  },
+  {
+    "type": "system",
+    "event": "system_startup",
+    "details": {
+      "version": "1.0.2",
+      "components": [
+        "EventBusManager",
+        "AgentManager",
+        "DataManager",
+        "AuditLogger",
+        "A2AManager",
+        "MCPServer"
+      ],
+      "configuration": {
+        "USE_LANGCHAIN": true,
+        "USE_ACTIONS": false,
+        "AGENT_MODE": "langchain",
+        "ENABLE_A2A": true
+      },
+      "eventBusIntegration": "Working - EventBusManager provides EventEmitter interface",
+      "mcpIntegration": "Successful"
+    },
+    "timestamp": "2025-09-27T16:28:44.877Z",
+    "auditId": "AUD-1758990524877-l9svzd"
+  },
+  {
+    "type": "system",
+    "event": "server_started",
+    "details": {
+      "port": "4000",
+      "version": "1.2.5",
+      "architecture": "modular+a2a",
+      "a2aEnabled": true,
+      "eventBusIntegration": "EventBusManager",
+      "mcpIntegration": "Active",
+      "frontendRoutesEnabled": true,
+      "endpoints": [
+        "/api/chat",
+        "/api/agents",
+        "/api/data",
+        "/api/events",
+        "/api/audit",
+        "/api/system",
+        "/api/workflows",
+        "/api/a2a/test",
+        "/api/a2a/status",
+        "/templates",
+        "/events",
+        "/api/oee"
+      ]
+    },
+    "timestamp": "2025-09-27T16:28:45.107Z",
+    "auditId": "AUD-1758990525107-3gn5u9"
+  },
+  {
+    "type": "system",
+    "event": "system_shutdown",
+    "details": {
+      "reason": "SIGINT",
+      "version": "1.2.5"
+    },
+    "timestamp": "2025-09-27T16:32:58.185Z",
+    "auditId": "AUD-1758990778185-0l5ak8"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:33:02.287Z",
+    "agentId": "orderAgent",
+    "capabilities": [
+      "analyzeOrders",
+      "checkMaterialAvailability",
+      "validateProductionReadiness",
+      "assessOrderImpact"
+    ],
+    "auditId": "AUD-1758990782302-165e8x"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:33:02.328Z",
+    "agentId": "briefingAgent",
+    "capabilities": [
+      "generateExecutiveBriefing",
+      "summarizeOperations",
+      "identifyTrends",
+      "createActionPlan"
+    ],
+    "auditId": "AUD-1758990782358-v3lukc"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:33:02.371Z",
+    "agentId": "assessmentAgent",
+    "capabilities": [
+      "assessBatchImpact",
+      "evaluateRisk",
+      "generateReleaseRecommendation",
+      "validateBatchCompliance"
+    ],
+    "auditId": "AUD-1758990782396-2o840d"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:33:02.410Z",
+    "agentId": "complianceAgent",
+    "capabilities": [
+      "validateOrder",
+      "checkCompliance",
+      "generateAuditReport",
+      "assessRegulatoryRisk"
+    ],
+    "auditId": "AUD-1758990782434-r7uch5"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:33:02.447Z",
+    "agentId": "statusAgent",
+    "capabilities": [
+      "updateSystemStatus",
+      "generateDashboard",
+      "monitorHealth",
+      "analyzePerformance"
+    ],
+    "auditId": "AUD-1758990782468-9zs20l"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:33:02.481Z",
+    "agentId": "helpAgent",
+    "capabilities": [
+      "provideHelp",
+      "explainWorkflow",
+      "guideTroubleshooting",
+      "trainUser"
+    ],
+    "auditId": "AUD-1758990782504-x92hvg"
+  },
+  {
+    "type": "system",
+    "event": "system_startup",
+    "details": {
+      "version": "1.0.2",
+      "components": [
+        "EventBusManager",
+        "AgentManager",
+        "DataManager",
+        "AuditLogger",
+        "A2AManager",
+        "MCPServer"
+      ],
+      "configuration": {
+        "USE_LANGCHAIN": true,
+        "USE_ACTIONS": false,
+        "AGENT_MODE": "langchain",
+        "ENABLE_A2A": true
+      },
+      "eventBusIntegration": "Working - EventBusManager provides EventEmitter interface",
+      "mcpIntegration": "Successful"
+    },
+    "timestamp": "2025-09-27T16:33:02.539Z",
+    "auditId": "AUD-1758990782539-daatxq"
+  },
+  {
+    "type": "system",
+    "event": "server_started",
+    "details": {
+      "port": "4000",
+      "version": "1.2.5",
+      "architecture": "modular+a2a",
+      "a2aEnabled": true,
+      "eventBusIntegration": "EventBusManager",
+      "mcpIntegration": "Active",
+      "frontendRoutesEnabled": true,
+      "endpoints": [
+        "/api/chat",
+        "/api/agents",
+        "/api/data",
+        "/api/events",
+        "/api/audit",
+        "/api/system",
+        "/api/workflows",
+        "/api/a2a/test",
+        "/api/a2a/status",
+        "/templates",
+        "/events",
+        "/api/oee"
+      ]
+    },
+    "timestamp": "2025-09-27T16:33:02.619Z",
+    "auditId": "AUD-1758990782619-nut54a"
+  },
+  {
+    "type": "system",
+    "event": "system_shutdown",
+    "details": {
+      "reason": "SIGINT",
+      "version": "1.2.5"
+    },
+    "timestamp": "2025-09-27T16:33:38.125Z",
+    "auditId": "AUD-1758990818125-sulwfe"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:33:41.911Z",
+    "agentId": "orderAgent",
+    "capabilities": [
+      "analyzeOrders",
+      "checkMaterialAvailability",
+      "validateProductionReadiness",
+      "assessOrderImpact"
+    ],
+    "auditId": "AUD-1758990821924-05jpyg"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:33:41.946Z",
+    "agentId": "briefingAgent",
+    "capabilities": [
+      "generateExecutiveBriefing",
+      "summarizeOperations",
+      "identifyTrends",
+      "createActionPlan"
+    ],
+    "auditId": "AUD-1758990821976-fm2sa4"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:33:41.989Z",
+    "agentId": "assessmentAgent",
+    "capabilities": [
+      "assessBatchImpact",
+      "evaluateRisk",
+      "generateReleaseRecommendation",
+      "validateBatchCompliance"
+    ],
+    "auditId": "AUD-1758990822011-ow2gkz"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:33:42.024Z",
+    "agentId": "complianceAgent",
+    "capabilities": [
+      "validateOrder",
+      "checkCompliance",
+      "generateAuditReport",
+      "assessRegulatoryRisk"
+    ],
+    "auditId": "AUD-1758990822058-atssp2"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:33:42.080Z",
+    "agentId": "statusAgent",
+    "capabilities": [
+      "updateSystemStatus",
+      "generateDashboard",
+      "monitorHealth",
+      "analyzePerformance"
+    ],
+    "auditId": "AUD-1758990822112-b3r19m"
+  },
+  {
+    "type": "a2a_agent_registered",
+    "timestamp": "2025-09-27T16:33:42.126Z",
+    "agentId": "helpAgent",
+    "capabilities": [
+      "provideHelp",
+      "explainWorkflow",
+      "guideTroubleshooting",
+      "trainUser"
+    ],
+    "auditId": "AUD-1758990822163-3mlq4m"
+  },
+  {
+    "type": "system",
+    "event": "system_startup",
+    "details": {
+      "version": "1.0.2",
+      "components": [
+        "EventBusManager",
+        "AgentManager",
+        "DataManager",
+        "AuditLogger",
+        "A2AManager",
+        "MCPServer"
+      ],
+      "configuration": {
+        "USE_LANGCHAIN": true,
+        "USE_ACTIONS": false,
+        "AGENT_MODE": "langchain",
+        "ENABLE_A2A": true
+      },
+      "eventBusIntegration": "Working - EventBusManager provides EventEmitter interface",
+      "mcpIntegration": "Successful"
+    },
+    "timestamp": "2025-09-27T16:33:42.201Z",
+    "auditId": "AUD-1758990822201-uur4bu"
+  },
+  {
+    "type": "system",
+    "event": "server_started",
+    "details": {
+      "port": "4000",
+      "version": "1.2.5",
+      "architecture": "modular+a2a",
+      "a2aEnabled": true,
+      "eventBusIntegration": "EventBusManager",
+      "mcpIntegration": "Active",
+      "frontendRoutesEnabled": true,
+      "endpoints": [
+        "/api/chat",
+        "/api/agents",
+        "/api/data",
+        "/api/events",
+        "/api/audit",
+        "/api/system",
+        "/api/workflows",
+        "/api/a2a/test",
+        "/api/a2a/status",
+        "/templates",
+        "/events",
+        "/api/oee"
+      ]
+    },
+    "timestamp": "2025-09-27T16:33:42.274Z",
+    "auditId": "AUD-1758990822274-8ns5a1"
+  },
+  {
+    "type": "system",
+    "event": "system_shutdown",
+    "details": {
+      "reason": "SIGINT",
+      "version": "1.2.5"
+    },
+    "timestamp": "2025-09-27T16:50:54.206Z",
+    "auditId": "AUD-1758991854206-2bup0z"
   }
 ]
